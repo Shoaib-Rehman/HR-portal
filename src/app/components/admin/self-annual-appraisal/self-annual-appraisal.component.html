@@ -1,0 +1,270 @@
+<div class="heading-line">
+    <h1 class="main-heading">Self Annual Apraisal</h1>
+</div>
+<!-- [formGroup]="myForm"  -->
+<form class="example-form" (ngSubmit)="onSubmit()">
+    <div class="row box-height">
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label class="textsize">Name</mat-label>
+            <input class="textsize" matInput placeholder="Name" formControlName="name" required />
+            <!-- <mat-icon matSuffix>email</mat-icon> -->
+            <mat-error>abc</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label class="textsize">Location/Office</mat-label>
+            <input class="textsize" matInput placeholder="Location/Office" formControlName="location" required />
+            <!-- <mat-icon matSuffix>email</mat-icon> -->
+            <mat-error>abc</mat-error>
+        </mat-form-field>
+    </div>
+    <div class="row">
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label class="textsize">Position</mat-label>
+            <mat-select required formControlName="position">
+                <mat-option *ngFor="let option of dropdownOptions" [value]="option.value" class="textsize">
+                    {{ option.label }}
+                </mat-option>
+            </mat-select>
+            <mat-error>abc</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label>Date</mat-label>
+            <input matInput placeholder="Select a date" />
+            <mat-datepicker-toggle matSuffix></mat-datepicker-toggle>
+            <!-- <mat-datepicker #picker></mat-datepicker> -->
+            <mat-error>abc</mat-error>
+        </mat-form-field>
+
+
+
+        <!-- 
+             <mat-form-field>
+    <input matInput [matDatepicker]="picker" placeholder="Date" formControlName="date">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+         -->
+
+
+
+    </div>
+
+
+
+    <!-- ***************************** Add Details *************** -->
+    <div>
+        <p class="add-details">Add Details</p>
+    </div>
+    <div class="row" style="padding: 9px">
+        <div class="objective-boxing mb-5" *ngFor="let objective of objectives; let i = index">
+            <div class="text-container">
+                <h2 class="objective-text">{{ objective.name }}</h2>
+                <img src="../../../../assets/icons/objective_plus_icon.svg" alt="plus" (click)="toggleObjective(i)" />
+            </div>
+            <div class="objective-content" [ngClass]="{ expanded: isExpanded(i) }">
+                <div class="outer-container">
+                    <div class="inner-container">
+                        <h4>Objective</h4>
+                        <textarea rows="4" [ngModel]="objective.content.objective"
+                            (ngModelChange)="objective.content.objective = $event" [name]="'objective-' + i"
+                            class="text-area textsize"></textarea>
+                    </div>
+                </div>
+                <div class="outer-container">
+                    <div class="inner-container">
+                        <h4>Key Performance Indicators</h4>
+                        <textarea rows="4" [ngModel]="objective.content.keyPerformanceIndicators"
+                            (ngModelChange)="objective.content.keyPerformanceIndicators = $event" [name]="'kpi-' + i"
+                            class="text-area textsize"></textarea>
+                    </div>
+                </div>
+                <div>
+
+
+                    <div class="outer-container">
+                        <div class="inner-container">
+                            <h4>Actual Performance</h4>
+                            <textarea rows="4" [ngModel]="objective.content.actualPerformance"
+                                (ngModelChange)="objective.content.actualPerformance = $event" [name]="'actual-' + i"
+                                class="text-area textsize"></textarea>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row" style="margin-top: -60px">
+                        <mat-form-field appearance="outline" class="input-box col-6 score-padding">
+                            <mat-label class="textsize">Score</mat-label>
+                            <mat-select required>
+                                <mat-option *ngFor="let option of dropdownOptions" [value]="option.value"
+                                    class="textsize">
+                                    {{ option.label }}
+                                </mat-option>
+                            </mat-select>
+                            <mat-error>abc</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="input-box col-6 score-padding">
+                            <mat-label>Self Scoor</mat-label>
+                            <input matInput placeholder="Self Scoor" formControlName="selfScoor" required />
+                            <mat-error>abc</mat-error>
+                        </mat-form-field>
+
+                        <mat-form-field appearance="outline" class="input-box  col-6 manager-score">
+                            <mat-label>Manager Scoor</mat-label>
+                            <input matInput placeholder="Manager Scoor" formControlName="mangerScoor" required />
+                            <mat-error>abc</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+        <button (click)="saveData()">Save Data</button>
+    </div>
+    <!-- <div class="row" style="margin-top: -60px">
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label class="textsize">Score</mat-label>
+            <mat-select required>
+                <mat-option *ngFor="let option of dropdownOptions" [value]="option.value" class="textsize">
+                    {{ option.label }}
+                </mat-option>
+            </mat-select>
+            <mat-error>abc</mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label>Self Scoor</mat-label>
+            <input matInput placeholder="Self Scoor" formControlName="selfScoor" required />
+            <mat-error>abc</mat-error>
+        </mat-form-field>
+    </div> -->
+
+    <button mat-button class="kips-button">Add Additional KPIS</button>
+    <button mat-button class="save-button">Save and continue</button>
+    <!-- <button mat-raised-button color="primary" type="submit">Submit</button> -->
+</form>
+
+<!-- ********************************************** Role Based Competendes -->
+<div>
+    <h1 class="main-heading">Role Based Competendes</h1>
+    <p class="ptext">1 being the lowest 5 being the highest</p>
+</div>
+<div class="row bottom-space">
+    <div class="col text-styling">
+        <p>work Ethics</p>
+    </div>
+    <div class="box-container col">
+        <div [class.selected]="isSelected('workEthics', boxNumber)" (click)="selectBox('workEthics', boxNumber)"
+            class="box" *ngFor="let boxNumber of boxNumbers">
+            {{ boxNumber }}
+        </div>
+    </div>
+</div>
+
+<div class="row bottom-space">
+    <div class="col text-styling col">
+        <p>Job Knowledge</p>
+    </div>
+    <div class="box-container col">
+        <div [class.selected]="isSelected('jobKnowledge', boxNumber)" (click)="selectBox('jobKnowledge', boxNumber)"
+            class="box" *ngFor="let boxNumber of boxNumbers">
+            {{ boxNumber }}
+        </div>
+    </div>
+</div>
+
+<div class="row bottom-space">
+    <div class="col text-styling col">
+        <p>Quality of Work</p>
+    </div>
+    <div class="box-container col">
+        <div [class.selected]="isSelected('qualityWork', boxNumber)" (click)="selectBox('qualityWork', boxNumber)"
+            class="box" *ngFor="let boxNumber of boxNumbers">
+            {{ boxNumber }}
+        </div>
+    </div>
+</div>
+
+<div class="row bottom-space">
+    <div class="col text-styling col">
+        <p>Productivity</p>
+    </div>
+    <div class="box-container col">
+        <div [class.selected]="isSelected('Productivity', boxNumber)" (click)="selectBox('Productivity', boxNumber)"
+            class="box" *ngFor="let boxNumber of boxNumbers">
+            {{ boxNumber }}
+        </div>
+    </div>
+</div>
+
+<div class="row bottom-space">
+    <div class="col text-styling col">
+        <p>Dependability</p>
+    </div>
+    <div class="box-container col">
+        <div [class.selected]="isSelected('Dependability', boxNumber)" (click)="selectBox('Dependability', boxNumber)"
+            class="box" *ngFor="let boxNumber of boxNumbers">
+            {{ boxNumber }}
+        </div>
+    </div>
+</div>
+
+<div class="row bottom-space">
+    <div class="col text-styling col">
+        <p>Discipline</p>
+    </div>
+    <div class="box-container col">
+        <div [class.selected]="isSelected('Discipline', boxNumber)" (click)="selectBox('Discipline', boxNumber)"
+            class="box" *ngFor="let boxNumber of boxNumbers">
+            {{ boxNumber }}
+        </div>
+    </div>
+</div>
+
+<div class="row bottom-space">
+    <div class="col text-styling col">
+        <p>Communication Skills</p>
+    </div>
+    <div class="box-container col">
+        <div [class.selected]="isSelected('CommunicationSkills', boxNumber)"
+            (click)="selectBox('CommunicationSkills', boxNumber)" class="box" *ngFor="let boxNumber of boxNumbers">
+            {{ boxNumber }}
+        </div>
+    </div>
+</div>
+
+<div class="row bottom-space">
+    <div class="col text-styling col">
+        <p>Total</p>
+    </div>
+    <div class="box-container col">
+        <div class="total-box">{{ calculateSum() }}</div>
+    </div>
+</div>
+
+<div>
+    <p class="comment-text">Comments</p>
+    <textarea class="text-area textsize comments-textarea"></textarea>
+</div>
+<div class="buttons-section">
+    <button mat-button class="kips-button">Submit</button>
+    <button mat-button class="save-button">Go back</button>
+</div>
+
+<!-- ******************************Custom Toaster *********************** -->
+
+<div class="custom-toaster">
+    <div class="row toaster-inner-section">
+        <mat-icon>highlight_off</mat-icon>
+    </div>
+    <div class="row toaster-tick-img-div">
+        <img src="../../../../assets/icons/blue-check-circle.svg" alt="Tick Mark" class="tick-mark-image" />
+    </div>
+    <div class="row" style="display: flex; justify-content: center">
+        <p class="toaster-text">YOUR RESPONSE HAS BEEN RECORDED</p>
+    </div>
+</div>
+
+<!-- ********************************************************************************* -->

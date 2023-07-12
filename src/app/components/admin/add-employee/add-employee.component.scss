@@ -1,0 +1,72 @@
+.form-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  
+  .form-field {
+    width: calc(50% - 10px);
+    margin-bottom: 16px;
+  }
+  
+  button[type="submit"] {
+    margin-top: 10px;
+  }
+
+  .input-box {
+    // margin-top: 3rem;
+    margin-bottom: 1.5rem;
+  }
+  .ptext{
+    font-size: 14px;
+    font-family: Poppins;
+    font-weight: 400;
+    color: #005BAA ;
+  }
+  .closeIcon {
+    margin-bottom: 3px;
+    cursor: pointer;
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .date-Icon {
+    vertical-align: baseline;
+    margin-bottom: 2px;
+  }
+ 
+// ************************************** same styling we will move to common css ********
+.main-heading{
+  font-size: 24px;
+  font-weight: 600;
+  font-family: Poppins;
+  margin-bottom: 3px;
+
+}
+
+
+  :host ::ng-deep mat-form-field .mat-form-field-outline-start {
+    background-color: #F8F9FA !important;
+  }
+  
+  :host ::ng-deep mat-form-field .mat-form-field-outline-gap {
+    background-color: #F8F9FA !important;
+  }
+  
+  :host ::ng-deep mat-form-field .mat-form-field-outline-end {
+    background-color: #F8F9FA !important;
+  }
+  .add-employee-button {
+    background-color:#4CA3FB;
+    color: white;
+  }
+  // .designation-input{
+  //   margin-bottom: 0px !important;
+  // }
+
+  mat-form-field {
+    width: 456px;
+    height: 64px;
+    margin-bottom: 10px;
+  }
