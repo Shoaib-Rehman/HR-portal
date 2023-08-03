@@ -10,6 +10,8 @@ import { FooterComponent } from './footer/footer.component';
 import { SharedModule } from '../shared/shared.module';
 import { SelfAnnualAppraisalComponent } from './self-annual-appraisal/self-annual-appraisal.component';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
+import { BellCurveComponent } from './bell-curve/bell-curve.component';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -21,10 +23,12 @@ import { AddEmployeeComponent } from './add-employee/add-employee.component';
     DishboardComponent,
     SelfAnnualAppraisalComponent,
     AddEmployeeComponent,
+    BellCurveComponent,
   ],
   imports: [
     SharedModule,
     AdminRoutingModule,
+    ChartsModule,
   ],
 })
 export class AdminModule {}

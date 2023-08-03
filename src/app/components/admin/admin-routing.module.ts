@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 import { DishboardComponent } from './dishboard/dishboard.component';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
+import { BellCurveComponent } from './bell-curve/bell-curve.component';
 const routes: Routes = [
     {
         path: "",
@@ -29,6 +30,10 @@ const routes: Routes = [
           {
             path: "employee",
             component: AddEmployeeComponent,
+          },
+          {
+            path: "bellCurve",
+            component: BellCurveComponent,
           },
         ],
     }
