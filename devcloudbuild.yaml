@@ -1,0 +1,18 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-f','Dockerfile', '-t', 'gcr.io/iagilityphp/hris',
+            '--cache-from', 'gcr.io/iagilityphp/hris:latest', '.']
+  timeout: 1800s # extend timeout for build to 2 hours
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/iagilityphp/hris:latest']
+  timeout: 1800s # extend timeout for build to 2 hours
+- name: "gcr.io/cloud-builders/gke-deploy"
+  args:
+  - run
+  - --filename=./k8-devdeploy.yml
+  - --image=gcr.io/iagilityphp/hris:latest
+  - --location=us-central1-c
+  - --cluster=hris-cluster
+timeout: 1800s
+
+  #args: ['build', '-f','DevDockerfile', '-t', 'gcr.io/iagilityphp/jig-admin-dev', '.']
