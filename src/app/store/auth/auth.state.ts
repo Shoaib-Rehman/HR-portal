@@ -17,7 +17,7 @@ export class AuthState {
   static sideNav(): ISideNav[] {
     return [
       {
-        name: 'Add Agency',
+        name: 'Agency Member List',
         icon: 'person',
         route: '/dashboard',
         routeLinkActive: "active"
@@ -31,9 +31,40 @@ export class AuthState {
       {
         name: 'Launch Appraisal',
         icon: 'commute',
-        route: '/dashboard',
+        route: '/launchAppraisal',
         routeLinkActive: "active"
       },
+      {
+        name: 'Self Annual Appraisal',
+        icon: 'commute',
+        route: '/selfAppraisal',
+        routeLinkActive: "active"
+      },
+      {
+        name: 'Annual Appraisal',
+        icon: 'commute',
+        route: '/annualappraisal',
+        routeLinkActive: "active"
+      },
+      {
+        name: 'All Employee List',
+        icon: 'commute',
+        route: '/allemployee',
+        routeLinkActive: "active"
+      },
+      {
+        name: 'Compose Email',
+        icon: 'commute',
+        route: '/composeEmail',
+        routeLinkActive: "active"
+      },
+      {
+        name: 'assign Members',
+        icon: 'commute',
+        route: 'assignMembers',
+        routeLinkActive: "active"
+      },
+      
       {
         name: 'Appraisal Results',
         icon: 'commute',
@@ -49,7 +80,7 @@ export class AuthState {
       {
         name: 'Bell Cruve',
         icon: 'home',
-        route: '/employee',
+        route: '/bellCurve',
         routeLinkActive: "active"
       },
     ];

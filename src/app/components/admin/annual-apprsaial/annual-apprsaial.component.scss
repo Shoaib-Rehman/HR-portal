@@ -1,0 +1,166 @@
+
+.input-box {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.box-height{
+  margin-bottom: -38px
+}
+:host ::ng-deep mat-form-field .mat-form-field-outline-start {
+  background-color: #F8F9FA !important;
+}
+
+:host ::ng-deep mat-form-field .mat-form-field-outline-gap {
+  background-color: #F8F9FA !important;
+}
+
+:host ::ng-deep mat-form-field .mat-form-field-outline-end {
+  background-color: #F8F9FA !important;
+}
+
+
+
+
+
+.main-heading{
+  font-size: 24px;
+  font-weight: 600;
+  font-family: Poppins;
+  margin-bottom: 3px;
+
+}
+.ptext{
+  font-size: 14px;
+  font-family: Inter;
+  font-weight: 500;
+  color: #494949;
+}
+.text-styling {
+  padding-top: 1rem;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: Poppins;
+  color: #000000;
+  max-width: 490px;
+
+}
+
+.box-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.box {
+  width: 44.03px;
+  height:  44.03px;
+  background-color:#CCCCCC;
+  border-radius: 7px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin-right: 26px;
+  font-size: 24px;
+  font-weight: 600;
+  font-family: Poppins;
+}
+
+.box.selected {
+  background-color:#4CA3FB;
+}
+.bottom-space {
+  margin-bottom: 21px;
+}
+.total-box-container {
+  display: flex;
+  justify-content: center;
+}
+
+.total-box {
+  width: 100px;
+  height: 50px;
+  background-color: blue;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+}
+.total-box{
+  width: 58px;
+  height:  44.03px;
+  background-color:#CCCCCC;
+  border-radius: 7px;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  font-size: 24px;
+  font-weight: 600;
+  font-family: Poppins;
+}
+
+.comment-text {
+  margin: 0px;
+  color: #696F79;
+  font-size: 16px;
+  font-weight: 500;
+  font-family: Inter;
+}
+.comments-textarea{
+  background: #F8F9FA !important;
+  border: #F8F9FA !important;
+}
+.buttons-section{
+  margin-top: 21px;
+}
+
+.save-button {
+  color:#4CA3FB;
+  background-color: white ;
+  border: 1px solid #4CA3FB;
+  text-align: center;
+}
+.kips-button {
+  background-color:#4CA3FB;
+  color: white !important;
+  margin-right: 22px;
+  text-align: center;
+
+}
+.disableButton {
+  background-color:#CCCCCC;
+  color: white !important;
+  margin-right: 22px;
+  text-align: center;
+}
+
+h4 {
+  margin: 0px 0px 0px 0px;
+  font-size: 18px;
+  font-family: Poppins;
+   font-weight: 600; 
+   color: #242731;
+}
+
+.text-area {
+  width: 100%;
+  height: 157px;
+  resize: none;
+  background: #B2B2B2;
+  border: 1px solid #B2B2B2;
+  border-radius: 6px;
+  padding: 20px;
+  margin-top: 1rem;
+}
+.textsize{
+  font-size: 14px;
+  line-height: 16.94px;
+  font-family: Inter;
+  font-weight: 500;
+}
+
+
+

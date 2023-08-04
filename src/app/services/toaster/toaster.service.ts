@@ -14,6 +14,7 @@ export class ToasterService {
     this._snackBar.open(message, 'X', {
       horizontalPosition: this.horizontalPosition,
       verticalPosition: this.verticalPosition,
+      duration: 3000
     });
   }
 

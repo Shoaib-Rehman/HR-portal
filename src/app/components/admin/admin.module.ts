@@ -12,7 +12,17 @@ import { SelfAnnualAppraisalComponent } from './self-annual-appraisal/self-annua
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { BellCurveComponent } from './bell-curve/bell-curve.component';
 import { ChartsModule } from 'ng2-charts';
-
+import { AnnualApprsaialComponent } from './annual-apprsaial/annual-apprsaial.component';
+import { LaunchAppriasalComponent } from './launch-appriasal/launch-appriasal.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { UnlaunchedAppriasalEmployeeComponent } from './unlaunched-appriasal-employee/unlaunched-appriasal-employee.component';
+import { CustomToasterComponent } from './custom-toaster/custom-toaster.component';
+import { ComposeEmailComponent } from './compose-email/compose-email.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { AssignMembersComponent } from './assign-members/assign-members.component';
+import { MatCardModule } from '@angular/material/card';
 @NgModule({
   declarations: [
     HeaderComponent,
@@ -24,11 +34,24 @@ import { ChartsModule } from 'ng2-charts';
     SelfAnnualAppraisalComponent,
     AddEmployeeComponent,
     BellCurveComponent,
+    AnnualApprsaialComponent,
+    LaunchAppriasalComponent,
+    UnlaunchedAppriasalEmployeeComponent,
+    CustomToasterComponent,
+    ComposeEmailComponent,
+    AssignMembersComponent,
   ],
   imports: [
     SharedModule,
     AdminRoutingModule,
     ChartsModule,
+    MatDialogModule,  
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatCardModule
   ],
 })
-export class AdminModule {}
+export class AdminModule {
+  
+}

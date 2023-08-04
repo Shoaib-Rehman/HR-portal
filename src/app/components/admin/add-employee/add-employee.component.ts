@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { IAddEmployee } from 'src/app/interface';
 
 @Component({
@@ -50,11 +52,17 @@ export class AddEmployeeComponent implements OnInit {
     { value: 'Office Admin/Receptionist', label: 'Office Admin/Receptionist' },
   ];
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private dialogRef: MatDialogRef<AddEmployeeComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: any
+  ) {
     this.employeeForm = this.initForm();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.setValue(this.data);
+  }
 
   initForm(): UntypedFormGroup {
     return this.formBuilder.group({
@@ -69,6 +77,23 @@ export class AddEmployeeComponent implements OnInit {
       designation: [''],
     });
   }
+  setValue(data: any): void {
+    if (data?.name) {
+      this.FirstNameFormControl.setValue(this.data?.name);
+    }
+    if (data?.dateOfJoining) {
+      this.DateOfJoiningFormControl.setValue(this.data?.dateOfJoining);
+    }
+    if (data?.lastName) {
+      this.LastNameFormControl.setValue(this.data?.lastName);
+    }
+    if (data?.middleName) {
+      this.MiddleFormControl.setValue(this.data?.middleName);
+    }
+    if (data?.email) {
+      this.EmailFormControl.setValue(this.data?.email);
+    }
+  }
 
   submitForm(): void {
     if (this.employeeForm.valid) {
@@ -76,21 +101,51 @@ export class AddEmployeeComponent implements OnInit {
       const formData = this.prepareFormData();
       console.log(formData);
     } else {
-      // handling error;
-      this.employeeForm.markAllAsTouched();
+      // Mark all form fields as touched to trigger error messages
+      Object.values(this.formControls).forEach((control) => {
+        control.markAsTouched();
+      });
     }
-  }
-
-  isFieldInvalid(field: string): boolean {
-    const formControl = this.employeeForm.get(field);
-    return (
-      (formControl?.invalid && (formControl?.touched || formControl?.dirty)) ||
-      true
-    );
   }
 
   private prepareFormData(): IAddEmployee {
     const formData = { ...this.employeeForm.value };
     return formData;
+  }
+
+  public close(): void {
+    this.dialogRef.close({ data: false });
+  }
+
+  get formControls() {
+    return this.employeeForm.controls;
+  }
+
+  get AgencyFormControl(): FormControl {
+    return this.employeeForm.get('agency') as FormControl;
+  }
+  get LocationFormControl(): FormControl {
+    return this.employeeForm.get('location') as FormControl;
+  }
+  get FirstNameFormControl(): FormControl {
+    return this.employeeForm.get('firstName') as FormControl;
+  }
+  get MiddleFormControl(): FormControl {
+    return this.employeeForm.get('middleName') as FormControl;
+  }
+  get LastNameFormControl(): FormControl {
+    return this.employeeForm.get('lastName') as FormControl;
+  }
+  get DateOfJoiningFormControl(): FormControl {
+    return this.employeeForm.get('dateOfJoining') as FormControl;
+  }
+  get RoleFormControl(): FormControl {
+    return this.employeeForm.get('role') as FormControl;
+  }
+  get EmailFormControl(): FormControl {
+    return this.employeeForm.get('email') as FormControl;
+  }
+  get DesignationFormControl(): FormControl {
+    return this.employeeForm.get('designation') as FormControl;
   }
 }
