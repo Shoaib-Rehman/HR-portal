@@ -1,0 +1,62 @@
+
+.input-box {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.input-box-employee {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+.box-height{
+  margin-bottom: -38px;
+  margin-top: -50px
+}
+
+
+
+// ****************same styling *********
+.ptext{
+  font-size: 14px;
+  font-family: Poppins;
+  font-weight: 400;
+  color: #005BAA ;
+}
+.cursor-pointer {
+  cursor: pointer;
+}
+.heading-line{
+  padding: 1rem 0rem 0rem 0rem
+}
+.main-heading{
+  font-size: 24px;
+  font-weight: 600;
+  font-family: Poppins;
+  margin-bottom: 3px;
+}
+.closeIcon {
+  margin-bottom: 3px;
+  cursor: pointer;
+}
+
+
+:host ::ng-deep mat-form-field .mat-form-field-outline-start {
+  background-color: #F8F9FA !important;
+}
+
+:host ::ng-deep mat-form-field .mat-form-field-outline-gap {
+  background-color: #F8F9FA !important;
+}
+
+:host ::ng-deep mat-form-field .mat-form-field-outline-end {
+  background-color: #F8F9FA !important;
+}
+
+// ************************
+.launch-button {
+  background-color:#4CA3FB;
+  color: white !important;
+  margin-right: 22px;
+  text-align: center;
+  // margin-top: 2rem;
+
+}

@@ -1,15 +1,18 @@
-<div class="heading-line" style="padding: 1rem 0rem">
+<div >
   <h1 class="main-heading">Add Employee</h1>
+  <div class="close-modal" (click)="close()">
+    <mat-icon>highlight_off</mat-icon>
+</div>
   <p class="ptext">
     <img src="../../../../assets/icons/closeIcon.svg" class="closeIcon" />
     <span class="cursor-pointer"> Click to hide Add Employee</span>
   </p>
 </div>
-<form [formGroup]="employeeForm" (ngSubmit)="submitForm()">
+<form [formGroup]="employeeForm">
   <div class="form-row">
     <mat-form-field appearance="outline" class="form-field input-box">
       <mat-label>Select Agency / Office</mat-label>
-      <mat-select formControlName="agency" required>
+      <mat-select formControlName="agency" >
         <mat-option
           *ngFor="let option of agencies"
           [value]="option.value"
@@ -17,13 +20,13 @@
           {{ option.label }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="isFieldInvalid('agency')">Please enter the
+      <mat-error *ngIf="AgencyFormControl.invalid && AgencyFormControl.touched">Please enter the
         agency/office.</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field input-box">
       <mat-label>Location / Office</mat-label>
-      <mat-select formControlName="location" required>
+      <mat-select formControlName="location" >
         <mat-option
           *ngFor="let option of officeLocation"
           [value]="option.value"
@@ -31,7 +34,7 @@
           {{ option.label }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="isFieldInvalid('location')">Please enter the
+      <mat-error   *ngIf="LocationFormControl.invalid && LocationFormControl.touched">Please enter the
         location/office.</mat-error>
     </mat-form-field>
   </div>
@@ -43,8 +46,8 @@
         matInput
         placeholder="First Name"
         formControlName="firstName"
-        required />
-      <mat-error *ngIf="isFieldInvalid('firstName')">Please enter the first
+         />
+      <mat-error  *ngIf="FirstNameFormControl.invalid && FirstNameFormControl.touched">Please enter the first
         name.</mat-error>
     </mat-form-field>
 
@@ -60,9 +63,8 @@
       <input
         matInput
         placeholder="Last Name"
-        required
         formControlName="lastName" />
-      <mat-error *ngIf="isFieldInvalid('lastName')">Please enter the last name.</mat-error>
+      <mat-error *ngIf="LastNameFormControl.invalid && LastNameFormControl.touched">Please enter the last name.</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field input-box">
@@ -81,7 +83,7 @@
   <div class="form-row">
     <mat-form-field appearance="outline" class="form-field input-box">
       <mat-label>Role</mat-label>
-      <mat-select required formControlName="role">
+      <mat-select  formControlName="role">
         <mat-option
           *ngFor="let option of roles"
           [value]="option.value"
@@ -89,7 +91,7 @@
           {{ option.label }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="isFieldInvalid('role')">Please enter the role.</mat-error>
+      <mat-error *ngIf="RoleFormControl.invalid && RoleFormControl.touched">Please enter the role.</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field input-box">
@@ -98,9 +100,9 @@
         matInput
         placeholder="pat@example.com"
         formControlName="email"
-        required />
+         />
       <mat-icon matSuffix>email</mat-icon>
-      <mat-error *ngIf="isFieldInvalid('email')">Please enter a valid email
+      <mat-error *ngIf="EmailFormControl.invalid && EmailFormControl.touched">Please enter a valid email
         address.</mat-error>
     </mat-form-field>
   </div>
@@ -110,7 +112,7 @@
       appearance="outline"
       class="form-field input-box designation-input">
       <mat-label>Designation</mat-label>
-      <mat-select required formControlName="designation">
+      <mat-select  formControlName="designation">
         <mat-option
           *ngFor="let option of designation"
           [value]="option.value"
@@ -118,11 +120,11 @@
           {{ option.label }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="isFieldInvalid('designation')">Please select designation</mat-error>
+      <mat-error *ngIf="DesignationFormControl.invalid && DesignationFormControl.touched">Please select designation</mat-error>
     </mat-form-field>
   </div>
 
-  <button mat-raised-button class="add-employee-button" type="submit">
+  <button mat-raised-button class="add-employee-button" (click)="submitForm()">
     Add Employee
   </button>
 </form>

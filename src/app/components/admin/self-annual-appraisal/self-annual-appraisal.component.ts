@@ -1,101 +1,86 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 @Component({
   selector: 'app-self-annual-appraisal',
   templateUrl: './self-annual-appraisal.component.html',
   styleUrls: ['./self-annual-appraisal.component.scss'],
 })
 export class SelfAnnualAppraisalComponent implements OnInit {
-  myForm: FormGroup;
-  dropdownOptions  = [
+  selfAppraisalForm: FormGroup;
+  dropdownOptions = [
     { value: 'option1', label: 'Option 1' },
     { value: 'option2', label: 'Option 2' },
     { value: 'option3', label: 'Option 3' },
   ];
-
-  selectedOption: string | undefined;
-
-  // role based competendense work ****************
-  boxNumbers: number[] = [1, 2, 3, 4, 5];
-  selectedBoxes: { [key: string]: any } = {
-    workEthics: null,
-    jobKnowledge: null,
-    qualityWork: null,
-    Productivity: null,
-    Dependability: null,
-    Discipline: null,
-    CommunicationSkills: null,
-  };
-
-  isSelected(category: string, boxNumber: number): boolean {
-    return (
-      boxNumber === this.selectedBoxes[category] ||
-      boxNumber < this.selectedBoxes[category]
-    );
-  }
-
-  selectBox(category: string, boxNumber: number): void {
-    this.selectedBoxes[category] = boxNumber;
-  }
-  calculateSum(): number {
-    let sum = 0;
-    for (const category in this.selectedBoxes) {
-      if (this.selectedBoxes[category] !== null) {
-        sum += this.selectedBoxes[category];
-      }
-    }
-    return sum;
-  }
-  // ****************************************************************
+  score = [
+    { value: '10%', label: '10%' },
+    { value: '20%', label: '20%'},
+    { value: '30%', label: '30%' },
+    { value: '40%', label: '40%' },
+    { value: '50%', label: '50%' },
+    { value: '60%', label: '60%' },
+    { value: '70%', label: '70%' },
+    { value: '80%', label: '80%' },
+    { value: '90%', label: '90%' },
+    { value: '100%', label:'100%' },
+  ];
   constructor(private formBuilder: FormBuilder) {
-    this.myForm = this.formBuilder.group({
+    this.selfAppraisalForm = this.initForm()
+  }
+
+  ngOnInit(): void {}
+
+  initForm() {
+    return this.formBuilder.group({
       name: ['', Validators.required],
       location: ['', Validators.required],
       position: ['', Validators.required],
       date: ['', Validators.required],
-      selfScoor: ['', Validators.required],
-      scoor: ['', Validators.required],
-
     });
+  
   }
-
-  ngOnInit(): void {
-    
-  }
-
   toggleTextArea(objective: any): void {
     objective.showTextArea = !objective.showTextArea;
   }
 
-
   objectives: any[] = [
-    { 
+    {
       name: 'Objective 1',
       expanded: false,
       content: {
         objective: '',
         keyPerformanceIndicators: '',
-        actualPerformance: ''
-      }
+        actualPerformance: '',
+        score: '',
+        selfScore:'',
+        managerScore:''
+      },
     },
-    { 
+    {
       name: 'Objective 2',
       expanded: false,
       content: {
         objective: '',
         keyPerformanceIndicators: '',
-        actualPerformance: ''
-      }
+        actualPerformance: '',
+        score: '40%',
+        selfScore:'',
+        managerScore:''
+      },
     },
-    { 
+    {
       name: 'Objective 3',
       expanded: false,
       content: {
         objective: '',
         keyPerformanceIndicators: '',
-        actualPerformance: ''
-      }
-    }
+        actualPerformance: '',
+        score: '40%',
+        selfScore:'',
+        managerScore:''
+      },
+    },
   ];
 
   toggleObjective(index: number): void {
@@ -106,48 +91,50 @@ export class SelfAnnualAppraisalComponent implements OnInit {
     return this.objectives[index].expanded;
   }
 
-
   saveData() {
-    const data:any = this.objectives.map(objective => {
+    const data: any = this.objectives.map((objective) => {
       return {
         objective: objective.content.objective,
         keyPerformanceIndicators: objective.content.keyPerformanceIndicators,
-        actualPerformance: objective.content.actualPerformance
+        actualPerformance: objective.content.actualPerformance,
+        score: objective.content.score,
+        selfScoor:objective.content.selfScore,
+        managerScoor:objective.content.managerScore
       };
     });
 
     console.log(data); // Do something with the data, like sending it to a server
   }
 
-
-
-  
-  get NameFormControl() {
-    return this.myForm.get('name');
-  }
-
-  get location() {
-    return this.myForm.get('location');
-  }
-
-  get position() {
-    return this.myForm.get('position');
-  }
-
-  get date() {
-    return this.myForm.get('date');
+  setValue(): void {
+    this.NameFormControl?.setValue('Abdul Majid');
   }
 
   onSubmit() {
-    // if (this.myForm.valid) {
-      console.log('Name:', this.NameFormControl);
-      console.log('Location:', this.location);
-      console.log('Position:', this.position);
-      // console.log('Date:', this.date.value);
-      // You can perform further actions with the form data here
-    // } else {
-      // Handle invalid form submission
-    // }
+    if (this.selfAppraisalForm.valid) {
+    console.log('Name:', this.NameFormControl);
+    console.log('Location:', this.LocationFormControl);
+    console.log('Position:', this.PositionFormControl);
+    // console.log('Date:', this.date.value);
+    // You can perform further actions with the form data here
+    } else {
+    // Handle invalid form submission
+    }
   }
-  
+
+  get NameFormControl(): FormControl {
+    return this.selfAppraisalForm.get('name') as FormControl;
+  }
+
+  get LocationFormControl() {
+    return this.selfAppraisalForm.get('location');
+  }
+
+  get PositionFormControl() {
+    return this.selfAppraisalForm.get('position');
+  }
+
+  get DateFormControl() {
+    return this.selfAppraisalForm.get('date');
+  }
 }
