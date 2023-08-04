@@ -1,0 +1,46 @@
+.heading-box {
+    .heading {
+        color: #000;
+        font-family: Poppins;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        margin-bottom: 10px;
+    }
+
+    .cross-btn {
+        padding: 0px;
+        color: #005BAA;
+        cursor: pointer;
+
+        font-family: Poppins;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+        letter-spacing: -0.2px;
+
+        mat-icon {
+            font-size: large;
+            vertical-align: sub;
+        }
+    }
+}
+
+.input-box {
+    margin-bottom: 1rem;
+    /* width: 500px; */
+    // height: 64px;
+    // border: 1px solid rgba(76, 163, 251, 0.08);
+    // background: #F8F9FA;
+    // border-radius: 6px;
+
+    .mat-form-field-wrapper .mat-form-field-flex {
+        width: 500px;
+        height: 64px;
+        border: 1px solid rgba(76, 163, 251, 0.08);
+        background: #F8F9FA;
+        border-radius: 6px;
+    }
+}
