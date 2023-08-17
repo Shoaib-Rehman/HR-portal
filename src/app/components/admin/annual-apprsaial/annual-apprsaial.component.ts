@@ -80,7 +80,7 @@ export class AnnualApprsaialComponent implements OnInit {
     for (const [key, value] of Object.entries(this.selectedBoxes)) {
       if (value == null) {
         console.log(value);
-        this.toasterService.openSnackBar(
+        this.toasterService.success(
           'Please rate all Role based competendes'
         );
         return;
