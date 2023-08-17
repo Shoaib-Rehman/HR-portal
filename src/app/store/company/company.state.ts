@@ -1,40 +1,111 @@
 import { Injectable } from '@angular/core';
-import { Action, State, StateContext } from '@ngxs/store';
-import { AuthService } from 'src/app/services/auth/auth.service';
+import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { CompanyModel } from './company.model';
 import { Company } from './company.action';
+import { CompanyService } from 'src/app/services/company/company.service';
+import { tap } from 'rxjs';
 
 @State<CompanyModel>({
-  name: 'auth',
+  name: 'company',
   defaults: new CompanyModel(),
 })
 @Injectable()
 export class CompanyState {
+  
+  constructor(private companyService: CompanyService) {}
 
-  constructor(private authService: AuthService) {}
+
+  @Selector()
+	static agenciesInfo(state: CompanyModel) { return state.agenciesList }
+
+  @Selector()
+	static agencyEmployees(state: CompanyModel) { return state.agencyemployeeList }
+
+  @Selector()
+	static allEmployees(state: CompanyModel) { return state.allemployeeList }
+
 
   @Action(Company.GetAll)
-  getAll(ctx: StateContext<CompanyModel>, action: Company.GetAll) {
+  getAllAgencies(ctx: StateContext<CompanyModel>) {
     const state = ctx.getState();
-    return this.authService.login(action.payload)
-    .pipe((resp: any) => {
-      ctx.patchState({
-
-      });
-    });
+    if(state.agenciesList.length) {
+      return state.agenciesList
+    } else {
+      return this.companyService.getAllAgencies().pipe(
+        tap((resp) => {
+          ctx.patchState({
+            agenciesList: resp?.items,
+          });
+        })
+      );
+    }
   }
 
-  @Action(Company.Create)
-  create(ctx: StateContext<CompanyModel>, action: Company.Create) {
-    const state = ctx.getState();
-    return this.authService.login(action.payload)
-    .pipe((resp: any) => {
-      ctx.patchState({
+  @Action(Company.addEmployee) 
+  addEmployee(ctx:StateContext<CompanyModel>, action:Company.addEmployee) {
+    return this.companyService.addEmployee(action.payload).pipe(
+      tap((resp) => {
+        console.log('addEmssssssssssployee>>>>>>>', resp);
+        ctx.patchState({
 
-      });
-    });
+        });
+      })
+    );
   }
 
-  
+
+
+  @Action(Company.GetAllEmployee) 
+  GetAllEmployee(ctx:StateContext<CompanyModel>) {
+    const state = ctx.getState();
+    if(state.allemployeeList.length) {
+      return state.allemployeeList
+    } else {
+    return this.companyService.getAllEmployee().pipe(
+      tap((resp) => {
+        ctx.patchState({
+          allemployeeList : resp?.items
+        });
+      })
+    );
+    }
+  }
+
+  @Action(Company.GetSingleAgencyEmployee) 
+  GetAgencyEmployee(ctx:StateContext<CompanyModel>, action:Company.GetSingleAgencyEmployee) {
+    // const state = ctx.getState();
+    // if(state.agencyemployeeList.length) {
+    //   return state.agencyemployeeList;
+    // } 
+    return this.companyService.agencyEmployee(action.payload).pipe(
+      tap((resp) => {
+        console.log('agencyEmployeeList>>>>>>>', resp);
+        ctx.patchState({
+          agencyemployeeList: resp
+        });
+      })
+    );
+  }
+
+  @Action(Company.launchAppriasal) 
+  launchAppriasal(ctx:StateContext<CompanyModel>, action:Company.launchAppriasal) {
+    // const state = ctx.getState();
+    // if(state.agencyemployeeList.length) {
+    //   return state.agencyemployeeList;
+    // } 
+    return this.companyService.launchAppriasal(action.payload).pipe(
+      tap((resp) => {
+        console.log('agencyEmployeeList>>>>>>>', resp);
+        ctx.patchState({
+          agencyemployeeList: resp
+        });
+      })
+    );
+  }
 }
+
+
+
+
+
 

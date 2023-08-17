@@ -17,6 +17,8 @@ import { NgxsModule } from '@ngxs/store';
 import { AuthState } from './store/auth/auth.state';
 import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
 import { ErrorComponent } from './components/common/error/error.component';
+import { CompanyService } from './services/company/company.service';
+import { CompanyState } from './store/company/company.state';
 
 @NgModule({
   declarations: [AppComponent, LoaderComponent, PageNotFoundComponent, ErrorComponent],
@@ -27,12 +29,13 @@ import { ErrorComponent } from './components/common/error/error.component';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     HttpClientModule,
-    NgxsModule.forRoot([AuthState]),
+    NgxsModule.forRoot([AuthState, CompanyState]),
   ],
   providers: [
     AuthService, 
     ToasterService, 
     LoadingService,
+    CompanyService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,

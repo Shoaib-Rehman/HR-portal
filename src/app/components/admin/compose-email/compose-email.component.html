@@ -1,24 +1,24 @@
-
 <div class="heading-line">
   <h1 class="main-heading">Compose Email</h1>
 </div>
 
 <div class="compose-email">
-  <form [formGroup]="composeEmail">
-      <div class="form-group">
+  <form [formGroup]="composeEmailForm">
+    <div class="form-group">
       <label class="labels">Recipient</label>
-      <input type="text"  class="recipient" placeholder="Recipient" formControlName="recipientName">
+      <input type="text" class="recipient" placeholder="Recipient" formControlName="recipientName">
     </div>
     <div class="form-group">
       <label class="labels">Subject</label>
-      <input type="text"  class="subject" placeholder="Subject" formControlName="subject">
+      <input type="text" class="subject" placeholder="Subject" formControlName="subject">
     </div>
     <div class="form-group">
-      <textarea  class="message" placeholder="Compose your email..." formControlName="discription"></textarea>
+      <textarea class="message" placeholder="Compose your email..." formControlName="discription"></textarea>
     </div>
 
-    <button mat-button class="save-button"(click)="onSubmit()">Send</button>
-    <button mat-button class="cancel-button"(click)="cancel()">Cancel</button>
+    <button mat-button [ngClass]="disableSubmitButton() ? 'disableSubmit-button ' : 'save-button'" (click)="onSubmit()"
+      [disabled]="disableSubmitButton()">Send</button>
+    <button mat-button class="cancel-button" (click)="cancel()">Cancel</button>
   </form>
 
-  </div>
+</div>

@@ -1,10 +1,29 @@
+<form [formGroup]="agencyForm">
+
 
 <div class="heading-line">
   <h1 class="heading">Agency Member List</h1>
+  <mat-form-field
+  appearance="outline"
+  class="form-field input-box designation-input">
+  <mat-label>AgenciesList</mat-label>
+  <mat-select  formControlName="agency">
+    <mat-option
+      *ngFor="let option of allAgencytList"
+      [value]="option?.id"
+      class="textsize">
+      {{ option.name }}
+    </mat-option>
+  </mat-select>
+  <!-- <mat-error
+    *ngIf="submitted &&  DesignationFormControl.invalid && DesignationFormControl.touched">Please
+    select designation</mat-error> -->
+</mat-form-field>
   <button mat-button class="add-employee-button" (click)="openEmployeeModal()">Add Employee</button>
 </div>
+<span *ngIf="!agencySelected">Please Select Agency</span>
 
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="agencySelected">
 
   <!-- Checkbox Column -->
   <!-- <ng-container matColumnDef="select">
@@ -74,3 +93,4 @@
 
 <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
 </mat-paginator>
+</form>

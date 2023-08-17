@@ -1,3 +1,4 @@
+import { Company } from 'src/app/store/company/company.action';
 import { Component, Inject, OnInit } from '@angular/core';
 import {
   FormGroup,
@@ -7,6 +8,8 @@ import {
   FormControl,
 } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ILaunchAppraisal } from 'src/app/interface';
+import { Store } from '@ngxs/store';
 
 @Component({
   selector: 'app-compose-email',
@@ -14,17 +17,18 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./compose-email.component.scss'],
 })
 export class ComposeEmailComponent implements OnInit {
-  composeEmail: FormGroup;
+  composeEmailForm: FormGroup;
+  isRecipentDisable: boolean = true;
   constructor(
     private dialogRef: MatDialogRef<ComposeEmailComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    @Inject(MAT_DIALOG_DATA) public data: any,private store: Store,
     private formBuilder: FormBuilder
   ) {
-    this.composeEmail = this.initForm();
+    this.composeEmailForm = this.initForm();
   }
 
   ngOnInit(): void {
-    this.setValues()
+    this.setValues();
   }
   initForm(): UntypedFormGroup {
     return this.formBuilder.group({
@@ -33,22 +37,60 @@ export class ComposeEmailComponent implements OnInit {
       discription: ['', Validators.required],
     });
   }
+
   setValues(): void {
-    this.recipientFormControlName.setValue(this.data?.employee);
+    if (this.data?.employee) {
+      this.recipientFormControlName.setValue(
+        this.data?.employee?.firstName + '' + this.data?.employee?.lastName
+      );
+    } else {
+      this.recipientFormControlName.setValue(this.data?.company?.name);
+    }
+    this.recipientFormControlName.disable();
+  }
+  onSubmit() {
+    if (this.composeEmailForm.valid) {
+    const formData: ILaunchAppraisal = this.prepareFormData();
+    console.log('emailFormData>>>', formData);
+    this.store.dispatch(new Company.launchAppriasal(formData)).subscribe(resp => {
+     
+    })
+    }
   }
 
-  onSubmit() { }
+  private prepareFormData(): ILaunchAppraisal {
+    let obj = {
+      id: this.data?.employee?.id,
+      appraisalType: this.data?.appraisalType,
+      year: this.data.year,
+      agencyId: this.data.company?.id,
+    };
+    const formData = { ...this.composeEmailForm.getRawValue(), obj };
+    return formData;
+  }
+
+  disableSubmitButton(): boolean {
+    if (
+      this.subjectFormControlName.value.trim() === '' ||
+      this.descriptionFormControlName.value.trim() === ''
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   cancel(): void {
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 
   get recipientFormControlName(): FormControl {
-    return this.composeEmail.get('recipientName') as FormControl;
+    return this.composeEmailForm.get('recipientName') as FormControl;
   }
   get subjectFormControlName(): FormControl {
-    return this.composeEmail.get('subject') as FormControl;
+    return this.composeEmailForm.get('subject') as FormControl;
   }
   get descriptionFormControlName(): FormControl {
-    return this.composeEmail.get('recipientName') as FormControl;
+    return this.composeEmailForm.get('discription') as FormControl;
   }
 }
