@@ -48,6 +48,14 @@
   transform: rotate(180deg);
 }
 
+.small-logo {
+  height: 20%;
+}
+
+.large-logo {
+  height: 100%;
+}
+
 .submenu {
   overflow-y: hidden;
   transition: transform 300ms ease;

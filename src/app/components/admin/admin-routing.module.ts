@@ -36,27 +36,27 @@ const routes: Routes = [
             component: AddEditAgencyComponent,
           },
           {
-            path: "launchAppraisal",
+            path: "launch-appraisal",
             component: LaunchAppriasalComponent,
           },
           {
-            path: "selfAppraisal",
+            path: "self-appraisal",
             component: SelfAnnualAppraisalComponent,
           },
           {
-            path: "annualappraisal",
+            path: "annual-appraisal",
             component: AnnualApprsaialComponent,
           },
           {
-            path: "allemployee",
+            path: "all-employee",
             component: UnlaunchedAppriasalEmployeeComponent,
           },
           {
-            path: "composeEmail",
+            path: "compose-email",
             component: ComposeEmailComponent,
           },
           {
-            path: "assignMembers",
+            path: "assign-members",
             component: AssignMembersComponent,
           },
           {
@@ -64,7 +64,7 @@ const routes: Routes = [
             component: AddEmployeeComponent,
           },
           {
-            path: "bellCurve",
+            path: "bell-curve",
             component: BellCurveComponent,
           },
         ],
