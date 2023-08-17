@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { ERROR } from 'src/app/constant';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
@@ -16,7 +17,7 @@ export class LoginComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
   hide = true;
 
-  constructor(private store: Store, private toasterService: ToasterService) {
+  constructor(private store: Store, private toasterService: ToasterService,  private router: Router) {
     this.form = this.initForm();
   }
 
@@ -30,12 +31,21 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log("form >> ", this.form);
-    this.store
-      .dispatch(new Auth.Login(this.form.value))
-      .subscribe((resp: any) => {
-        this.toasterService.openSnackBar('Here is your message!!');
-      });
+    console.log('form >> ', this.form);
+
+    if (this.form.status === 'INVALID') {
+      return;
+    }
+
+    this.store.dispatch(new Auth.Login(this.form.value)).subscribe(
+      (resp: any) => {
+        // this.toasterService.success('Here is your message!!');
+        this.router.navigate(['/dashboard']);
+      },
+      (err) => {
+        this.toasterService.failed(err?.error?.message);
+      }
+    );
   }
 
   get EmailControl(): FormControl {

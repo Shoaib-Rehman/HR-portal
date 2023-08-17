@@ -4,7 +4,7 @@
   <mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true">
     <mat-nav-list>
       <mat-list-item class="mt-2 mb-5">
-        <img src="./../../../../assets/images/logo.svg" class="logo">
+        <img src="./../../../../assets/images/HRIS-logo.svg" class="logo" [ngClass]="isExpanded ? 'large-logo' : 'small-logo'">
       </mat-list-item>
 
       <mat-list-item *ngFor="let navItem of (sideNav$ | async)" (click)="showSubmenu = false" [routerLink]="navItem.route" [routerLinkActive]="navItem.routeLinkActive">
