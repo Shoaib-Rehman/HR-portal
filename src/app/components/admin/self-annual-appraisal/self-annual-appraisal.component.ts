@@ -111,15 +111,15 @@ export class SelfAnnualAppraisalComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.selfAppraisalForm.valid) {
+    // if (this.selfAppraisalForm.valid) {
     console.log('Name:', this.NameFormControl);
     console.log('Location:', this.LocationFormControl);
     console.log('Position:', this.PositionFormControl);
     // console.log('Date:', this.date.value);
     // You can perform further actions with the form data here
-    } else {
+    // } else {
     // Handle invalid form submission
-    }
+    // }
   }
 
   get NameFormControl(): FormControl {

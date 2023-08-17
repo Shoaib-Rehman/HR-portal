@@ -28,8 +28,13 @@
       <th mat-header-cell *matHeaderCellDef> Position </th>
       <td mat-cell *matCellDef="let element"> {{element.position}} </td>
     </ng-container>
-  
+
     <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef> Location </th>
+      <td mat-cell *matCellDef="let element">{{element.location}} </td>
+    </ng-container>
+  
+    <!-- <ng-container matColumnDef="location">
       <th mat-header-cell *matHeaderCellDef> Location </th>
       <td mat-cell *matCellDef="let element">
         <mat-select class="select-status" [formControl]="statusFormControl" name="food">
@@ -38,7 +43,7 @@
           </mat-option>
         </mat-select>
       </td>
-    </ng-container>
+    </ng-container> -->
   
     <ng-container matColumnDef="status">
       <th mat-header-cell *matHeaderCellDef> Status </th>
@@ -47,12 +52,12 @@
   
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef> Actions </th>
-      <td mat-cell *matCellDef="let element">
+      <td mat-cell *matCellDef="let element; let i = index" >
         <button mat-icon-button [matMenuTriggerFor]="actionMenu">
           <img src="./../../../../assets/icons/actiondots.svg" alt="">
         </button>
-        <mat-menu #actionMenu="matMenu">
-          <button mat-menu-item (click)="openEmployeeModal(element)">Edit</button>
+        <mat-menu #actionMenu="matMenu" >
+          <button mat-menu-item (click)="openEmployeeModal(element, i)">Edit</button>
           <button mat-menu-item (click)="delete(element)">Active</button>
           <button mat-menu-item (click)="delete(element)">InActive</button>
           <!-- <button mat-menu-item (click)="delete(element)">Assign User</button> -->

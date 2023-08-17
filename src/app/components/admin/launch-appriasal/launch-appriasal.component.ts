@@ -1,3 +1,4 @@
+import { IAddEmployee } from 'src/app/interface';
 import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -6,11 +7,14 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import {
-  MatDialog,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { ILaunchAppraisal } from 'src/app/interface';
 import { ComposeEmailComponent } from '../compose-email/compose-email.component';
+import { Select, Store } from '@ngxs/store';
+import { CompanyState } from 'src/app/store/company/company.state';
+import { Observable } from 'rxjs';
+import { Company } from 'src/app/store/company/company.action';
+import { CompanyModel } from 'src/app/store/company/company.model';
 
 @Component({
   selector: 'app-launch-appriasal',
@@ -18,43 +22,63 @@ import { ComposeEmailComponent } from '../compose-email/compose-email.component'
   styleUrls: ['./launch-appriasal.component.scss'],
 })
 export class LaunchAppriasalComponent implements OnInit {
+  @Select(CompanyState.agenciesInfo)
+  AgenciesList$?: Observable<any>;
+
+  @Select(CompanyState.agencyEmployees)
+  AgencyEmployeeList$?: Observable<any>
+
+  @Select(CompanyState.allEmployees)
+  AllEmployeeList$?: Observable<any>
+
   appraisalForm: FormGroup;
   isIndividualAppraisal: boolean = false;
   isCompanyAppraisal: boolean = false;
-  dropdownOptions = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' },
-  ];
-  dropdownOptions1 = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' },
-  ];
-  dropdownOptions2 = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' },
-  ];
-  dropdownOptions3 = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' },
-  ];
+  currentTime: Date = new Date();
+  employeeList:IAddEmployee[] = [];
+  // private unsubscribe$ = new Subject();
+  // allAgencytList: any[] = [];
 
-  constructor(private formBuilder: FormBuilder, private dialog: MatDialog) {
+  constructor(
+    private formBuilder: FormBuilder,
+    private dialog: MatDialog,
+    private store: Store
+  ) {
     this.appraisalForm = this.initForm();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.agencyList();
+  }
 
   initForm(): UntypedFormGroup {
-    return this.formBuilder.group({
-      year: ['', Validators.required],
+    const formGroup = this.formBuilder.group({
+      year: [''],
       appraisalType: ['', Validators.required],
       employee: [''],
       company: [''],
     });
+    this.disableFormControl(formGroup);
+    return formGroup;
+  }
+
+  agencyList(): void {
+    this.store.dispatch(new Company.GetAll());
+    // if (this.AgenciesList$) {
+    //   this.AgenciesList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
+    //     (agenciesList) => {
+    //       console.log('agenciesList >>>>>>> ', agenciesList);
+    //       if (Array.isArray(agenciesList) && agenciesList.length) {
+    //         this.allAgencytList = agenciesList;
+    //       }
+    //     }
+    //   );
+    // }
+  }
+
+  disableFormControl(formGroup: UntypedFormGroup): void {
+    formGroup.get('year')?.disable();
+    formGroup.get('year')?.setValue(this.currentTime.getFullYear());
   }
 
   isFieldInvalid(field: string): boolean {
@@ -65,24 +89,44 @@ export class LaunchAppriasalComponent implements OnInit {
     );
   }
 
-  onAppraisalTypeChange(selectedType: string) {
+  onAppraisalTypeChange(selectedType: string): void {
+    this.clearValidator();
     this.isIndividualAppraisal = selectedType === 'individual';
     this.isCompanyAppraisal = selectedType === 'company';
+    if (this.isCompanyAppraisal) {
+      this.companyFromControl.setValue('');
+      this.employeeFromControl.setValue('');
+    }
     if (this.isIndividualAppraisal) {
-      this.companyFromControl?.setValue('');
-      this.employeeFromControl.setValidators([Validators.required]);
-      this.companyFromControl.clearValidators();
-      this.employeeFromControl.updateValueAndValidity();
-      this.companyFromControl.updateValueAndValidity();
-    } else {
-      this.companyFromControl.setValidators([Validators.required]);
-      this.employeeFromControl.clearValidators();
-      this.employeeFromControl.updateValueAndValidity();
-      this.companyFromControl.updateValueAndValidity();
-      this.employeeFromControl?.setValue('');
+      this.companyFromControl.setValue('');
+      this.employeeFromControl.setValue('');
+      // ************** remove *******
+      this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
+        console.log("All Employee >>>>>> ", resp?.company?.allemployeeList)
+        this.employeeList = resp?.company?.allemployeeList
+      })
+      // ***************
     }
   }
+
+  isCompanySelected(): boolean {
+    if (this.isIndividualAppraisal && this.companyFromControl.value === '') {
+      return true;
+    } else if (this.isCompanyAppraisal) {
+      return false;
+    }
+    return false;
+  }
+
+
+  selectedAgencyEmployeeList(agencyId:number): void {
+    // this.store.dispatch(new Company.GetSingleAgencyEmployee({id:agencyId})).subscribe((resp) => {
+      // this.employeeList = resp
+    // })
+  }
+
   onSubmit(): void {
+    this.formValidator();
     if (this.appraisalForm.valid) {
       const formData: ILaunchAppraisal = this.prepareFormData();
       console.log('appraisalForm formData >>', formData);
@@ -101,9 +145,30 @@ export class LaunchAppriasalComponent implements OnInit {
   }
 
   private prepareFormData(): ILaunchAppraisal {
-    const formData = { ...this.appraisalForm.value };
+    const formData = { ...this.appraisalForm.getRawValue() };
     return formData;
   }
+
+  formValidator(): void {
+    this.companyFromControl.setValidators([Validators.required]);
+    this.companyFromControl.updateValueAndValidity();
+    if (this.isCompanyAppraisal) {
+      this.employeeFromControl?.setValue('');
+      this.employeeFromControl.clearValidators();
+      this.employeeFromControl.updateValueAndValidity();
+    } else {
+      this.employeeFromControl.setValidators([Validators.required]);
+      this.employeeFromControl.updateValueAndValidity();
+    }
+  }
+
+  clearValidator(): void {
+    this.employeeFromControl.clearValidators();
+    this.employeeFromControl.updateValueAndValidity();
+    this.companyFromControl.clearValidators();
+    this.companyFromControl.updateValueAndValidity();
+  }
+
   get employeeFromControl(): FormControl {
     return this.appraisalForm.get('employee') as FormControl;
   }

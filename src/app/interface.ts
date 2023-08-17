@@ -7,15 +7,27 @@ export interface IGetAll {
 }
 
 export interface IMember {
-  name: string;
-  position: string;
-  location: string;
-  status: string;
-  agency?:string;
+  name?: string;
+  position?: string;
+  status?: string;
+  agency?: string;
+  dateOfJoining?: string;
+  designation?: string;
+  email?: string;
+  firstName?: string;
+  id?: string;
+  lastName?: string;
+  location?: string;
+  middleName?: string;
+  password?: string;
+  password_encry?: string;
+  phoneNo?: string;
+  role?: string;
 }
 
 export interface IAddEmployee {
   agency: string;
+  id?: number;
   location: any;
   firstName: string;
   middleName: string;
@@ -27,8 +39,17 @@ export interface IAddEmployee {
 }
 
 export interface ILaunchAppraisal {
-  year:string;
-  appraisalType:string;
-  employee?:string;
-  company?:string;
+  year: string;
+  appraisalType?: string;
+  employee?: IAddEmployee;
+  company?: IAgency;
+  subject?: string;
+  emailDescription?: string;
+}
+
+export interface IAgency {
+  agencyId?: string;
+  id?: number;
+  location?: string;
+  name?: string;
 }

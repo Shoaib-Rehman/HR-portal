@@ -6,75 +6,81 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { IMember } from 'src/app/interface';
 import { AddEmployeeComponent } from '../add-employee/add-employee.component';
+import { Store } from '@ngxs/store';
+import { CompanyModel } from 'src/app/store/company/company.model';
+import { Company } from 'src/app/store/company/company.action';
 
-const ELEMENT_DATA: IMember[] = [
-{
-  name: 'Hydrogen',
-  position: 'Manager',
-  location: 'Islamabad',
-  status: 'developer',
-},
-{
-  name: 'Hydrogen',
-  position: 'HR',
-  location: 'Islamabad',
-  status: 'Pending',
-},
-{
-  name: 'Hydrogen',
-  position: 'Manager',
-  location: 'Islamabad',
-  status: 'developer',
-},
-{
-  name: 'Hydrogen',
-  position: 'Manager',
-  location: 'Islamabad',
-  status: 'developer',
-},
-{
-  name: 'Hydrogen',
-  position: 'Manager',
-  location: 'Islamabad',
-  status: 'developer',
-},
-{
-  name: 'Hydrogen',
-  position: 'Manager',
-  location: 'Islamabad',
-  status: 'developer',
-},
-{
-  name: 'Hydrogen',
-  position: 'Manager',
-  location: 'Islamabad',
-  status: 'developer',
-},
-{
-  name: 'Hydrogen',
-  position: 'Manager',
-  location: 'Islamabad',
-  status: 'developer',
-},
-{
-  name: 'Hydrogen',
-  position: 'Manager',
-  location: 'Islamabad',
-  status: 'developer',
-},
-{
-  name: 'Hydrogen',
-  position: 'Manager',
-  location: 'Islamabad',
-  status: 'developer',
-},
-{
-  name: 'Hydrogen',
-  position: 'Manager',
-  location: 'Islamabad',
-  status: 'developer',
-},
-];
+
+const ELEMENT_DATA: IMember[] = []
+
+// const ELEMENT_DATA: IMember[] = [
+// {
+//   name: 'Hydrogen',
+//   position: 'Manager',
+//   location: 'Islamabad',
+//   status: 'developer',
+// },
+// {
+//   name: 'Hydrogen',
+//   position: 'HR',
+//   location: 'Islamabad',
+//   status: 'Pending',
+// },
+// {
+//   name: 'Hydrogen',
+//   position: 'Manager',
+//   location: 'Islamabad',
+//   status: 'developer',
+// },
+// {
+//   name: 'Hydrogen',
+//   position: 'Manager',
+//   location: 'Islamabad',
+//   status: 'developer',
+// },
+// {
+//   name: 'Hydrogen',
+//   position: 'Manager',
+//   location: 'Islamabad',
+//   status: 'developer',
+// },
+// {
+//   name: 'Hydrogen',
+//   position: 'Manager',
+//   location: 'Islamabad',
+//   status: 'developer',
+// },
+// {
+//   name: 'Hydrogen',
+//   position: 'Manager',
+//   location: 'Islamabad',
+//   status: 'developer',
+// },
+// {
+//   name: 'Hydrogen',
+//   position: 'Manager',
+//   location: 'Islamabad',
+//   status: 'developer',
+// },
+// {
+//   name: 'Hydrogen',
+//   position: 'Manager',
+//   location: 'Islamabad',
+//   status: 'developer',
+// },
+// {
+//   name: 'Hydrogen',
+//   position: 'Manager',
+//   location: 'Islamabad',
+//   status: 'developer',
+// },
+// {
+//   name: 'Hydrogen',
+//   position: 'Manager',
+//   location: 'Islamabad',
+//   status: 'developer',
+// },
+// ];
 @Component({
   selector: 'app-unlaunched-appriasal-employee',
   templateUrl: './unlaunched-appriasal-employee.component.html',
@@ -82,7 +88,7 @@ const ELEMENT_DATA: IMember[] = [
 })
 
 export class UnlaunchedAppriasalEmployeeComponent implements OnInit {
-
+employeeList: IMember[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   statusFormControl: FormControl = new FormControl('steak-0');
@@ -103,18 +109,32 @@ export class UnlaunchedAppriasalEmployeeComponent implements OnInit {
   dataSource = new MatTableDataSource<IMember>(ELEMENT_DATA);
   selection = new SelectionModel<IMember>(true, []);
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private store:Store) {}
 
   ngOnInit(): void {
     this.statusFormControl.valueChanges.subscribe((status: string) => {
       console.log('changes >> ', status);
     });
+    this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
+      console.log("All Employee >>>>>> ", resp?.company?.employeeList)
+      this.employeeList = resp?.company?.employeeList
+      // this.dataSource = resp?.company?.employeeList
+      this.dataSource  = resp?.company?.employeeList.map((item:any) => ({
+        name: `${item.firstName} ${item.lastName}`,
+        position: item.designation || 'HR',
+        location: item.location || 'Islamabad',
+        status: item.status || 'Pending',
+      }));
+      
+    })
   }
 
-  openEmployeeModal(element:any): void {
-    console.log(element)
+  
+
+  openEmployeeModal(element:IMember, index:any): void {
+    console.log("Element>>>>>>>>>>>>>>>",element)
     const dialogRef = this.dialog.open(AddEmployeeComponent, {
-      data:element,
+      data:this.employeeList[index],
       width: '700px',
     });
     dialogRef.afterClosed().subscribe(result => {

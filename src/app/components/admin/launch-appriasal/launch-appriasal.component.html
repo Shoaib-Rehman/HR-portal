@@ -1,64 +1,51 @@
 <div class="heading-line" style="padding: 1rem 0rem">
     <h1 class="main-heading">Launch Appraisal</h1>
-    <p class="ptext">
-      <img src="../../../../assets/icons/closeIcon.svg" class="closeIcon" />
-      <span class="cursor-pointer"> Click to hide Launch Appraisal</span>
-    </p>
-  </div>
+    <!-- <p class="ptext">
+        <img src="../../../../assets/icons/closeIcon.svg" class="closeIcon" />
+        <span class="cursor-pointer"> Click to hide Launch Appraisal</span>
+    </p> -->
+</div>
 <form [formGroup]="appraisalForm">
     <div class="row box-height">
-        <!-- <mat-form-field appearance="outline" class="input-box col" style="margin-bottom: 2.5rem;">
-            <mat-label class="textsize">Select Year</mat-label> -->
-            <!-- <mat-select formControlName="year">
-                <mat-option *ngFor="let option of dropdownOptions"
-                    [value]="option.value" class="textsize">
-                    {{ option.label }}
-                </mat-option>
-            </mat-select> -->
-            <!-- <mat-error *ngIf="isFieldInvalid('year')">Please Select Year.</mat-error>
-        </mat-form-field> -->
-        <mat-form-field  appearance="outline" class="input-box col" style="margin-bottom: 2.5rem;">
+        <mat-form-field appearance="outline" class="input-box col" style="margin-bottom: 2.5rem;">
             <mat-label class="textsize">Select Year</mat-label>
-            <input matInput [matDatepicker]="picker" placeholder="Choose a date"  formControlName="year">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="isFieldInvalid('year')">Please Select Year.</mat-error>
-          </mat-form-field>
+            <input matInput placeholder="Select Year" formControlName="year" [disabled]="true" />
+        </mat-form-field>
         <mat-form-field appearance="outline" class="input-box col">
             <mat-label class="textsize">Appraisal Type</mat-label>
-            <mat-select formControlName="appraisalType" (selectionChange)="onAppraisalTypeChange($event.value)" required>
+            <mat-select formControlName="appraisalType" (selectionChange)="onAppraisalTypeChange($event.value)"
+                required>
                 <mat-option class="textsize" value="individual">Individual</mat-option>
-                <mat-option  class="textsize" value="company">Company</mat-option>
+                <mat-option class="textsize" value="company">Company</mat-option>
             </mat-select>
             <mat-error *ngIf="isFieldInvalid('appraisalType')">Please Select
                 Appraisal Type.</mat-error>
         </mat-form-field>
     </div>
     <div class="row">
-        <mat-form-field appearance="outline" class="input-box-employee col-6" *ngIf="isIndividualAppraisal">
-            <mat-label class="textsize">Select Employee</mat-label>
-            <mat-select formControlName="employee">
-                <mat-option *ngFor="let option of dropdownOptions2"
-                    [value]="option.value" class="textsize">
-                    {{ option.label }}
-                </mat-option>
-            
-            </mat-select>
-            <mat-error *ngIf="isFieldInvalid('employee')">Please Select Employee
-                Name.</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="outline" class="input-box-employee col-6" *ngIf="isCompanyAppraisal">
+        <mat-form-field appearance="outline" class="input-box-employee col-6"
+            *ngIf="isIndividualAppraisal || isCompanyAppraisal">
             <mat-label class="textsize">Select Company</mat-label>
             <mat-select formControlName="company">
-                <mat-option *ngFor="let option of dropdownOptions3"
-                    [value]="option.value" class="textsize">
-                    {{ option.label }}
+                <mat-option *ngFor="let option of AgenciesList$ | async" [value]="option" class="textsize"
+                    (click)="selectedAgencyEmployeeList(option.id)">
+                    {{ option.name }}
                 </mat-option>
             </mat-select>
             <mat-error *ngIf="isFieldInvalid('company')">Please enter the
                 agency/office.</mat-error>
         </mat-form-field>
+        <mat-form-field appearance="outline" class="input-box-employee col-6" *ngIf="isIndividualAppraisal">
+            <mat-label class="textsize">Select Employee</mat-label>
+            <mat-select formControlName="employee" [disabled]="isCompanySelected()">
+                <mat-option *ngFor="let option of employeeList" [value]="option" class="textsize">
+                    {{ option?.firstName }} {{ option?.lastName }}
+                </mat-option>
+            </mat-select>
+            <mat-error *ngIf="isFieldInvalid('employee')">Please Select Employee
+                Name.</mat-error>
+        </mat-form-field>
+
     </div>
-    <button mat-button class="launch-button"(click)="onSubmit()">Launch</button>
+    <button mat-button class="launch-button" (click)="onSubmit()">Launch</button>
     <form>

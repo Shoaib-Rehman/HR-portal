@@ -1,42 +1,59 @@
-<div >
+<div>
   <h1 class="main-heading">Add Employee</h1>
   <div class="close-modal" (click)="close()">
     <mat-icon>highlight_off</mat-icon>
-</div>
+  </div>
   <p class="ptext">
     <img src="../../../../assets/icons/closeIcon.svg" class="closeIcon" />
     <span class="cursor-pointer"> Click to hide Add Employee</span>
   </p>
 </div>
 <form [formGroup]="employeeForm">
+ 
   <div class="form-row">
     <mat-form-field appearance="outline" class="form-field input-box">
       <mat-label>Select Agency / Office</mat-label>
-      <mat-select formControlName="agency" >
+      <mat-select [(ngModel)]="selectedAgency" formControlName="agency">
         <mat-option
-          *ngFor="let option of agencies"
-          [value]="option.value"
+          *ngFor="let option of AgenciesList$ | async"
+          [value]="option?.id"
           class="textsize">
-          {{ option.label }}
+          {{ option.name }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="AgencyFormControl.invalid && AgencyFormControl.touched">Please enter the
-        agency/office.</mat-error>
+      <mat-error *ngIf="submitted &&  AgencyFormControl.invalid && AgencyFormControl.touched">Please enter the agency/office.</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field input-box">
-      <mat-label>Location / Office</mat-label>
-      <mat-select formControlName="location" >
+      <mat-label>Select Agency Office</mat-label>
+      <mat-select formControlName="agency">
         <mat-option
-          *ngFor="let option of officeLocation"
-          [value]="option.value"
+          *ngFor="let option of AgenciesList$ | async"
+          [value]="option?.id"
           class="textsize">
-          {{ option.label }}
+          {{ option.name }}
         </mat-option>
       </mat-select>
-      <mat-error   *ngIf="LocationFormControl.invalid && LocationFormControl.touched">Please enter the
-        location/office.</mat-error>
+      <mat-error *ngIf="submitted &&  AgencyFormControl.invalid && AgencyFormControl.touched">Please
+        enter the
+        agency/office.</mat-error>
     </mat-form-field>
+
+
+
+
+
+    <!-- <mat-form-field appearance="outline" class="form-field input-box">
+      <mat-label>Location / Office</mat-label>
+      <input
+        matInput
+        placeholder="Location / Office"
+        formControlName="location" />
+      <mat-error
+        *ngIf="LocationFormControl.invalid && LocationFormControl.touched">Please
+        enter the
+        location/office.</mat-error>
+    </mat-form-field> -->
   </div>
 
   <div class="form-row">
@@ -45,9 +62,10 @@
       <input
         matInput
         placeholder="First Name"
-        formControlName="firstName"
-         />
-      <mat-error  *ngIf="FirstNameFormControl.invalid && FirstNameFormControl.touched">Please enter the first
+        formControlName="firstName" />
+      <mat-error
+        *ngIf="FirstNameFormControl.invalid && FirstNameFormControl.touched">Please
+        enter the first
         name.</mat-error>
     </mat-form-field>
 
@@ -64,26 +82,29 @@
         matInput
         placeholder="Last Name"
         formControlName="lastName" />
-      <mat-error *ngIf="LastNameFormControl.invalid && LastNameFormControl.touched">Please enter the last name.</mat-error>
+      <mat-error
+        *ngIf="submitted &&  LastNameFormControl.invalid && LastNameFormControl.touched">Please
+        enter the last name.</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="form-field input-box">
+    <mat-form-field appearance="outline" class="form-field input-box"
+      style="margin-bottom: 2.5rem;">
       <mat-label>Date of Joining</mat-label>
-      <input
-        matInput
-        placeholder="Date/Month/Year"
+      <input matInput [matDatepicker]="picker" placeholder="Date/Month/Year"
         formControlName="dateOfJoining" />
-      <img
-        class="date-Icon"
-        matSuffix
-        src="../../../../assets/icons/dateIcon.svg" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <mat-error
+        *ngIf="submitted &&  DateOfJoiningFormControl.invalid && DateOfJoiningFormControl.touched">Please
+        enter the Date.</mat-error>
+
     </mat-form-field>
   </div>
 
   <div class="form-row">
     <mat-form-field appearance="outline" class="form-field input-box">
       <mat-label>Role</mat-label>
-      <mat-select  formControlName="role">
+      <mat-select formControlName="role">
         <mat-option
           *ngFor="let option of roles"
           [value]="option.value"
@@ -91,7 +112,8 @@
           {{ option.label }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="RoleFormControl.invalid && RoleFormControl.touched">Please enter the role.</mat-error>
+      <mat-error *ngIf="submitted &&  RoleFormControl.invalid && RoleFormControl.touched">Please
+        enter the role.</mat-error>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="form-field input-box">
@@ -99,10 +121,10 @@
       <input
         matInput
         placeholder="pat@example.com"
-        formControlName="email"
-         />
+        formControlName="email" />
       <mat-icon matSuffix>email</mat-icon>
-      <mat-error *ngIf="EmailFormControl.invalid && EmailFormControl.touched">Please enter a valid email
+      <mat-error *ngIf="submitted &&  EmailFormControl.invalid && EmailFormControl.touched">Please
+        enter a valid email
         address.</mat-error>
     </mat-form-field>
   </div>
@@ -112,7 +134,7 @@
       appearance="outline"
       class="form-field input-box designation-input">
       <mat-label>Designation</mat-label>
-      <mat-select  formControlName="designation">
+      <mat-select formControlName="designation">
         <mat-option
           *ngFor="let option of designation"
           [value]="option.value"
@@ -120,7 +142,17 @@
           {{ option.label }}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="DesignationFormControl.invalid && DesignationFormControl.touched">Please select designation</mat-error>
+      <mat-error
+        *ngIf="submitted &&  DesignationFormControl.invalid && DesignationFormControl.touched">Please
+        select designation</mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" class="form-field input-box">
+      <mat-label>Phone Number</mat-label>
+      <input
+        matInput
+        placeholder="Phone Number"
+        formControlName="phoneNo" />
     </mat-form-field>
   </div>
 
