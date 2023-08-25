@@ -26,6 +26,8 @@ import { AddEditAgencyComponent } from './add-edit-agency/add-edit-agency.compon
 import { SelfAnnualAppraisalComponent } from './self-annual-appraisal/self-annual-appraisal.component';
 import { SearchPipe } from 'src/app/pipes/search.pipe';
 import { NextYearObjectivesComponent } from './next-year-objectives/next-year-objectives.component';
+import { CalibrationComponent } from './calibration/calibration.component';
+import { AssignMembersListComponent } from './assign-members-list/assign-members-list.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +49,8 @@ import { NextYearObjectivesComponent } from './next-year-objectives/next-year-ob
     AssignMembersComponent,
     AddEditAgencyComponent,
     SearchPipe,
+    CalibrationComponent,
+    AssignMembersListComponent,
   ],
   imports: [
     SharedModule,

@@ -12,3 +12,11 @@ export const ERROR = {
         AGENCY_NAME: "Not a valid Agency Name"
     }
 }
+
+
+export const ROLE = {
+    HR: "HR",
+    CEO: "CEO",
+    MEMBER: "Member",
+    MANAGER: "Manager",
+}

@@ -1,3 +1,4 @@
+import { AssignMembersListComponent } from './assign-members-list/assign-members-list.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DishboardComponent } from './dishboard/dishboard.component';
@@ -12,6 +13,7 @@ import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { AddEditAgencyComponent } from './add-edit-agency/add-edit-agency.component';
 import { SelfAnnualAppraisalComponent } from './self-annual-appraisal/self-annual-appraisal.component';
 import { NextYearObjectivesComponent } from './next-year-objectives/next-year-objectives.component';
+import { CalibrationComponent } from './calibration/calibration.component';
 
 
 const routes: Routes = [
@@ -53,7 +55,7 @@ const routes: Routes = [
             component: NextYearObjectivesComponent,
           },
           {
-            path: "allemployee",
+            path: "all-employee",
             component: UnlaunchedAppriasalEmployeeComponent,
           },
           {
@@ -62,7 +64,7 @@ const routes: Routes = [
           },
           {
             path: "assign-members",
-            component: AssignMembersComponent,
+            component: AssignMembersListComponent,
           },
           {
             path: "employee",
@@ -71,6 +73,10 @@ const routes: Routes = [
           {
             path: "bell-curve",
             component: BellCurveComponent,
+          },
+          {
+            path: "calibration",
+            component: CalibrationComponent,
           },
         ],
     }

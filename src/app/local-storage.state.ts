@@ -17,5 +17,9 @@ export class LocalStorageState {
     static get User(): any {
         return JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem("current-user"))))
     }
+
+    static get CurrentUserRole(): string {
+        return this.User?.role;
+    }
     
 }

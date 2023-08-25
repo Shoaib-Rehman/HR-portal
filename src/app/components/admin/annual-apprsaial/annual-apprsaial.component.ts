@@ -80,7 +80,6 @@ export class AnnualApprsaialComponent implements OnInit {
   submit() {
     for (const [key, value] of Object.entries(this.selectedBoxes)) {
       if (value == null) {
-        console.log(value);
         this.toasterService.success(
           'Please rate all Role based competendes'
         );
@@ -94,7 +93,6 @@ export class AnnualApprsaialComponent implements OnInit {
     const dialogRef = this.dialog.open(CustomToasterComponent, {
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
     });
   }
 
