@@ -13,4 +13,9 @@ export namespace Auth {
         static readonly type = '[Auth] Login';
         constructor(public payload: ILogin) {}
     }
+
+    export class RefreshSideBarORData {
+        static readonly type = '[Auth] Refresh';
+        constructor() {}
+    }
 }

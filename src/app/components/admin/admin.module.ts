@@ -24,6 +24,8 @@ import { AdminLayoutComponent } from './admin-layout/admin-layout.component';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { AddEditAgencyComponent } from './add-edit-agency/add-edit-agency.component';
 import { SelfAnnualAppraisalComponent } from './self-annual-appraisal/self-annual-appraisal.component';
+import { SearchPipe } from 'src/app/pipes/search.pipe';
+import { NextYearObjectivesComponent } from './next-year-objectives/next-year-objectives.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { SelfAnnualAppraisalComponent } from './self-annual-appraisal/self-annua
     AdminLayoutComponent,
     DishboardComponent,
     SelfAnnualAppraisalComponent,
+    NextYearObjectivesComponent,
     AddEmployeeComponent,
     BellCurveComponent,
     AnnualApprsaialComponent,
@@ -43,6 +46,7 @@ import { SelfAnnualAppraisalComponent } from './self-annual-appraisal/self-annua
     ComposeEmailComponent,
     AssignMembersComponent,
     AddEditAgencyComponent,
+    SearchPipe,
   ],
   imports: [
     SharedModule,

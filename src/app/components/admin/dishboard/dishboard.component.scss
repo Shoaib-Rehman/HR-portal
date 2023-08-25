@@ -3,11 +3,13 @@ table {
   box-shadow: none;
 }
 .add-employee-button {
-  background-color: #4ca3fb;
-  color: white !important;
-  display: flex;
-  float: right;
-  margin-top: -48px;
+  background-color:#4CA3FB;
+    color: white !important;
+    display: flex;
+    float: right;
+    border: none;
+    padding: 8px;
+    // margin-top: -7px;
 }
 .add-employee-button:hover{
   background-color: #4ca3fb;

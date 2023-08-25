@@ -6,7 +6,12 @@ import {
   ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, UntypedFormGroup } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { IMember } from 'src/app/interface';
@@ -20,7 +25,7 @@ import { CompanyModel } from 'src/app/store/company/company.model';
 import { CompanyState } from 'src/app/store/company/company.state';
 import { Observable, Subject, takeUntil } from 'rxjs';
 
-const ELEMENT_DATA: IMember[] = []
+const ELEMENT_DATA: IMember[] = [];
 // const ELEMENT_DATA: IMember[] = [
 //   {
 //     name: 'Hydrogen',
@@ -129,18 +134,22 @@ export class DishboardComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource<IMember>(ELEMENT_DATA);
   selection = new SelectionModel<IMember>(true, []);
 
-  constructor(private dialog: MatDialog, private store: Store,  private formBuilder: FormBuilder,) {
-    this.agencyForm = this.initForm()
+  constructor(
+    private dialog: MatDialog,
+    private store: Store,
+    private formBuilder: FormBuilder
+  ) {
+    this.agencyForm = this.initForm();
   }
   private unsubscribe$ = new Subject();
-  agencySelected= false;
+  agencySelected = false;
   employeeList: IMember[] = [];
   @Select(CompanyState.agenciesInfo)
   AgenciesList$?: Observable<CompanyModel>;
+  selectedAgencyId: number = -1;
   allAgencytList: any[] = [];
   ngOnInit(): void {
-    this.statusFormControl.valueChanges.subscribe((status: string) => {
-    });
+    this.statusFormControl.valueChanges.subscribe((status: string) => {});
     this.agencyFormValue();
     this.subscriptions();
 
@@ -148,52 +157,53 @@ export class DishboardComponent implements OnInit, AfterViewInit {
     });
     // this.agencyFormValue()
     // this.agencyEmployeeList();
-
   }
 
   agencyFormValue() {
     this.AgencyFormControlName.valueChanges.subscribe((res) => {
-      if(res !== '') {
-        this.agencySelected =true;
+      if (res !== '') {
+        this.agencySelected = true;
       }
       this.agencyEmployeeList(res);
-      console.log("res",res)
-    })
+    });
   }
 
-  agencyEmployeeList(agencyId:number): void {
-    // this.store.dispatch(new Company.GetSingleAgencyEmployee({id:agencyId})).subscribe((resp) => {
-    //   console.log("All Employee >>>>>> ", resp?.company?.employeeList)
-    //   this.employeeList = resp?.company?.employeeList
+  agencyEmployeeList(agencyId: number): void {
+    this.store
+      .dispatch(new Company.GetSingleAgencyEmployee({ id: agencyId }))
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        this.employeeList = resp?.company?.agencyemployeeList;
+        this.dataSource = resp?.company?.agencyemployeeList.map(
+          (item: any) => ({
+            name: `${item?.firstName} ${item?.lastName}`,
+            agency: item?.agency_name || 'N/A',
+            position: item?.designation || 'N/A',
+            location: item?.location || 'N/A',
+            status: item?.status || 'Pending',
+          })
+        );
+      });
+
+    // this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
+    //   console.log("All Employee >>>>>> ", resp?.company?.allemployeeList)
+    //   this.employeeList = resp?.company?.allemployeeList
     //   // this.dataSource = resp?.company?.employeeList
-    //   this.dataSource  = resp?.company?.employeeList.map((item:any) => ({
+    //   this.dataSource  = resp?.company?.allemployeeList.map((item:any) => ({
     //     name: `${item.firstName} ${item.lastName}`,
     //     position: item.designation || 'HR',
     //     location: item.location || 'Islamabad',
     //     status: item.status || 'Pending',
     //   }));
-      
+
     // })
-    
-    this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
-      console.log("All Employee >>>>>> ", resp?.company?.allemployeeList)
-      this.employeeList = resp?.company?.allemployeeList
-      // this.dataSource = resp?.company?.employeeList
-      this.dataSource  = resp?.company?.allemployeeList.map((item:any) => ({
-        name: `${item.firstName} ${item.lastName}`,
-        position: item.designation || 'HR',
-        location: item.location || 'Islamabad',
-        status: item.status || 'Pending',
-      }));
-      
-    })
   }
 
   initForm(): UntypedFormGroup {
-  return this.formBuilder.group({
-    agency: ['',],
-   })
-    }
+    return this.formBuilder.group({
+      agency: [''],
+    });
+  }
 
   subscriptions(): void {
     if (this.AgenciesList$) {
@@ -206,8 +216,6 @@ export class DishboardComponent implements OnInit, AfterViewInit {
       );
     }
   }
-
-  
 
   openEmployeeModal(): void {
     const dialogRef = this.dialog.open(AddEmployeeComponent, {
@@ -253,6 +261,6 @@ export class DishboardComponent implements OnInit, AfterViewInit {
   delete(a: any): void {}
 
   get AgencyFormControlName(): FormControl {
-return this.agencyForm.get('agency') as FormControl; 
+    return this.agencyForm.get('agency') as FormControl;
   }
 }

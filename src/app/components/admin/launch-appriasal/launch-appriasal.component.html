@@ -45,6 +45,11 @@
             <mat-error *ngIf="isFieldInvalid('employee')">Please Select Employee
                 Name.</mat-error>
         </mat-form-field>
+        <!-- <mat-select formControlName="employee" [disabled]="isCompanySelected()">
+    <mat-option *ngFor="let option of employeeList | search: searchText" [value]="option" class="textsize">
+        {{ option?.firstName }} {{ option?.lastName }}
+    </mat-option>
+</mat-select> -->
 
     </div>
     <button mat-button class="launch-button" (click)="onSubmit()">Launch</button>

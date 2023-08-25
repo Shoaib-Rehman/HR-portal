@@ -51,7 +51,7 @@ export class ComposeEmailComponent implements OnInit {
   onSubmit() {
     if (this.composeEmailForm.valid) {
     const formData: ILaunchAppraisal = this.prepareFormData();
-    console.log('emailFormData>>>', formData);
+    console.log('emailFormData>>>', JSON.stringify(formData));
     this.store.dispatch(new Company.launchAppriasal(formData)).subscribe(resp => {
      
     })
@@ -59,13 +59,13 @@ export class ComposeEmailComponent implements OnInit {
   }
 
   private prepareFormData(): ILaunchAppraisal {
-    let obj = {
+    let apprisalDetail = {
       id: this.data?.employee?.id,
       appraisalType: this.data?.appraisalType,
       year: this.data.year,
       agencyId: this.data.company?.id,
     };
-    const formData = { ...this.composeEmailForm.getRawValue(), obj };
+    const formData = { ...this.composeEmailForm.getRawValue(), apprisalDetail };
     return formData;
   }
 

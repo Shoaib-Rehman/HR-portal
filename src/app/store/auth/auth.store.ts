@@ -17,7 +17,6 @@ import { Permission } from 'src/app/helper/permission';
 @Injectable()
 export class AuthState {
 
-
   @Selector()
   static sideNav(state: AuthModel): ISideNav[] {
     return state.sideBar;
@@ -25,20 +24,27 @@ export class AuthState {
 
   constructor(private authService: AuthService) {}
 
+
+
   @Action(Auth.Login)
   login(ctx: StateContext<AuthModel>, action: Auth.Login) {
-    const state = ctx.getState();
     return this.authService.login(action.payload).pipe(
       tap((resp: any) => {
         console.log("auth responce > ", resp);
         LocalStorageState.setTokan(resp?.token);
         LocalStorageState.setCurrentUser(resp?.user);
-        console.log("filtered > ", this.sideBarModules)
         ctx.patchState({
           sideBar: this.sideBarModules,
         });
       })
     );
+  }
+
+  @Action(Auth.RefreshSideBarORData)
+  refreshSideBarORData(ctx: StateContext<AuthModel>) {
+    ctx.patchState({
+      sideBar: this.sideBarModules,
+    });
   }
 
   get sideBarModules(): ISideBar[] {
