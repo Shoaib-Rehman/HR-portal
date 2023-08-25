@@ -10,12 +10,12 @@ export class LocalStorageState {
         return JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem("tokan"))))
     }
 
-    static setUser(user: any): void {
-        localStorage.setItem("user", JSON.stringify(user));
+    static setCurrentUser(user: any): void {
+        localStorage.setItem("current-user", JSON.stringify(user));
     }
 
     static get User(): any {
-        return JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem("user"))))
+        return JSON.parse(JSON.parse(JSON.stringify(localStorage.getItem("current-user"))))
     }
     
 }

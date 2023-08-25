@@ -3,7 +3,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { Select } from '@ngxs/store';
 import { Observable } from 'rxjs';
 import { ISideNav } from 'src/app/store/auth/auth.interface';
-import { AuthState } from 'src/app/store/auth/auth.state';
+import { AuthState } from 'src/app/store/auth/auth.store';
 
 @Component({
   selector: 'app-side-bar',

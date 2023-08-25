@@ -10,3 +10,8 @@ export interface ISideNav {
     route: string;
     routeLinkActive: string;
 }
+
+export interface IInvalidAuthData {
+    message: string;
+    statusCode: number;
+}

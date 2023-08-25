@@ -14,7 +14,7 @@ import { LoadingInterceptor } from './interceptors/loading/loading.interceptor';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { PageNotFoundComponent } from './components/common/page-not-found/page-not-found.component';
 import { NgxsModule } from '@ngxs/store';
-import { AuthState } from './store/auth/auth.state';
+import { AuthState } from './store/auth/auth.store';
 import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
 import { ErrorComponent } from './components/common/error/error.component';
 import { CompanyService } from './services/company/company.service';
