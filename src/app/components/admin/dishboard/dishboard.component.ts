@@ -140,13 +140,11 @@ export class DishboardComponent implements OnInit, AfterViewInit {
   allAgencytList: any[] = [];
   ngOnInit(): void {
     this.statusFormControl.valueChanges.subscribe((status: string) => {
-      console.log('changes >> ', status);
     });
     this.agencyFormValue();
     this.subscriptions();
 
     this.store.dispatch(new Company.GetAll()).subscribe((resp: any) => {
-      console.log('resp>', resp);
     });
     // this.agencyFormValue()
     // this.agencyEmployeeList();
@@ -201,7 +199,6 @@ export class DishboardComponent implements OnInit, AfterViewInit {
     if (this.AgenciesList$) {
       this.AgenciesList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
         (agenciesList) => {
-          console.log('agenciesList >> ', agenciesList);
           if (Array.isArray(agenciesList) && agenciesList.length) {
             this.allAgencytList = agenciesList;
           }
@@ -217,7 +214,6 @@ export class DishboardComponent implements OnInit, AfterViewInit {
       width: '800px',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed', result);
     });
   }
 
@@ -244,7 +240,6 @@ export class DishboardComponent implements OnInit, AfterViewInit {
       panelClass: 'abc',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed', result);
     });
   }
 
@@ -253,7 +248,6 @@ export class DishboardComponent implements OnInit, AfterViewInit {
       width: '900%',
     });
     dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed', result);
     });
   }
   delete(a: any): void {}

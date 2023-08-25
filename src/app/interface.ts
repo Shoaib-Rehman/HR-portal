@@ -53,3 +53,10 @@ export interface IAgency {
   location?: string;
   name?: string;
 }
+
+export interface ISideBar {
+  name: string;
+  icon: string;
+  route: string;
+  routeLinkActive: string;
+}

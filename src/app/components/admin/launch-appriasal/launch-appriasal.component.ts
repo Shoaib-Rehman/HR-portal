@@ -67,7 +67,6 @@ export class LaunchAppriasalComponent implements OnInit {
     // if (this.AgenciesList$) {
     //   this.AgenciesList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
     //     (agenciesList) => {
-    //       console.log('agenciesList >>>>>>> ', agenciesList);
     //       if (Array.isArray(agenciesList) && agenciesList.length) {
     //         this.allAgencytList = agenciesList;
     //       }
