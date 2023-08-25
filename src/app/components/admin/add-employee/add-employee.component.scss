@@ -67,7 +67,13 @@
   }
   .add-employee-button {
     background-color:#4CA3FB;
-    color: white;
+    color: white !important;
+    display: flex;
+    float: right;
+    border: none;
+    padding: 8px;
+    margin-top: -7px;
+
   }
   // .designation-input{
   //   margin-bottom: 0px !important;

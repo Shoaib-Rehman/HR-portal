@@ -34,18 +34,7 @@ export class AuthState {
         route: '/launchAppraisal',
         routeLinkActive: "active"
       },
-      {
-        name: 'Self Annual Appraisal',
-        icon: 'commute',
-        route: '/selfAppraisal',
-        routeLinkActive: "active"
-      },
-      {
-        name: 'Annual Appraisal',
-        icon: 'commute',
-        route: '/annualappraisal',
-        routeLinkActive: "active"
-      },
+    
       {
         name: 'All Employee List',
         icon: 'commute',
@@ -64,7 +53,24 @@ export class AuthState {
         route: 'assignMembers',
         routeLinkActive: "active"
       },
-      
+      {
+        name: 'Self Annual Appraisal',
+        icon: 'commute',
+        route: '/selfAppraisal',
+        routeLinkActive: "active"
+      },
+      {
+        name: 'Annual Appraisal',
+        icon: 'commute',
+        route: '/annualappraisal',
+        routeLinkActive: "active"
+      },
+      {
+        name: 'Next Year Objectives',
+        icon: 'commute',
+        route: '/next-year-objective',
+        routeLinkActive: "active"
+      },
       {
         name: 'Appraisal Results',
         icon: 'commute',

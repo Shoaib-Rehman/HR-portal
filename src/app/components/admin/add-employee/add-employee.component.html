@@ -12,8 +12,8 @@
  
   <div class="form-row">
     <mat-form-field appearance="outline" class="form-field input-box">
-      <mat-label>Select Agency / Office</mat-label>
-      <mat-select [(ngModel)]="selectedAgency" formControlName="agency">
+      <mat-label>Select Agency</mat-label>
+      <mat-select formControlName="agency">
         <mat-option
           *ngFor="let option of AgenciesList$ | async"
           [value]="option?.id"
@@ -24,9 +24,9 @@
       <mat-error *ngIf="submitted &&  AgencyFormControl.invalid && AgencyFormControl.touched">Please enter the agency/office.</mat-error>
     </mat-form-field>
 
-    <mat-form-field appearance="outline" class="form-field input-box">
+    <!-- <mat-form-field appearance="outline" class="form-field input-box">
       <mat-label>Select Agency Office</mat-label>
-      <mat-select formControlName="agency">
+      <mat-select formControlName="location">
         <mat-option
           *ngFor="let option of AgenciesList$ | async"
           [value]="option?.id"
@@ -37,23 +37,19 @@
       <mat-error *ngIf="submitted &&  AgencyFormControl.invalid && AgencyFormControl.touched">Please
         enter the
         agency/office.</mat-error>
-    </mat-form-field>
-
-
-
-
-
-    <!-- <mat-form-field appearance="outline" class="form-field input-box">
+    </mat-form-field> -->
+    <mat-form-field appearance="outline"   class="form-field input-box">
       <mat-label>Location / Office</mat-label>
       <input
         matInput
+        type="text"
         placeholder="Location / Office"
         formControlName="location" />
       <mat-error
-        *ngIf="LocationFormControl.invalid && LocationFormControl.touched">Please
+        *ngIf="submitted && LocationFormControl.invalid && LocationFormControl.touched">Please
         enter the
         location/office.</mat-error>
-    </mat-form-field> -->
+    </mat-form-field>
   </div>
 
   <div class="form-row">
@@ -156,7 +152,7 @@
     </mat-form-field>
   </div>
 
-  <button mat-raised-button class="add-employee-button" (click)="submitForm()">
+  <button  class="add-employee-button" (click)="submitForm()">
     Add Employee
   </button>
 </form>
