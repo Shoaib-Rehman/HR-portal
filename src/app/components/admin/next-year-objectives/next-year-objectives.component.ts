@@ -8,18 +8,21 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
-import { Company } from 'src/app/store/company/company.action';
 
 @Component({
-  selector: 'app-self-annual-appraisal',
-  templateUrl: './self-annual-appraisal.component.html',
-  styleUrls: ['./self-annual-appraisal.component.scss'],
+  selector: 'app-next-year-objectives',
+  templateUrl: './next-year-objectives.component.html',
+  styleUrls: ['./next-year-objectives.component.scss']
 })
-export class SelfAnnualAppraisalComponent implements OnInit {
-  selfAppraisalForm: FormGroup;
+export class NextYearObjectivesComponent implements OnInit {
 
-  constructor(private formBuilder: FormBuilder, private router: Router,private store: Store) {
+  selfAppraisalForm: FormGroup;
+  dropdownOptions = [
+    { value: 'option1', label: 'Option 1' },
+    { value: 'option2', label: 'Option 2' },
+    { value: 'option3', label: 'Option 3' },
+  ];
+  constructor(private formBuilder: FormBuilder, private router: Router) {
     this.selfAppraisalForm = this.initForm();
   }
 
@@ -134,7 +137,7 @@ export class SelfAnnualAppraisalComponent implements OnInit {
           objective: objective.content.objective,
           KeyPerformanceIndicators: objective.content.keyPerformanceIndicators,
           actualPerformance: objective.content.actualPerformance,
-          score: +(objective.content.score.slice(0, -1)),
+          score: +objective.content.score,
           selfScore: +objective.content.selfScore,
           managerScore: +objective.content.managerScore,
         };
@@ -151,18 +154,12 @@ export class SelfAnnualAppraisalComponent implements OnInit {
       }
     });
     if (this.valuetrue !== false) {
-      let performance: any[] = []
-      performance.push({...data, userId:1040})
-      this.store
-      .dispatch(new Company.lanunchSelfApriasal(performance))
-      .subscribe((resp) => {
-        console.log('wah g wah',(JSON.stringify(performance))); // Do something with the data, like sending it to a server
-        this.router.navigateByUrl('/annualappraisal');
-      });
-  }  else {
-  }
-    console.log("ASDSASAD", data)
-    
+      let performance = []
+      performance.push({...data, userId:'1'})
+      console.log('wah g wah',(JSON.stringify(performance))); // Do something with the data, like sending it to a server
+      this.router.navigateByUrl('/annualappraisal');
+    } else {
+    }
   }
 
   // setValue(): void {

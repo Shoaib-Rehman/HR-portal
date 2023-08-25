@@ -101,6 +101,7 @@ employeeList: IMember[] = [];
 
   displayedColumns: string[] = [
     'name',
+    'agency',
     'position',
     'location',
     'status',
@@ -115,31 +116,40 @@ employeeList: IMember[] = [];
     this.statusFormControl.valueChanges.subscribe((status: string) => {
       console.log('changes >> ', status);
     });
-    this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
-      console.log("All Employee >>>>>> ", resp?.company?.employeeList)
-      this.employeeList = resp?.company?.employeeList
-      // this.dataSource = resp?.company?.employeeList
-      this.dataSource  = resp?.company?.employeeList.map((item:any) => ({
-        name: `${item.firstName} ${item.lastName}`,
-        position: item.designation || 'HR',
-        location: item.location || 'Islamabad',
-        status: item.status || 'Pending',
-      }));
-      
-    })
+    this.getAllEmployee()
+
   }
 
   
 
   openEmployeeModal(element:IMember, index:any): void {
-    console.log("Element>>>>>>>>>>>>>>>",element)
+    console.log("Element>>>>>>>>>>>>>>>",this.employeeList[index])
     const dialogRef = this.dialog.open(AddEmployeeComponent, {
       data:this.employeeList[index],
       width: '700px',
     });
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed', result);
+      if(result?.data) {
+        this.getAllEmployee()
+      }
     });
+  }
+
+  getAllEmployee(): void {
+    this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
+      console.log("All Employee >>>>>> ", resp?.company?.allemployeeList)
+      this.employeeList = resp?.company?.allemployeeList
+      // this.dataSource = resp?.company?.employeeList
+      this.dataSource  = resp?.company?.allemployeeList.map((item:any) => ({
+        name: `${item.firstName} ${item.lastName}`,
+        agency: item.agency_name || 'N/A',
+        position: item.designation || 'N/A',
+        location: item.location || 'N/A',
+        status: item.status || 'Pending',
+      }));
+      
+    })
   }
 
   isAllSelected() {

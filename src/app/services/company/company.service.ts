@@ -20,19 +20,25 @@ export class CompanyService extends APIBasicConfig {
     return this.http.post(`${this.base_url}users/register`, formData);
   }
 
+  editEmployee(formData: IAddEmployee): Observable<any> {
+    return this.http.put(`${this.base_url}users/${formData?.id}`, formData);
+  }
+
   getAllEmployee(): Observable<any> {
     return this.http.get(`${this.base_url}users`);
   }
 
   agencyEmployee(agencyId: any): Observable<any> {
     // not in use not confirmed
-    return this.http.post(`${this.base_url}users/agencyEmployee`, agencyId);
+    return this.http.get(`${this.base_url}agency/getAgencyEmployees/${agencyId?.id}`);
   }
 
   launchAppriasal(formData: ILaunchAppraisal): Observable<any> {
     // not in use not confirmed
     return this.http.post(`${this.base_url}users/launchApprisal`, formData);
   }
-
+  lanunchSelfApriasal(formData: any): Observable<any> {
+    return this.http.post(`${this.base_url}users/selfAnnualAppraisal`, formData);
+  }
   
 }

@@ -54,21 +54,35 @@ export class CompanyState {
   }
 
 
-
-  @Action(Company.GetAllEmployee) 
-  GetAllEmployee(ctx:StateContext<CompanyModel>) {
-    const state = ctx.getState();
-    if(state.allemployeeList.length) {
-      return state.allemployeeList
-    } else {
-    return this.companyService.getAllEmployee().pipe(
+  @Action(Company.EditEmployee) 
+  EditEmployee(ctx:StateContext<CompanyModel>, action:Company.EditEmployee) {
+    return this.companyService.editEmployee(action.payload).pipe(
       tap((resp) => {
+        console.log('addEmssssssssssployee>>>>>>>', resp);
         ctx.patchState({
-          allemployeeList : resp?.items
+
         });
       })
     );
-    }
+  }
+
+
+
+  @Action(Company.GetAllEmployee) 
+  GetAllEmployee(ctx:StateContext<CompanyModel>) {
+    // const state = ctx.getState();
+    // if(state.allemployeeList.length) {
+    //   return state.allemployeeList
+    // } else {
+      
+    return this.companyService.getAllEmployee().pipe(
+      tap((resp) => {
+        ctx.patchState({
+          allemployeeList : resp
+        });
+      })
+    );
+    // }
   }
 
   @Action(Company.GetSingleAgencyEmployee) 
@@ -99,6 +113,18 @@ export class CompanyState {
         ctx.patchState({
           agencyemployeeList: resp
         });
+      })
+    );
+  }
+
+  @Action(Company.lanunchSelfApriasal) 
+  lanunchSelfApriasal(ctx:StateContext<CompanyModel>, action:Company.lanunchSelfApriasal) {
+    return this.companyService.lanunchSelfApriasal(action.payload).pipe(
+      tap((resp) => {
+        console.log('resp', resp)
+        // ctx.patchState({
+        //   agencyemployeeList: resp
+        // });
       })
     );
   }

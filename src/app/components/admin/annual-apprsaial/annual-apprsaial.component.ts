@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatDialog } from '@angular/material/dialog';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { CustomToasterComponent } from '../custom-toaster/custom-toaster.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-annual-apprsaial',
@@ -13,7 +14,7 @@ export class AnnualApprsaialComponent implements OnInit {
   annualAppraisal: FormGroup;
 
   constructor(
-    private formBuilder: FormBuilder,
+    private formBuilder: FormBuilder,private router: Router,
     private toasterService: ToasterService,private dialog: MatDialog
   ) {
     this.annualAppraisal = this.initForm();
@@ -86,6 +87,7 @@ export class AnnualApprsaialComponent implements OnInit {
         return;
       } else {
         console.log('fromData >>>>>', this.prepareFormData());
+        this.router.navigateByUrl('/next-year-objective')
      
       }
     }
@@ -95,12 +97,17 @@ export class AnnualApprsaialComponent implements OnInit {
       console.log('The dialog was closed', result);
     });
   }
+
   private prepareFormData(): any {
     const formData = {
       rating: this.selectedBoxes,
       totalRating: this.calculateSum(),
     };
     return formData;
+  }
+
+  goBack(): void {
+    this.router.navigateByUrl('/selfAppraisal')
   }
 
   get NameFormControl(): FormControl {

@@ -12,7 +12,7 @@ import { ILaunchAppraisal } from 'src/app/interface';
 import { ComposeEmailComponent } from '../compose-email/compose-email.component';
 import { Select, Store } from '@ngxs/store';
 import { CompanyState } from 'src/app/store/company/company.state';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Company } from 'src/app/store/company/company.action';
 import { CompanyModel } from 'src/app/store/company/company.model';
 
@@ -36,7 +36,7 @@ export class LaunchAppriasalComponent implements OnInit {
   isCompanyAppraisal: boolean = false;
   currentTime: Date = new Date();
   employeeList:IAddEmployee[] = [];
-  // private unsubscribe$ = new Subject();
+  private unsubscribe$ = new Subject();
   // allAgencytList: any[] = [];
 
   constructor(
@@ -49,6 +49,7 @@ export class LaunchAppriasalComponent implements OnInit {
 
   ngOnInit(): void {
     this.agencyList();
+    // this.Searchemployee()
   }
 
   initForm(): UntypedFormGroup {
@@ -76,6 +77,17 @@ export class LaunchAppriasalComponent implements OnInit {
     // }
   }
 
+  // filterList(resp: string):any {
+  //   return this.employeeList.filter((res:any) => res?.firstName.toLocaleLowerCase()?.includes(resp.toLocaleLowerCase()));
+  // }
+  // Searchemployee() {
+  //   this.employeeFromControl.valueChanges.subscribe((resp: string) => {
+  //     console.log("RESSSSSS",resp)
+  //       this.employeeList = this.filterList(resp);
+       
+  //   })
+  // }
+
   disableFormControl(formGroup: UntypedFormGroup): void {
     formGroup.get('year')?.disable();
     formGroup.get('year')?.setValue(this.currentTime.getFullYear());
@@ -102,7 +114,7 @@ export class LaunchAppriasalComponent implements OnInit {
       this.employeeFromControl.setValue('');
       // ************** remove *******
       this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
-        console.log("All Employee >>>>>> ", resp?.company?.allemployeeList)
+        console.log("Agency employee Launch Apprisail >>>>>> ", resp?.company?.allemployeeList)
         this.employeeList = resp?.company?.allemployeeList
       })
       // ***************
@@ -120,9 +132,12 @@ export class LaunchAppriasalComponent implements OnInit {
 
 
   selectedAgencyEmployeeList(agencyId:number): void {
-    // this.store.dispatch(new Company.GetSingleAgencyEmployee({id:agencyId})).subscribe((resp) => {
-      // this.employeeList = resp
-    // })
+    this.store
+    .dispatch(new Company.GetSingleAgencyEmployee({ id: agencyId }))
+    .pipe(takeUntil(this.unsubscribe$))
+    .subscribe((resp) => {
+      this.employeeList = resp?.company?.agencyemployeeList;
+    })
   }
 
   onSubmit(): void {
