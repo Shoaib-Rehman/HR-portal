@@ -1,3 +1,19 @@
+.mat-nav-list .mat-list-item.active {
+  background-color: #EEF6FF;
+
+  mat-icon, .ng-star-inserted {
+    color: #4CA3FB;
+  }
+}
+
+.mat-nav-list .mat-list-item.active {
+  background-color: #EEF6FF;
+
+  mat-icon, .ng-star-inserted {
+    color: #4CA3FB;
+  }
+} 
+
 .example-container {
   position: fixed;
   overflow: auto;
@@ -86,3 +102,5 @@
   align-items: center;
   justify-content: center;
 }  */
+
+

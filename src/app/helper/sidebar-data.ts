@@ -8,12 +8,12 @@ export class SideBarData {
         route: '/dashboard',
         routeLinkActive: 'active',
       },
-      {
-        name: 'Add Employee',
-        icon: 'commute',
-        route: '/employee',
-        routeLinkActive: 'active',
-      },
+      // {
+      //   name: 'Add Employee',
+      //   icon: 'commute',
+      //   route: '/employee',
+      //   routeLinkActive: 'active',
+      // },
       {
         name: 'Launch Appraisal',
         icon: 'commute',
@@ -27,16 +27,16 @@ export class SideBarData {
         route: '/all-employee',
         routeLinkActive: 'active',
       },
-      {
-        name: 'Compose Email',
-        icon: 'commute',
-        route: '/compose-email',
-        routeLinkActive: "active"
-      },
+      // {
+      //   name: 'Compose Email',
+      //   icon: 'commute',
+      //   route: '/compose-email',
+      //   routeLinkActive: "active"
+      // },
       {
         name: 'Assign Members',
         icon: 'commute',
-        route: 'assign-members',
+        route: '/assign-members',
         routeLinkActive: "active"
       },
       {
@@ -66,7 +66,7 @@ export class SideBarData {
       {
         name: 'Calibration',
         icon: 'settings',
-        route: '/dashboard',
+        route: '/calibration',
         routeLinkActive: 'active',
       },
       {
