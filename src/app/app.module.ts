@@ -19,6 +19,9 @@ import { AuthInterceptor } from './interceptors/auth/auth.interceptor';
 import { ErrorComponent } from './components/common/error/error.component';
 import { CompanyService } from './services/company/company.service';
 import { CompanyState } from './store/company/company.state';
+import { PermissionsService } from './services/permissions/permissions.service';
+import { LocalStorageService } from './services/local-storage/local-storage.service';
+// import { AuthGuard } from './guards/auth/auth.guard';
 
 @NgModule({
   declarations: [AppComponent, LoaderComponent, PageNotFoundComponent, ErrorComponent],
@@ -36,6 +39,9 @@ import { CompanyState } from './store/company/company.state';
     ToasterService, 
     LoadingService,
     CompanyService,
+    PermissionsService,
+    LocalStorageService,
+    // AuthGuard,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoadingInterceptor,

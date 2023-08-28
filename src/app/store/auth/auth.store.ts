@@ -4,11 +4,11 @@ import { AuthModel } from './auth.state.model';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { Auth } from './auth.action';
 import { ISideNav } from './auth.interface';
-import { LocalStorageState } from 'src/app/local-storage.state';
 import { tap } from 'rxjs';
 import { ISideBar } from 'src/app/interface';
 import { SideBarData } from 'src/app/helper/sidebar-data';
-import { Permission } from 'src/app/helper/permission';
+import { PermissionsService } from 'src/app/services/permissions/permissions.service';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 
 @State<AuthModel>({
   name: 'auth',
@@ -22,7 +22,7 @@ export class AuthState {
     return state.sideBar;
   }
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService, private permissions: PermissionsService, private localStorage: LocalStorageService) {}
 
 
 
@@ -30,9 +30,8 @@ export class AuthState {
   login(ctx: StateContext<AuthModel>, action: Auth.Login) {
     return this.authService.login(action.payload).pipe(
       tap((resp: any) => {
-        console.log("auth responce > ", resp);
-        LocalStorageState.setTokan(resp?.token);
-        LocalStorageState.setCurrentUser(resp?.user);
+        this.localStorage.setTokan(resp?.token);
+        this.localStorage.setCurrentUser(resp?.user);
         ctx.patchState({
           sideBar: this.sideBarModules,
         });
@@ -48,7 +47,7 @@ export class AuthState {
   }
 
   get sideBarModules(): ISideBar[] {
-    return SideBarData.data.filter((module: ISideBar) => Permission.canSee(module.name));
+    return SideBarData.data.filter((module: ISideBar) => this.permissions.canSee(module.name));
   }
 
 
