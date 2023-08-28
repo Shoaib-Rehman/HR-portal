@@ -3,65 +3,19 @@ import {
   FormBuilder,
   FormControl,
   FormGroup,
-  UntypedFormControl,
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import { Store } from '@ngxs/store';
+import { Company } from 'src/app/store/company/company.action';
 
 @Component({
   selector: 'app-next-year-objectives',
   templateUrl: './next-year-objectives.component.html',
-  styleUrls: ['./next-year-objectives.component.scss']
+  styleUrls: ['./next-year-objectives.component.scss'],
 })
 export class NextYearObjectivesComponent implements OnInit {
-
-  selfAppraisalForm: FormGroup;
-  dropdownOptions = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' },
-  ];
-  constructor(private formBuilder: FormBuilder, private router: Router) {
-    this.selfAppraisalForm = this.initForm();
-  }
-
-  ngOnInit(): void {}
-
-  initForm(): UntypedFormGroup {
-    const formGroup = this.formBuilder.group({
-      name: ['', Validators.required],
-      location: ['', Validators.required],
-      position: ['', Validators.required],
-      date: ['', Validators.required],
-    });
-    return this.disableFormControl(formGroup);
-  }
-
-  disableFormControl(formGroup: UntypedFormGroup): FormGroup {
-    // if (this.name?.agency) {
-    formGroup.get('name')?.disable();
-    formGroup.get('name')?.setValue('Majid');
-    // }
-    // if (this.data?.firstName) {
-    formGroup.get('position')?.disable();
-    formGroup.get('position')?.setValue('Team member');
-    // this.editEmployee = true;
-    // }
-    // if (this.data?.middleName) {
-    formGroup.get('location')?.disable();
-    formGroup.get('location')?.setValue('Islamabad');
-    // }
-    // if (this.data?.lastName) {
-    formGroup.get('date')?.disable();
-    formGroup.get('date')?.setValue('2023-2024');
-    // }
-    return formGroup;
-  }
-  toggleTextArea(objective: any): void {
-    objective.showTextArea = !objective.showTextArea;
-  }
-
   objectives: any[] = [
     {
       name: 'Objective 1',
@@ -70,10 +24,7 @@ export class NextYearObjectivesComponent implements OnInit {
       content: {
         objective: '',
         keyPerformanceIndicators: '',
-        actualPerformance: '',
         score: '40%',
-        selfScore: '',
-        managerScore: '',
       },
     },
     {
@@ -83,10 +34,7 @@ export class NextYearObjectivesComponent implements OnInit {
       content: {
         objective: '',
         keyPerformanceIndicators: '',
-        actualPerformance: '',
         score: '30%',
-        selfScore: '',
-        managerScore: '',
       },
     },
     {
@@ -96,10 +44,7 @@ export class NextYearObjectivesComponent implements OnInit {
       content: {
         objective: '',
         keyPerformanceIndicators: '',
-        actualPerformance: '',
         score: '20%',
-        selfScore: '',
-        managerScore: '',
       },
     },
     {
@@ -109,13 +54,82 @@ export class NextYearObjectivesComponent implements OnInit {
       content: {
         objective: '',
         keyPerformanceIndicators: '',
-        actualPerformance: '',
         score: '10%',
-        selfScore: '',
-        managerScore: '',
       },
     },
   ];
+  nextYearForm: FormGroup;
+  submittedNextYearAppriasalData: any[] = [];
+  disable: boolean = false;
+  data: any;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router,
+    private store: Store
+  ) {
+    this.nextYearForm = this.initForm();
+  }
+  ngOnInit(): void {
+    this.getSelfApriasalData();
+    this.setValueDisableConrols();
+  }
+
+  getSelfApriasalData(): void {
+    //change userId 2
+    this.store.dispatch(new Company.GetSelfApriasal(1)).subscribe((resp) => {
+      if (resp.company.employeeSelfApprisalDetails.length) {
+        this.submittedNextYearAppriasalData =
+          resp.company.employeeSelfApprisalDetails;
+        this.data = this.submittedNextYearAppriasalData[0];
+        for (let i = 1; i <= 4; i++) {
+          this.objectives[i - 1].content.objective =
+            this.data[`objective_${i}`];
+          this.objectives[i - 1].content.keyPerformanceIndicators =
+            this.data[`kpi_${i}`];
+          // this.objectives[i - 1].content.actualPerformance =
+          //   this.data[`actual_performance_${i}`];
+          this.objectives[i - 1].content.score = `${this.data[`score_${i}`]}%`;
+          // this.objectives[i - 1].content.selfScore =
+          //   this.data[`self_socre_${i}`];
+          // this.objectives[i - 1].content.managerScore =
+          //   this.data[`manager_score_${i}`];
+        }
+        if (
+          this.data['actual_performance_1'] !== '' ||
+          this.data['actual_performance_1'] !== null
+        ) {
+          this.disable = true;
+        }
+      }
+    });
+  }
+
+  initForm(): UntypedFormGroup {
+    return this.formBuilder.group({
+      name: ['', Validators.required],
+      location: ['', Validators.required],
+      position: ['', Validators.required],
+      date: ['', Validators.required],
+    });
+  }
+
+  setValueDisableConrols() {
+    this.NameFormControl?.disable();
+    this.NameFormControl?.setValue('Majid');
+
+    this.LocationFormControl?.disable();
+    this.LocationFormControl?.setValue('Canada');
+
+    this.PositionFormControl?.disable();
+    this.PositionFormControl?.setValue('Member');
+
+    this.DateFormControl?.disable();
+    this.DateFormControl?.setValue('2023-2024');
+  }
+  toggleTextArea(objective: any): void {
+    objective.showTextArea = !objective.showTextArea;
+  }
 
   toggleObjective(index: number): void {
     this.objectives[index].expanded = !this.objectives[index].expanded;
@@ -129,17 +143,13 @@ export class NextYearObjectivesComponent implements OnInit {
     const data: any = this.objectives.map((objective) => {
       if (
         objective.content.objective &&
-        objective.content.keyPerformanceIndicators &&
-        objective.content.actualPerformance &&
-        objective.content.selfScore
+        objective.content.keyPerformanceIndicators
       ) {
         return {
           objective: objective.content.objective,
           KeyPerformanceIndicators: objective.content.keyPerformanceIndicators,
           actualPerformance: objective.content.actualPerformance,
-          score: +objective.content.score,
-          selfScore: +objective.content.selfScore,
-          managerScore: +objective.content.managerScore,
+          score: +objective.content.score.slice(0, -1),
         };
       } else {
         return false;
@@ -154,53 +164,35 @@ export class NextYearObjectivesComponent implements OnInit {
       }
     });
     if (this.valuetrue !== false) {
-      let performance = []
-      performance.push({...data, userId:'1'})
-      console.log('wah g wah',(JSON.stringify(performance))); // Do something with the data, like sending it to a server
-      this.router.navigateByUrl('/annualappraisal');
+      let performance: any[] = [];
+      performance.push({ ...data, userId: 1040 }); // change userId
+      this.store
+        .dispatch(new Company.lanunchSelfApriasal(performance))
+        .subscribe((resp) => {
+          if (resp) {
+            // this.router.navigateByUrl('/annual-appraisal');
+          }
+        });
     } else {
     }
   }
-
-  // setValue(): void {
-  //   this.NameFormControl?.setValue('Abdul Majid');
-  // }
-
-  selfScoreValue(selfScore: number, score: string, index: number): void {
-    score = score.slice(0, -1);
-    if (selfScore > +score) {
-      this.objectives[index].isValueGreaterThanScore = true; // Show the error message
-    } else {
-      this.objectives[index].isValueGreaterThanScore = false; // Hide the error message
-      this.objectives[index].content.selfScore = selfScore;
-    }
-  }
-
-  onSubmit() {
-    // if (this.selfAppraisalForm.valid) {
-    console.log('Name:', this.NameFormControl);
-    console.log('Location:', this.LocationFormControl);
-    console.log('Position:', this.PositionFormControl);
-    // console.log('Date:', this.date.value);
-    // You can perform further actions with the form data here
-    // } else {
-    // Handle invalid form submission
-    // }
+  backPage() {
+    this.router.navigateByUrl('/annual-appraisal');
   }
 
   get NameFormControl(): FormControl {
-    return this.selfAppraisalForm.get('name') as FormControl;
+    return this.nextYearForm.get('name') as FormControl;
   }
 
   get LocationFormControl() {
-    return this.selfAppraisalForm.get('location');
+    return this.nextYearForm.get('location');
   }
 
   get PositionFormControl() {
-    return this.selfAppraisalForm.get('position');
+    return this.nextYearForm.get('position');
   }
 
   get DateFormControl() {
-    return this.selfAppraisalForm.get('date');
+    return this.nextYearForm.get('date');
   }
 }

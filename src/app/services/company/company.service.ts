@@ -41,4 +41,7 @@ export class CompanyService extends APIBasicConfig {
     return this.http.post(`${this.base_url}users/selfAnnualAppraisal`, formData);
   }
   
+  getSelfApriasal(userId: number): Observable<any> {
+    return this.http.get(`${this.base_url}users/getUserAppraisalDetail/${userId}`);
+  }
 }
