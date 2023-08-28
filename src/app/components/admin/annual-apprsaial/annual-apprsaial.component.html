@@ -7,39 +7,28 @@
     <div class="row box-height">
         <mat-form-field appearance="outline" class="input-box col">
             <mat-label class="textsize">Name</mat-label>
-            <input class="textsize" matInput placeholder="Name" formControlName="name" required />
-            <!-- <mat-icon matSuffix>email</mat-icon> -->
-            <mat-error>abc</mat-error>
+            <input class="textsize" matInput placeholder="Name" formControlName="name"  />
         </mat-form-field>
         <mat-form-field appearance="outline" class="input-box col">
             <mat-label class="textsize">Location/Office</mat-label>
-            <input class="textsize" matInput placeholder="Location/Office" formControlName="location" required />
-            <!-- <mat-icon matSuffix>email</mat-icon> -->
-            <mat-error>abc</mat-error>
+            <input class="textsize" matInput placeholder="Location/Office" formControlName="location"  />
         </mat-form-field>
     </div>
     <div class="row">
         <mat-form-field appearance="outline" class="input-box col">
             <mat-label class="textsize">Position</mat-label>
-            <mat-select required formControlName="position">
-                <mat-option *ngFor="let option of dropdownOptions" [value]="option.value" class="textsize">
-                    {{ option.label }}
-                </mat-option>
-            </mat-select>
-            <mat-error>abc</mat-error>
+            <input class="textsize" matInput placeholder="position" formControlName="position"  />
+        
         </mat-form-field>
         <mat-form-field appearance="outline" class="input-box col">
             <mat-label>Date</mat-label>
-            <input matInput formControlName="date" placeholder="Select a date" />
-            <!-- <mat-datepicker-toggle matSuffix></mat-datepicker-toggle> -->
-            <!-- <mat-datepicker #picker></mat-datepicker> -->
-            <mat-error>abc</mat-error>
+            <input matInput formControlName="date" placeholder="Select a date"  />
         </mat-form-field>
     </div>
-</form>
+
 
 <div>
-    <h1 class="main-heading">Role Based Competendes</h1>
+    <h1 class="main-heading">Role Based Competency</h1>
     <p class="ptext">1 being the lowest 5 being the highest</p>
 </div>
 <div class="row bottom-space">
@@ -137,9 +126,10 @@
 
 <div>
     <p class="comment-text">Comments</p>
-    <textarea class="text-area textsize comments-textarea"></textarea>
+    <textarea class="text-area textsize comments-textarea" formControlName="comment" ></textarea>
 </div>
 <div class="buttons-section">
-    <button mat-button class="kips-button" (click)="submit()">Save and continue</button>
-    <button mat-button class="save-button" (click)="goBack()">Go back</button>
+    <button mat-button class="save-button" (click)="submit()">Save and continue</button>
+    <button mat-button class="go-back" (click)="goBack()">Go back</button>
 </div>
+</form>

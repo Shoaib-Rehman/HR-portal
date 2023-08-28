@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, UntypedFormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { CustomToasterComponent } from '../custom-toaster/custom-toaster.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 
 @Component({
   selector: 'app-annual-apprsaial',
@@ -12,24 +12,53 @@ import { Router } from '@angular/router';
 })
 export class AnnualApprsaialComponent implements OnInit {
   annualAppraisal: FormGroup;
+  // userId: string = '';
 
   constructor(
     private formBuilder: FormBuilder,private router: Router,
-    private toasterService: ToasterService,private dialog: MatDialog
+    private toasterService: ToasterService,private dialog: MatDialog,
+    private activatedRoute: ActivatedRoute,
   ) {
     this.annualAppraisal = this.initForm();
   }
 
   ngOnInit(): void {
     this.setValues();
+    // this.activatedRoute.queryParams.subscribe((params: Params) => {
+    //   console.log("params",params?.['id']);
+    //   this.userId = params?.['id']
+    // });
   }
-  initForm() {
-    return this.formBuilder.group({
-      name: ['', Validators.required],
-      location: ['', Validators.required],
-      position: ['', Validators.required],
-      date: ['', Validators.required],
+  initForm(): UntypedFormGroup {
+    const formGroup = this.formBuilder.group({
+      name: [''],
+      location: [''],
+      position: [''],
+      date: [''],
+      comment:['']
     });
+    return this.disableFormControl(formGroup);
+  }
+
+  disableFormControl(formGroup: UntypedFormGroup): FormGroup {
+    // if (this.name?.agency) {
+    formGroup.get('name')?.disable();
+    formGroup.get('name')?.setValue('Majid');
+    // }
+    // if (this.data?.firstName) {
+    formGroup.get('position')?.disable();
+    formGroup.get('position')?.setValue('Team member');
+    // this.editEmployee = true;
+    // }
+    // if (this.data?.middleName) {
+    formGroup.get('location')?.disable();
+    formGroup.get('location')?.setValue('Islamabad');
+    // }
+    // if (this.data?.lastName) {
+    formGroup.get('date')?.disable();
+    formGroup.get('date')?.setValue('2023-2024');
+    // }
+    return formGroup;
   }
   setValues (): void {
     this.NameFormControl?.setValue('Abdul Majid');
@@ -37,12 +66,7 @@ export class AnnualApprsaialComponent implements OnInit {
     this.PositionFormControl?.setValue('Team member')
     this.DateFormControl?.setValue("2023 - 2024");
   }
-  dropdownOptions = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' },
-  ];
-
+ 
   selectedOption: string | undefined;
 
   // role based competendense work ****************
@@ -81,11 +105,11 @@ export class AnnualApprsaialComponent implements OnInit {
     for (const [key, value] of Object.entries(this.selectedBoxes)) {
       if (value == null) {
         this.toasterService.success(
-          'Please rate all Role based competendes'
+          'Please rate all Role based Competency'
         );
         return;
       } else {
-        console.log('fromData >>>>>', this.prepareFormData());
+        console.log("DATA", this.prepareFormData())
         this.router.navigateByUrl('/next-year-objective')
      
       }
@@ -100,12 +124,14 @@ export class AnnualApprsaialComponent implements OnInit {
     const formData = {
       rating: this.selectedBoxes,
       totalRating: this.calculateSum(),
+      comment: this.CommentFormControl.value,
+      userId: 1043, // will change according to the login user
     };
     return formData;
   }
 
   goBack(): void {
-    this.router.navigateByUrl('/selfAppraisal')
+    this.router.navigateByUrl('/self-appraisal')
   }
 
   get NameFormControl(): FormControl {
@@ -122,5 +148,8 @@ export class AnnualApprsaialComponent implements OnInit {
 
   get DateFormControl(): FormControl {
     return this.annualAppraisal.get('date') as FormControl;
+  }
+  get CommentFormControl(): FormControl {
+    return this.annualAppraisal.get('comment') as FormControl;
   }
 }

@@ -66,8 +66,6 @@ export class CompanyState {
     );
   }
 
-
-
   @Action(Company.GetAllEmployee) 
   GetAllEmployee(ctx:StateContext<CompanyModel>) {
     // const state = ctx.getState();
@@ -109,7 +107,6 @@ export class CompanyState {
     // } 
     return this.companyService.launchAppriasal(action.payload).pipe(
       tap((resp) => {
-        console.log('agencyEmployeeList>>>>>>>', resp);
         ctx.patchState({
           agencyemployeeList: resp
         });
@@ -120,11 +117,17 @@ export class CompanyState {
   @Action(Company.lanunchSelfApriasal) 
   lanunchSelfApriasal(ctx:StateContext<CompanyModel>, action:Company.lanunchSelfApriasal) {
     return this.companyService.lanunchSelfApriasal(action.payload).pipe(
+      tap((resp) => {})
+    );
+  }
+
+  @Action(Company.GetSelfApriasal) 
+  GetSelfApriasal(ctx:StateContext<CompanyModel>, action:Company.GetSelfApriasal) {
+    return this.companyService.getSelfApriasal(action.payload).pipe(
       tap((resp) => {
-        console.log('resp', resp)
-        // ctx.patchState({
-        //   agencyemployeeList: resp
-        // });
+        ctx.patchState({
+          employeeSelfApprisalDetails: resp
+        });
       })
     );
   }

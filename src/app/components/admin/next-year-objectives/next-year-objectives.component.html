@@ -1,26 +1,26 @@
 <div class="heading-line">
-    <h1 class="main-heading">Self Annual Apraisal</h1>
+    <h1 class="main-heading">Objective Settings</h1>
 </div>
-<form class="example-form" [formGroup]="selfAppraisalForm" (ngSubmit)="onSubmit()">
+<form class="example-form" [formGroup]="nextYearForm">
     <div class="row box-height">
         <mat-form-field appearance="outline" class="input-box col">
             <mat-label class="textsize">Name</mat-label>
-            <input class="textsize" matInput placeholder="Name" formControlName="name"  />
+            <input class="textsize" matInput placeholder="Name" formControlName="name" />
         </mat-form-field>
         <mat-form-field appearance="outline" class="input-box col">
             <mat-label class="textsize">Location/Office</mat-label>
-            <input class="textsize" matInput placeholder="Location/Office" formControlName="location"  />
+            <input class="textsize" matInput placeholder="Location/Office" formControlName="location" />
         </mat-form-field>
     </div>
     <div class="row">
         <mat-form-field appearance="outline" class="input-box col">
             <mat-label class="textsize">Position</mat-label>
-            <input class="textsize" matInput placeholder="position" formControlName="position"  />
-        
+            <input class="textsize" matInput placeholder="position" formControlName="position" />
+
         </mat-form-field>
         <mat-form-field appearance="outline" class="input-box col">
             <mat-label>Date</mat-label>
-            <input matInput formControlName="date" placeholder="Select a date"  />
+            <input matInput formControlName="date" placeholder="Select a date" />
         </mat-form-field>
     </div>
 </form>
@@ -40,7 +40,7 @@
                     <h4>Objective</h4>
                     <textarea rows="4" [ngModel]="objective.content.objective"
                         (ngModelChange)="objective.content.objective = $event" [name]="'objective-' + i"
-                        class="text-area textsize"></textarea>
+                        class="text-area textsize" [disabled]="disable"></textarea>
                 </div>
             </div>
             <div class="outer-container">
@@ -48,44 +48,15 @@
                     <h4>Key Performance Indicators</h4>
                     <textarea rows="4" [ngModel]="objective.content.keyPerformanceIndicators"
                         (ngModelChange)="objective.content.keyPerformanceIndicators = $event" [name]="'kpi-' + i"
-                        class="text-area textsize"></textarea>
+                        class="text-area textsize" [disabled]="disable"></textarea>
                 </div>
             </div>
             <div>
-
-                <div class="outer-container">
-                    <div class="inner-container">
-                        <h4>Actual Performance</h4>
-                        <textarea rows="4" [ngModel]="objective.content.actualPerformance"
-                            (ngModelChange)="objective.content.actualPerformance = $event" [name]="'actual-' + i"
-                            class="text-area textsize"></textarea>
-                    </div>
-                </div>
-
                 <div class="row" style="margin-top: -60px">
-                    <mat-form-field appearance="outline" class="input-box col-6 score-padding">
+                    <mat-form-field appearance="outline" class="input-box col-12 score-padding">
                         <mat-label class="textsize">Score</mat-label>
                         <input matInput [ngModel]="objective.content.score"
                             (ngModelChange)="objective.content.score = $event" [name]="'score' + i" disabled>
-                    </mat-form-field>
-
-                    <div class="col-md-6 ">
-
-                        <mat-form-field appearance="outline" class="input-box col-md-12  score-padding">
-                            <mat-label>Self Score</mat-label>
-                            <input class="textsize" matInput placeholder="Name" type="number" [ngModel]="objective.content.selfScore"
-                                (ngModelChange)="selfScoreValue($event, objective.content.score,i)" [name]="'selfScore' + i" required >
-                            </mat-form-field>
-                            <mat-error style="position: relative;
-                            margin-top: -38px;"  *ngIf="objective.isValueGreaterThanScore">Self score should not be greater then Score </mat-error>
-                    </div>
-                    
-                    <mat-form-field appearance="outline" class="input-box  col-6 manager-score">
-                        <mat-label>Manager Score</mat-label>
-                        <input class="textsize" matInput placeholder="Name" [ngModel]="objective.content.managerScore"
-                            (ngModelChange)="objective.content.managerScore = $event" [name]="'managerScore' + i"
-                            required />
-                        <mat-error>abc</mat-error>
                     </mat-form-field>
                 </div>
 
@@ -94,4 +65,5 @@
         </div>
     </div>
 </div>
-<button mat-button class="save-button" (click)="saveData()">Save and continue</button>
+<button mat-button class="save-button" (click)="saveData()" *ngIf="!disable">Save and Finish</button>
+<button mat-button class="save-button" (click)="backPage()" *ngIf="disable">Back</button>
