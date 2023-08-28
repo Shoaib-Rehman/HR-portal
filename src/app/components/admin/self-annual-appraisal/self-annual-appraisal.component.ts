@@ -81,7 +81,6 @@ export class SelfAnnualAppraisalComponent implements OnInit {
     private store: Store
   ) {
     this.selfAppraisalForm = this.initForm();
-    debugger
   }
   ngOnInit(): void {
     this.getSelfApriasalData();

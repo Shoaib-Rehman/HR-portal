@@ -12,7 +12,6 @@ export namespace Company {
     export class EditEmployee {
         static readonly type = '[Company] EditEmployee';
         constructor(public payload: IAddEmployee) {
-            debugger
         }
     }
 
