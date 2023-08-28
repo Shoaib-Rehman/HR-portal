@@ -1,6 +1,7 @@
 import { ISideBar } from "../interface";
 
 export class SideBarData {
+
      static data: ISideBar[] = [
       {
         name: 'Agency Member List',

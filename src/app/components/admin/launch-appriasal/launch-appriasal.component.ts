@@ -65,15 +65,7 @@ export class LaunchAppriasalComponent implements OnInit {
 
   agencyList(): void {
     this.store.dispatch(new Company.GetAll());
-    // if (this.AgenciesList$) {
-    //   this.AgenciesList$.pipe(takeUntil(this.unsubscribe$)).subscribe(
-    //     (agenciesList) => {
-    //       if (Array.isArray(agenciesList) && agenciesList.length) {
-    //         this.allAgencytList = agenciesList;
-    //       }
-    //     }
-    //   );
-    // }
+ 
   }
 
   // filterList(resp: string):any {
