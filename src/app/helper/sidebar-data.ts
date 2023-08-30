@@ -17,14 +17,14 @@ export class SideBarData {
       // },
       {
         name: 'Launch Appraisal',
-        icon: 'commute',
+        icon: 'rocket_launch',
         route: '/launch-appraisal',
         routeLinkActive: 'active',
       },
     
       {
         name: 'All Employee List',
-        icon: 'commute',
+        icon: 'supervised_user_circle',
         route: '/all-employee',
         routeLinkActive: 'active',
       },
@@ -36,43 +36,43 @@ export class SideBarData {
       // },
       {
         name: 'Assign Members',
-        icon: 'commute',
+        icon: 'work_history',
         route: '/assign-members',
         routeLinkActive: "active"
       },
       {
         name: 'Self Annual Appraisal',
-        icon: 'commute',
+        icon: 'assignment_ind',
         route: '/self-appraisal',
         routeLinkActive: "active"
       },
       {
         name: 'Annual Appraisal',
-        icon: 'commute',
+        icon: 'view_timeline',
         route: '/annual-appraisal',
         routeLinkActive: "active"
       },
       {
         name: 'Next Year Objectives',
-        icon: 'commute',
+        icon: 'perm_contact_calendar',
         route: '/next-year-objective',
         routeLinkActive: "active"
       },
       {
         name: 'Appraisal Results',
-        icon: 'commute',
+        icon: 'wysiwyg',
         route: '/employee',
         routeLinkActive: 'active',
       },
       {
         name: 'Calibration',
-        icon: 'settings',
+        icon: 'square_foot',
         route: '/calibration',
         routeLinkActive: 'active',
       },
       {
         name: 'Bell Cruve',
-        icon: 'home',
+        icon: 'timeline',
         route: '/bell-curve',
         routeLinkActive: 'active',
       },
