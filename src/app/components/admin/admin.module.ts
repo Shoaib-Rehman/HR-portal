@@ -28,6 +28,7 @@ import { NextYearObjectivesComponent } from './next-year-objectives/next-year-ob
 import { CalibrationComponent } from './calibration/calibration.component';
 import { AssignMembersListComponent } from './assign-members-list/assign-members-list.component';
 import { SearchPipe } from 'src/app/pipes/search/search.pipe';
+import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +52,7 @@ import { SearchPipe } from 'src/app/pipes/search/search.pipe';
     SearchPipe,
     CalibrationComponent,
     AssignMembersListComponent,
+    ProfileMenuComponent,
   ],
   imports: [
     SharedModule,
@@ -60,7 +62,7 @@ import { SearchPipe } from 'src/app/pipes/search/search.pipe';
     MatDatepickerModule,
     MatInputModule,
     MatNativeDateModule,
-    MatCardModule
+    MatCardModule,
   ],
 })
 export class AdminModule {
