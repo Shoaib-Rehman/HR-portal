@@ -29,6 +29,7 @@ import { CalibrationComponent } from './calibration/calibration.component';
 import { AssignMembersListComponent } from './assign-members-list/assign-members-list.component';
 import { SearchPipe } from 'src/app/pipes/search/search.pipe';
 import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
+import { NotificationComponent } from './notification/notification.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
     CalibrationComponent,
     AssignMembersListComponent,
     ProfileMenuComponent,
+    NotificationComponent,
   ],
   imports: [
     SharedModule,

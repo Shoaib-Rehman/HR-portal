@@ -3,7 +3,13 @@
 }
 
 .container {
+    justify-content: end;
     display: flex;
+
+    .left {
+        display: flex;
+        gap: 25px;
+    }
 }
 
 // @media screen and (max-width: 1609px) and (min-width: 1508px) {
