@@ -61,8 +61,6 @@ export class AssignMembersComponent implements OnInit {
 
   submitSelectedUsers() {
     const selectedUsers = this.selectedUsersControl.value;
-    console.log(selectedUsers);
-
     this.dialogRef.close({ data: false });
   }
   cancel() {

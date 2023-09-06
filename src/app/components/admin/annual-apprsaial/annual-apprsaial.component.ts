@@ -1,9 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, UntypedFormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  UntypedFormGroup,
+} from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { CustomToasterComponent } from '../custom-toaster/custom-toaster.component';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { Select, Store } from '@ngxs/store';
+import { CompanyState } from 'src/app/store/company/company.state';
+import { CompanyModel } from 'src/app/store/company/company.model';
+import { Observable, Subject, takeUntil } from 'rxjs';
+import { IUser } from 'src/app/store/company/company.interface';
+import { Company } from 'src/app/store/company/company.action';
 
 @Component({
   selector: 'app-annual-apprsaial',
@@ -11,65 +22,12 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
   styleUrls: ['./annual-apprsaial.component.scss'],
 })
 export class AnnualApprsaialComponent implements OnInit {
+  @Select(CompanyState.userdetails)
+  userdetails$?: Observable<CompanyModel>;
   annualAppraisal: FormGroup;
-  // userId: string = '';
-
-  constructor(
-    private formBuilder: FormBuilder,private router: Router,
-    private toasterService: ToasterService,private dialog: MatDialog,
-    private activatedRoute: ActivatedRoute,
-  ) {
-    this.annualAppraisal = this.initForm();
-  }
-
-  ngOnInit(): void {
-    this.setValues();
-    // this.activatedRoute.queryParams.subscribe((params: Params) => {
-    //   console.log("params",params?.['id']);
-    //   this.userId = params?.['id']
-    // });
-  }
-  initForm(): UntypedFormGroup {
-    const formGroup = this.formBuilder.group({
-      name: [''],
-      location: [''],
-      position: [''],
-      date: [''],
-      comment:['']
-    });
-    return this.disableFormControl(formGroup);
-  }
-
-  disableFormControl(formGroup: UntypedFormGroup): FormGroup {
-    // if (this.name?.agency) {
-    formGroup.get('name')?.disable();
-    formGroup.get('name')?.setValue('Majid');
-    // }
-    // if (this.data?.firstName) {
-    formGroup.get('position')?.disable();
-    formGroup.get('position')?.setValue('Team member');
-    // this.editEmployee = true;
-    // }
-    // if (this.data?.middleName) {
-    formGroup.get('location')?.disable();
-    formGroup.get('location')?.setValue('Islamabad');
-    // }
-    // if (this.data?.lastName) {
-    formGroup.get('date')?.disable();
-    formGroup.get('date')?.setValue('2023-2024');
-    // }
-    return formGroup;
-  }
-  setValues (): void {
-    this.NameFormControl?.setValue('Abdul Majid');
-    this.LocationFormControl?.setValue('toronto');
-    this.PositionFormControl?.setValue('Team member')
-    this.DateFormControl?.setValue("2023 - 2024");
-  }
- 
-  selectedOption: string | undefined;
-
-  // role based competendense work ****************
+  userDetails?: IUser;
+  disableBoxes: boolean = true;
+  private unsubscribe$ = new Subject();
   boxNumbers: number[] = [1, 2, 3, 4, 5];
   selectedBoxes: { [key: string]: any } = {
     workEthics: null,
@@ -80,7 +38,74 @@ export class AnnualApprsaialComponent implements OnInit {
     Discipline: null,
     CommunicationSkills: null,
   };
-  disable = true;
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private store: Store,
+    private router: Router,
+    private toasterService: ToasterService,
+    private dialog: MatDialog
+  ) {
+    this.annualAppraisal = this.initForm();
+  }
+
+  ngOnInit(): void {
+    this.getSelfApriasalData();
+  }
+  initForm(): UntypedFormGroup {
+    return this.formBuilder.group({
+      name: [''],
+      location: [''],
+      position: [''],
+      date: [''],
+      comment: [''],
+    });
+  }
+
+  getSelfApriasalData(): void {
+    this.userdetails$?.subscribe((resp: any) => {
+      if (resp) {
+        this.userDetails = resp;
+        this.setValueDisableConrols(resp);
+        this.store
+          .dispatch(new Company.GetCompetencyApriasal(this.userDetails?.id))
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((resp) => {
+            if (resp.company.ApprisalDetails.length) {
+              const data = resp.company.ApprisalDetails[0];
+              this.selectedBoxes['workEthics'] = data?.workEthics;
+              this.selectedBoxes['jobKnowledge'] = data?.jobKnowledge;
+              this.selectedBoxes['qualityWork'] = data?.qualityWork;
+              this.selectedBoxes['Productivity'] = data?.Productivity;
+              this.selectedBoxes['Dependability'] = data?.Dependability;
+              this.selectedBoxes['Discipline'] = data?.Discipline;
+              this.selectedBoxes['CommunicationSkills'] =
+                data?.CommunicationSkills;
+              this.CommentFormControl.disable();
+              this.CommentFormControl.setValue(data?.comment);
+              this.disableBoxes = false;
+            }
+          });
+      }
+    });
+  }
+
+  setValueDisableConrols(userData: IUser) {
+    this.NameFormControl?.disable();
+    this.NameFormControl?.setValue(userData?.firstName);
+
+    this.LocationFormControl?.disable();
+    this.LocationFormControl?.setValue(userData?.location || 'N/A');
+
+    this.PositionFormControl?.disable();
+    this.PositionFormControl?.setValue(userData?.role);
+
+    this.DateFormControl?.disable();
+    this.DateFormControl?.setValue(
+      new Date().getFullYear() + '-' + (new Date().getFullYear() + 1)
+    );
+  }
+  selectedOption: string | undefined;
   isSelected(category: string, boxNumber: number): boolean {
     return (
       boxNumber === this.selectedBoxes[category] ||
@@ -89,7 +114,9 @@ export class AnnualApprsaialComponent implements OnInit {
   }
 
   selectBox(category: string, boxNumber: number): void {
-    this.selectedBoxes[category] = boxNumber;
+    if (this.disableBoxes) {
+      this.selectedBoxes[category] = boxNumber;
+    }
   }
   calculateSum(): number {
     let sum = 0;
@@ -101,23 +128,29 @@ export class AnnualApprsaialComponent implements OnInit {
     return sum;
   }
 
+  valueNotNull: boolean = true;
   submit() {
     for (const [key, value] of Object.entries(this.selectedBoxes)) {
       if (value == null) {
-        this.toasterService.success(
-          'Please rate all Role based Competency'
-        );
+        this.toasterService.success('Please rate all Role based Competency');
+        this.valueNotNull = false;
         return;
       } else {
-        console.log("DATA", this.prepareFormData())
-        this.router.navigateByUrl('/next-year-objective')
-     
+        this.valueNotNull = true;
       }
     }
-    const dialogRef = this.dialog.open(CustomToasterComponent, {
-    });
-    dialogRef.afterClosed().subscribe(result => {
-    });
+    if (this.valueNotNull) {
+      this.store
+        .dispatch(new Company.launchCompetencyApriasal(this.prepareFormData()))
+        .subscribe((resp) => {
+          if (resp) {
+            this.router.navigateByUrl('/next-year-objective');
+          }
+        });
+    }
+
+    const dialogRef = this.dialog.open(CustomToasterComponent, {});
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   private prepareFormData(): any {
@@ -125,13 +158,17 @@ export class AnnualApprsaialComponent implements OnInit {
       rating: this.selectedBoxes,
       totalRating: this.calculateSum(),
       comment: this.CommentFormControl.value,
-      userId: 1043, // will change according to the login user
+      userId: this.userDetails?.id, // will change according to the login user
     };
     return formData;
   }
 
   goBack(): void {
-    this.router.navigateByUrl('/self-appraisal')
+    this.router.navigateByUrl('/self-appraisal');
+  }
+
+  nextPage() {
+    this.router.navigateByUrl('/next-year-objective');
   }
 
   get NameFormControl(): FormControl {

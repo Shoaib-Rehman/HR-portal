@@ -109,7 +109,6 @@ export class AddEmployeeComponent implements OnInit {
     this.submitted = true;
     this.inputValidator();
     if (this.employeeForm.valid) {
-      console.log(this.employeeForm.value);
       const formData = this.prepareFormData();
       if (this.editEmployee) {
         this.store
@@ -129,7 +128,6 @@ export class AddEmployeeComponent implements OnInit {
             }
           });
       }
-      console.log(formData);
     } else {
       // Mark all form fields as touched to trigger error messages
       Object.values(this.formControls).forEach((control) => {

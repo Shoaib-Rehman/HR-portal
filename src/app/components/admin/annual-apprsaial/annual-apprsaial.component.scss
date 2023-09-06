@@ -1,35 +1,29 @@
-
 .input-box {
   margin-top: 3rem;
   margin-bottom: 1rem;
 }
-.box-height{
-  margin-bottom: -38px
+.box-height {
+  margin-bottom: -38px;
 }
 :host ::ng-deep mat-form-field .mat-form-field-outline-start {
-  background-color: #F8F9FA !important;
+  background-color: #f8f9fa !important;
 }
 
 :host ::ng-deep mat-form-field .mat-form-field-outline-gap {
-  background-color: #F8F9FA !important;
+  background-color: #f8f9fa !important;
 }
 
 :host ::ng-deep mat-form-field .mat-form-field-outline-end {
-  background-color: #F8F9FA !important;
+  background-color: #f8f9fa !important;
 }
 
-
-
-
-
-.main-heading{
+.main-heading {
   font-size: 24px;
   font-weight: 600;
   font-family: Poppins;
   margin-bottom: 3px;
-
 }
-.ptext{
+.ptext {
   font-size: 14px;
   font-family: Inter;
   font-weight: 500;
@@ -42,7 +36,6 @@
   font-family: Poppins;
   color: #000000;
   max-width: 490px;
-
 }
 
 .box-container {
@@ -52,8 +45,8 @@
 
 .box {
   width: 44.03px;
-  height:  44.03px;
-  background-color:#CCCCCC;
+  height: 44.03px;
+  background-color: #cccccc;
   border-radius: 7px;
   color: white;
   display: flex;
@@ -67,7 +60,7 @@
 }
 
 .box.selected {
-  background-color:#4CA3FB;
+  background-color: #4ca3fb;
 }
 .bottom-space {
   margin-bottom: 21px;
@@ -87,10 +80,10 @@
   justify-content: center;
   font-weight: bold;
 }
-.total-box{
+.total-box {
   width: 58px;
-  height:  44.03px;
-  background-color:#CCCCCC;
+  height: 44.03px;
+  background-color: #cccccc;
   border-radius: 7px;
   color: white;
   display: flex;
@@ -104,34 +97,37 @@
 
 .comment-text {
   margin: 0px;
-  color: #696F79;
+  color: #696f79;
   font-size: 16px;
   font-weight: 500;
   font-family: Inter;
 }
-.comments-textarea{
-  background: #F8F9FA !important;
-  border: #F8F9FA !important;
+.comments-textarea {
+  background: #f8f9fa !important;
+  border: #f8f9fa !important;
 }
-.buttons-section{
+.buttons-section {
   margin-top: 21px;
+  margin-top: 21px;
+  display: flex;
+  justify-content: space-between;
 }
 
-.go-back{
-  color:#4CA3FB;
-  background-color: white ;
-  border: 1px solid #4CA3FB;
+.go-back {
+  color: #4ca3fb;
+  background-color: #4ca3fb;
+  color: white !important;
+  border: 1px solid #4ca3fb;
   text-align: center;
 }
-.save-button  {
-  background-color:#4CA3FB;
+.save-button {
+  background-color: #4ca3fb;
   color: white !important;
   margin-right: 22px;
   text-align: center;
-
 }
 .disableButton {
-  background-color:#CCCCCC;
+  background-color: #cccccc;
   color: white !important;
   margin-right: 22px;
   text-align: center;
@@ -141,26 +137,23 @@ h4 {
   margin: 0px 0px 0px 0px;
   font-size: 18px;
   font-family: Poppins;
-   font-weight: 600; 
-   color: #242731;
+  font-weight: 600;
+  color: #242731;
 }
 
 .text-area {
   width: 100%;
   height: 157px;
   resize: none;
-  background: #B2B2B2;
-  border: 1px solid #B2B2B2;
+  background: #b2b2b2;
+  border: 1px solid #b2b2b2;
   border-radius: 6px;
   padding: 20px;
   margin-top: 1rem;
 }
-.textsize{
+.textsize {
   font-size: 14px;
   line-height: 16.94px;
   font-family: Inter;
   font-weight: 500;
 }
-
-
-

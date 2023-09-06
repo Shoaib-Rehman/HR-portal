@@ -24,6 +24,10 @@ export class CompanyState {
   @Selector()
 	static allEmployees(state: CompanyModel) { return state.allemployeeList }
 
+  @Selector()
+	static userdetails(state: CompanyModel) { return state.userId }
+
+
 
   @Action(Company.GetAll)
   getAllAgencies(ctx: StateContext<CompanyModel>) {
@@ -45,7 +49,6 @@ export class CompanyState {
   addEmployee(ctx:StateContext<CompanyModel>, action:Company.addEmployee) {
     return this.companyService.addEmployee(action.payload).pipe(
       tap((resp) => {
-        console.log('addEmssssssssssployee>>>>>>>', resp);
         ctx.patchState({
 
         });
@@ -58,7 +61,6 @@ export class CompanyState {
   EditEmployee(ctx:StateContext<CompanyModel>, action:Company.EditEmployee) {
     return this.companyService.editEmployee(action.payload).pipe(
       tap((resp) => {
-        console.log('addEmssssssssssployee>>>>>>>', resp);
         ctx.patchState({
 
         });
@@ -68,11 +70,6 @@ export class CompanyState {
 
   @Action(Company.GetAllEmployee) 
   GetAllEmployee(ctx:StateContext<CompanyModel>) {
-    // const state = ctx.getState();
-    // if(state.allemployeeList.length) {
-    //   return state.allemployeeList
-    // } else {
-      
     return this.companyService.getAllEmployee().pipe(
       tap((resp) => {
         ctx.patchState({
@@ -85,13 +82,8 @@ export class CompanyState {
 
   @Action(Company.GetSingleAgencyEmployee) 
   GetAgencyEmployee(ctx:StateContext<CompanyModel>, action:Company.GetSingleAgencyEmployee) {
-    // const state = ctx.getState();
-    // if(state.agencyemployeeList.length) {
-    //   return state.agencyemployeeList;
-    // } 
     return this.companyService.agencyEmployee(action.payload).pipe(
       tap((resp) => {
-        console.log('agencyEmployeeList>>>>>>>', resp);
         ctx.patchState({
           agencyemployeeList: resp
         });
@@ -101,10 +93,6 @@ export class CompanyState {
 
   @Action(Company.launchAppriasal) 
   launchAppriasal(ctx:StateContext<CompanyModel>, action:Company.launchAppriasal) {
-    // const state = ctx.getState();
-    // if(state.agencyemployeeList.length) {
-    //   return state.agencyemployeeList;
-    // } 
     return this.companyService.launchAppriasal(action.payload).pipe(
       tap((resp) => {
         ctx.patchState({
@@ -114,9 +102,9 @@ export class CompanyState {
     );
   }
 
-  @Action(Company.lanunchSelfApriasal) 
-  lanunchSelfApriasal(ctx:StateContext<CompanyModel>, action:Company.lanunchSelfApriasal) {
-    return this.companyService.lanunchSelfApriasal(action.payload).pipe(
+  @Action(Company.launchSelfApriasal) 
+  launchSelfApriasal(ctx:StateContext<CompanyModel>, action:Company.launchSelfApriasal) {
+    return this.companyService.launchSelfApriasal(action.payload).pipe(
       tap((resp) => {})
     );
   }
@@ -126,12 +114,57 @@ export class CompanyState {
     return this.companyService.getSelfApriasal(action.payload).pipe(
       tap((resp) => {
         ctx.patchState({
-          employeeSelfApprisalDetails: resp
+          ApprisalDetails: resp
         });
       })
     );
   }
+
+  @Action(Company.launchCompetencyApriasal) 
+  launchCompetencyApriasal(ctx:StateContext<CompanyModel>, action:Company.launchCompetencyApriasal) {
+    return this.companyService.launchCompetencyApriasal(action.payload).pipe(
+      tap((resp) => {})
+    );
+  }
+
+  @Action(Company.GetCompetencyApriasal) 
+  GetCompetencyApriasal(ctx:StateContext<CompanyModel>, action:Company.GetSelfApriasal) {
+    return this.companyService.GetCompetencyApriasal(action.payload).pipe(
+      tap((resp) => {
+        ctx.patchState({
+          ApprisalDetails: resp
+        });
+      })
+    );
+  }
+
+  @Action(Company.launchNextYearApriasal) 
+  launchNextYearApriasal(ctx:StateContext<CompanyModel>, action:Company.launchNextYearApriasal) {
+    return this.companyService.launchNextYearApriasal(action.payload).pipe(
+      tap((resp) => {})
+    );
+  }
+
+  @Action(Company.GetNextYearApriasal) 
+  GetNextYearApriasal(ctx:StateContext<CompanyModel>, action:Company.GetNextYearApriasal) {
+    return this.companyService.GetNextYearApriasal(action.payload).pipe(
+      tap((resp) => {
+        ctx.patchState({
+          ApprisalDetails: resp
+        });
+      })
+    );
+  }
+
+  // @Action(Company.GetUserIdLocalStorage) 
+  // GetUserIdLocalStorage(ctx:StateContext<CompanyModel>) {
+  //   return ctx.getState()
+  // }
 }
+
+
+
+
 
 
 
