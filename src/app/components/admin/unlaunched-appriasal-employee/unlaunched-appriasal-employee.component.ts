@@ -114,7 +114,6 @@ employeeList: IMember[] = [];
 
   ngOnInit(): void {
     this.statusFormControl.valueChanges.subscribe((status: string) => {
-      console.log('changes >> ', status);
     });
     this.getAllEmployee()
 
@@ -123,13 +122,11 @@ employeeList: IMember[] = [];
   
 
   openEmployeeModal(element:IMember, index:any): void {
-    console.log("Element>>>>>>>>>>>>>>>",this.employeeList[index])
     const dialogRef = this.dialog.open(AddEmployeeComponent, {
       data:this.employeeList[index],
       width: '700px',
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed', result);
       if(result?.data) {
         this.getAllEmployee()
       }
@@ -138,9 +135,7 @@ employeeList: IMember[] = [];
 
   getAllEmployee(): void {
     this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
-      console.log("All Employee >>>>>> ", resp?.company?.allemployeeList)
       this.employeeList = resp?.company?.allemployeeList
-      // this.dataSource = resp?.company?.employeeList
       this.dataSource  = resp?.company?.allemployeeList.map((item:any) => ({
         name: `${item.firstName} ${item.lastName}`,
         agency: item.agency_name || 'N/A',

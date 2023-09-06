@@ -1,5 +1,5 @@
 import { IAddEmployee } from 'src/app/interface';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -14,28 +14,27 @@ import { Select, Store } from '@ngxs/store';
 import { CompanyState } from 'src/app/store/company/company.state';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { Company } from 'src/app/store/company/company.action';
-import { CompanyModel } from 'src/app/store/company/company.model';
 
 @Component({
   selector: 'app-launch-appriasal',
   templateUrl: './launch-appriasal.component.html',
   styleUrls: ['./launch-appriasal.component.scss'],
 })
-export class LaunchAppriasalComponent implements OnInit {
+export class LaunchAppriasalComponent implements OnInit, OnDestroy {
   @Select(CompanyState.agenciesInfo)
   AgenciesList$?: Observable<any>;
 
   @Select(CompanyState.agencyEmployees)
-  AgencyEmployeeList$?: Observable<any>
+  AgencyEmployeeList$?: Observable<any>;
 
   @Select(CompanyState.allEmployees)
-  AllEmployeeList$?: Observable<any>
+  AllEmployeeList$?: Observable<any>;
 
   appraisalForm: FormGroup;
   isIndividualAppraisal: boolean = false;
   isCompanyAppraisal: boolean = false;
   currentTime: Date = new Date();
-  employeeList:IAddEmployee[] = [];
+  employeeList: IAddEmployee[] = [];
   private unsubscribe$ = new Subject();
   // allAgencytList: any[] = [];
 
@@ -65,7 +64,6 @@ export class LaunchAppriasalComponent implements OnInit {
 
   agencyList(): void {
     this.store.dispatch(new Company.GetAll());
- 
   }
 
   // filterList(resp: string):any {
@@ -73,9 +71,8 @@ export class LaunchAppriasalComponent implements OnInit {
   // }
   // Searchemployee() {
   //   this.employeeFromControl.valueChanges.subscribe((resp: string) => {
-  //     console.log("RESSSSSS",resp)
   //       this.employeeList = this.filterList(resp);
-       
+
   //   })
   // }
 
@@ -103,12 +100,9 @@ export class LaunchAppriasalComponent implements OnInit {
     if (this.isIndividualAppraisal) {
       this.companyFromControl.setValue('');
       this.employeeFromControl.setValue('');
-      // ************** remove *******
-      this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
-        console.log("Agency employee Launch Apprisail >>>>>> ", resp?.company?.allemployeeList)
-        this.employeeList = resp?.company?.allemployeeList
-      })
-      // ***************
+      this.store.dispatch(new Company.GetAllEmployee()).subscribe((resp) => {
+        this.employeeList = resp?.company?.allemployeeList;
+      });
     }
   }
 
@@ -121,31 +115,25 @@ export class LaunchAppriasalComponent implements OnInit {
     return false;
   }
 
-
-  selectedAgencyEmployeeList(agencyId:number): void {
+  selectedAgencyEmployeeList(agencyId: number): void {
     this.store
-    .dispatch(new Company.GetSingleAgencyEmployee({ id: agencyId }))
-    .pipe(takeUntil(this.unsubscribe$))
-    .subscribe((resp) => {
-      this.employeeList = resp?.company?.agencyemployeeList;
-    })
+      .dispatch(new Company.GetSingleAgencyEmployee({ id: agencyId }))
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        this.employeeList = resp?.company?.agencyemployeeList;
+      });
   }
 
   onSubmit(): void {
     this.formValidator();
     if (this.appraisalForm.valid) {
       const formData: ILaunchAppraisal = this.prepareFormData();
-      console.log('appraisalForm formData >>', formData);
       const dialogRef = this.dialog.open(ComposeEmailComponent, {
         data: formData,
         width: '900%',
       });
-      dialogRef.afterClosed().subscribe((result) => {
-        console.log('The dialog was closed', result);
-      });
+      dialogRef.afterClosed().subscribe((result) => {});
     } else {
-      console.log('appraisalForm >>', this.appraisalForm.value);
-      // handling error;
       this.appraisalForm.markAllAsTouched();
     }
   }
@@ -180,5 +168,10 @@ export class LaunchAppriasalComponent implements OnInit {
   }
   get companyFromControl(): FormControl {
     return this.appraisalForm.get('company') as FormControl;
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(false);
+    this.unsubscribe$.complete();
   }
 }

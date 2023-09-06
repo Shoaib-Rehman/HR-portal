@@ -37,11 +37,30 @@ export class CompanyService extends APIBasicConfig {
     // not in use not confirmed
     return this.http.post(`${this.base_url}users/launchApprisal`, formData);
   }
-  lanunchSelfApriasal(formData: any): Observable<any> {
+  launchSelfApriasal(formData: any): Observable<any> {
     return this.http.post(`${this.base_url}users/selfAnnualAppraisal`, formData);
   }
   
   getSelfApriasal(userId: number): Observable<any> {
     return this.http.get(`${this.base_url}users/getUserAppraisalDetail/${userId}`);
   }
+
+  launchCompetencyApriasal(formData: any): Observable<any> {
+    return this.http.post(`${this.base_url}users/annualAppraisal`, formData);
+  }
+
+ 
+  GetCompetencyApriasal(userId: number): Observable<any> {
+    return this.http.get(`${this.base_url}users/getUserAnnualAppraisalDetail/${userId}`);
+  }
+
+  launchNextYearApriasal(formData: any): Observable<any> {
+    return this.http.post(`${this.base_url}users/addUserNextYearObjective`, formData);
+  }
+
+ 
+  GetNextYearApriasal(userId: number): Observable<any> {
+    return this.http.get(`${this.base_url}users/getUserNextYearDetail/${userId}`);
+  }
+  
 }

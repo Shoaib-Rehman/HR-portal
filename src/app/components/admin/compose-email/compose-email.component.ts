@@ -51,7 +51,6 @@ export class ComposeEmailComponent implements OnInit {
   onSubmit() {
     if (this.composeEmailForm.valid) {
     const formData: ILaunchAppraisal = this.prepareFormData();
-    console.log('emailFormData>>>', JSON.stringify(formData));
     this.store.dispatch(new Company.launchAppriasal(formData)).subscribe(resp => {
      
     })

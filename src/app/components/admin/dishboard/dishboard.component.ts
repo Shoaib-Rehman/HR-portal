@@ -184,19 +184,6 @@ export class DishboardComponent implements OnInit, AfterViewInit {
           })
         );
       });
-
-    // this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
-    //   console.log("All Employee >>>>>> ", resp?.company?.allemployeeList)
-    //   this.employeeList = resp?.company?.allemployeeList
-    //   // this.dataSource = resp?.company?.employeeList
-    //   this.dataSource  = resp?.company?.allemployeeList.map((item:any) => ({
-    //     name: `${item.firstName} ${item.lastName}`,
-    //     position: item.designation || 'HR',
-    //     location: item.location || 'Islamabad',
-    //     status: item.status || 'Pending',
-    //   }));
-
-    // })
   }
 
   initForm(): UntypedFormGroup {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,15 +7,22 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Company } from 'src/app/store/company/company.action';
+import { IUser } from 'src/app/store/company/company.interface';
+import { CompanyModel } from 'src/app/store/company/company.model';
+import { CompanyState } from 'src/app/store/company/company.state';
 
 @Component({
   selector: 'app-next-year-objectives',
   templateUrl: './next-year-objectives.component.html',
   styleUrls: ['./next-year-objectives.component.scss'],
 })
-export class NextYearObjectivesComponent implements OnInit {
+export class NextYearObjectivesComponent implements OnInit, OnDestroy {
+  @Select(CompanyState.userdetails)
+  userdetails$?: Observable<CompanyModel>;
+  userDetails?: IUser;
   objectives: any[] = [
     {
       name: 'Objective 1',
@@ -62,6 +69,7 @@ export class NextYearObjectivesComponent implements OnInit {
   submittedNextYearAppriasalData: any[] = [];
   disable: boolean = false;
   data: any;
+  private unsubscribe$ = new Subject();
 
   constructor(
     private formBuilder: FormBuilder,
@@ -71,36 +79,36 @@ export class NextYearObjectivesComponent implements OnInit {
     this.nextYearForm = this.initForm();
   }
   ngOnInit(): void {
-    this.getSelfApriasalData();
-    this.setValueDisableConrols();
+    this.apprisalDetail();
   }
 
-  getSelfApriasalData(): void {
-    //change userId 2
-    this.store.dispatch(new Company.GetSelfApriasal(1)).subscribe((resp) => {
-      if (resp.company.employeeSelfApprisalDetails.length) {
-        this.submittedNextYearAppriasalData =
-          resp.company.employeeSelfApprisalDetails;
-        this.data = this.submittedNextYearAppriasalData[0];
-        for (let i = 1; i <= 4; i++) {
-          this.objectives[i - 1].content.objective =
-            this.data[`objective_${i}`];
-          this.objectives[i - 1].content.keyPerformanceIndicators =
-            this.data[`kpi_${i}`];
-          // this.objectives[i - 1].content.actualPerformance =
-          //   this.data[`actual_performance_${i}`];
-          this.objectives[i - 1].content.score = `${this.data[`score_${i}`]}%`;
-          // this.objectives[i - 1].content.selfScore =
-          //   this.data[`self_socre_${i}`];
-          // this.objectives[i - 1].content.managerScore =
-          //   this.data[`manager_score_${i}`];
-        }
-        if (
-          this.data['actual_performance_1'] !== '' ||
-          this.data['actual_performance_1'] !== null
-        ) {
-          this.disable = true;
-        }
+  apprisalDetail(): void {
+    this.userdetails$?.subscribe((resp: any) => {
+      if (resp) {
+        this.userDetails = resp;
+        this.setValueDisableConrols(resp);
+        this.store
+          .dispatch(new Company.GetNextYearApriasal(this.userDetails?.id))
+          .pipe(takeUntil(this.unsubscribe$))
+          .subscribe((resp) => {
+            if (resp.company.ApprisalDetails.length) {
+              this.submittedNextYearAppriasalData =
+                resp.company.ApprisalDetails;
+              this.data = this.submittedNextYearAppriasalData[0];
+              for (let i = 1; i <= 4; i++) {
+                this.objectives[i - 1].content.objective =
+                  this.data[`objective_${i}`];
+                this.objectives[i - 1].content.keyPerformanceIndicators =
+                  this.data[`kpi_${i}`];
+                this.objectives[i - 1].content.score = `${
+                  this.data[`score_${i}`]
+                }%`;
+              }
+              if (this.data['kpi__1'] !== '' || this.data['kpi__1'] !== null) {
+                this.disable = true;
+              }
+            }
+          });
       }
     });
   }
@@ -114,19 +122,19 @@ export class NextYearObjectivesComponent implements OnInit {
     });
   }
 
-  setValueDisableConrols() {
+  setValueDisableConrols(userData: IUser) {
     this.NameFormControl?.disable();
-    this.NameFormControl?.setValue('Majid');
-
+    this.NameFormControl?.setValue(userData?.firstName);
     this.LocationFormControl?.disable();
-    this.LocationFormControl?.setValue('Canada');
-
+    this.LocationFormControl?.setValue(userData?.location || 'N/A');
     this.PositionFormControl?.disable();
-    this.PositionFormControl?.setValue('Member');
-
+    this.PositionFormControl?.setValue(userData?.role);
     this.DateFormControl?.disable();
-    this.DateFormControl?.setValue('2023-2024');
+    this.DateFormControl?.setValue(
+      new Date().getFullYear() + '-' + (new Date().getFullYear() + 1)
+    );
   }
+
   toggleTextArea(objective: any): void {
     objective.showTextArea = !objective.showTextArea;
   }
@@ -148,7 +156,6 @@ export class NextYearObjectivesComponent implements OnInit {
         return {
           objective: objective.content.objective,
           KeyPerformanceIndicators: objective.content.keyPerformanceIndicators,
-          actualPerformance: objective.content.actualPerformance,
           score: +objective.content.score.slice(0, -1),
         };
       } else {
@@ -165,20 +172,21 @@ export class NextYearObjectivesComponent implements OnInit {
     });
     if (this.valuetrue !== false) {
       let performance: any[] = [];
-      performance.push({ ...data, userId: 1040 }); // change userId
+      performance.push({ ...data, userId: this.userDetails?.id });
       this.store
-        .dispatch(new Company.lanunchSelfApriasal(performance))
+        .dispatch(new Company.launchNextYearApriasal(performance))
         .subscribe((resp) => {
           if (resp) {
-            // this.router.navigateByUrl('/annual-appraisal');
+            this.apprisalDetail();
           }
         });
-    } else {
-    }
+    } 
   }
   backPage() {
     this.router.navigateByUrl('/annual-appraisal');
   }
+  
+
 
   get NameFormControl(): FormControl {
     return this.nextYearForm.get('name') as FormControl;
@@ -194,5 +202,10 @@ export class NextYearObjectivesComponent implements OnInit {
 
   get DateFormControl() {
     return this.nextYearForm.get('date');
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(false);
+    this.unsubscribe$.complete();
   }
 }

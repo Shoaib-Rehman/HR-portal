@@ -40,7 +40,7 @@
                     <h4>Objective</h4>
                     <textarea rows="4" [ngModel]="objective.content.objective"
                         (ngModelChange)="objective.content.objective = $event" [name]="'objective-' + i"
-                        class="text-area textsize" disabled></textarea>
+                        class="text-area textsize" ></textarea>
                 </div>
             </div>
             <div class="outer-container">
@@ -48,7 +48,7 @@
                     <h4>Key Performance Indicators</h4>
                     <textarea rows="4" [ngModel]="objective.content.keyPerformanceIndicators"
                         (ngModelChange)="objective.content.keyPerformanceIndicators = $event" [name]="'kpi-' + i"
-                        class="text-area textsize" disabled></textarea>
+                        class="text-area textsize" ></textarea>
                 </div>
             </div>
             <div>
@@ -96,11 +96,9 @@
 
         </div>
     </div>
+    <div style=" padding: 0;"> 
+        <button mat-button class="save-button" (click)="saveData()" *ngIf="!disable">Save and continue</button>
+        <button mat-button class=" nextbutton" (click)="nextPage()" *ngIf="disable">Next</button>
+
+    </div>
 </div>
-<button mat-button class="save-button" (click)="saveData()" *ngIf="!disable">Save and continue</button>
-<button mat-button class="save-button" (click)="nextPage()" *ngIf="disable">Next</button>
-
-<!-- ******************************Custom Toaster *********************** -->
-
-
-<!-- ********************************************************************************* -->
