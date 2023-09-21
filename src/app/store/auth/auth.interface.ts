@@ -4,11 +4,6 @@ export interface ILogin {
     password: string;
 }
 
-export interface ILogout {
-    email: string;
-    password: string;
-}
-
 export interface ISideNav {
     name: string;
     icon: string;

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { ERROR } from 'src/app/constant';
+import { ERROR, ROLE } from 'src/app/constant';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { Auth } from 'src/app/store/auth/auth.action';
 
@@ -17,7 +18,12 @@ export class LoginComponent implements OnInit {
   email = new FormControl('', [Validators.required, Validators.email]);
   hide = true;
 
-  constructor(private store: Store, private toasterService: ToasterService,  private router: Router) {
+  constructor(
+    private store: Store,
+    private toasterService: ToasterService,
+    private router: Router,
+    private localStorage: LocalStorageService
+  ) {
     this.form = this.initForm();
   }
 
@@ -31,7 +37,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(): void {
-    
     if (this.form.status === 'INVALID') {
       return;
     }
@@ -39,12 +44,23 @@ export class LoginComponent implements OnInit {
     this.store.dispatch(new Auth.Login(this.form.value)).subscribe(
       (resp: any) => {
         // this.toasterService.success('Here is your message!!');
-        this.router.navigate(['/dashboard']);
+        this.redirectTo();
       },
       (err) => {
         this.toasterService.failed(err?.error?.message);
       }
     );
+  }
+
+  redirectTo(): void {
+    if (
+      this.localStorage.CurrentUserRole === ROLE.MEMBER ||
+      this.localStorage.CurrentUserRole === ROLE.MANAGER
+    ) {
+      this.router.navigate(['/self-appraisal']);
+    } else {
+      this.router.navigate(['/dashboard']);
+    }
   }
 
   get EmailControl(): FormControl {
