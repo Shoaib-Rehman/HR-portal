@@ -5,22 +5,28 @@ import { AuthGuard } from './guards/auth/auth.guard';
 
 const routes: Routes = [
   {
-    path: "",
+    path: '',
     canActivate: [AuthGuard],
-    loadChildren: () => import('./components/admin/admin.module').then(m => m.AdminModule)
+    loadChildren: () =>
+      import('./components/admin/admin.module').then((m) => m.AdminModule),
   },
   {
-    path: "auth",
-    loadChildren: () => import('./components/auth/auth.module').then(m => m.AuthModule)
+    path: 'auth',
+    loadChildren: () =>
+      import('./components/auth/auth.module').then((m) => m.AuthModule),
   },
   {
-    path: "**",
+    path: 'not-found',
     component: PageNotFoundComponent,
-  }
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent,
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
