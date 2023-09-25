@@ -29,13 +29,14 @@ export class ProfileMenuComponent implements OnInit {
   logout(): void {
     // Handle logout logic
     this.store.dispatch(new Auth.Logout()).subscribe(() => {
-      this.router.navigate(['/auth/login']);
+     
     });
+    localStorage.removeItem('tokan');
+    localStorage.removeItem('current-user');
+    this.router.navigate(['/auth/login']);
   }
 
   downloadPDF() {
-    this.store.dispatch(new Company.DownloadPDF(+this.curtentUserId)).subscribe((res) => {
-    });
+    this.store.dispatch(new Company.DownloadPDF(+this.curtentUserId));
   }
-
 }
