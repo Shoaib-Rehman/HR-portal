@@ -89,7 +89,8 @@ export namespace Company {
         static readonly type = '[Company] AssignMembers';
         constructor(public payload: any) {}
     }
-
-
-
+    export class DownloadPDF {
+        static readonly type = '[Company] DownloadPDF';
+        constructor(public payload:number) {}
+    }
 }

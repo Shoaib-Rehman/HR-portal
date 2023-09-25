@@ -7,5 +7,5 @@ export class CompanyModel {
     agencyemployeeList: IMember[] = [];
     ApprisalDetails: [] = [];
     managerEmployeeList: [] = [];
-    userId:IUser = JSON.parse(localStorage.getItem('current-user')  || '{}')
+    userId:IUser = JSON.parse(localStorage.getItem('current-user')  || '{}');
 }
