@@ -40,7 +40,7 @@
                     <h4>Objective</h4>
                     <textarea rows="4" [ngModel]="objective.content.objective"
                         (ngModelChange)="objective.content.objective = $event" [name]="'objective-' + i"
-                        class="text-area textsize" [disabled]="disable"></textarea>
+                        class="text-area textsize" [disabled]="hideButtonsAndDisableFields"></textarea>
                 </div>
             </div>
             <div class="outer-container">
@@ -48,7 +48,7 @@
                     <h4>Key Performance Indicators</h4>
                     <textarea rows="4" [ngModel]="objective.content.keyPerformanceIndicators"
                         (ngModelChange)="objective.content.keyPerformanceIndicators = $event" [name]="'kpi-' + i"
-                        class="text-area textsize" [disabled]="disable"></textarea>
+                        class="text-area textsize" [disabled]="hideButtonsAndDisableFields"></textarea>
                 </div>
             </div>
             <div>
@@ -65,5 +65,5 @@
         </div>
     </div>
 </div>
-<button mat-button class="save-button" (click)="saveData()" *ngIf="!disable">Save and Finish</button>
-<button mat-button class="save-button" (click)="backPage()" *ngIf="disable">Back</button>
+<button mat-button class="save-button" (click)="saveData()" *ngIf="!hideButtonsAndDisableFields">Save and Finish</button>
+<button mat-button class="save-button" (click)="backPage()" *ngIf="hideButtonsAndDisableFields">Back</button>

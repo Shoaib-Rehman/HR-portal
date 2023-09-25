@@ -24,7 +24,6 @@
         </mat-form-field>
     </div>
 </form>
-<!-- ***************************** Add Details *************** -->
 <div>
     <p class="add-details">Add Details</p>
 </div>
@@ -40,7 +39,7 @@
                     <h4>Objective</h4>
                     <textarea rows="4" [ngModel]="objective.content.objective"
                         (ngModelChange)="objective.content.objective = $event" [name]="'objective-' + i"
-                        class="text-area textsize" ></textarea>
+                        class="text-area textsize" disabled></textarea>
                 </div>
             </div>
             <div class="outer-container">
@@ -48,7 +47,7 @@
                     <h4>Key Performance Indicators</h4>
                     <textarea rows="4" [ngModel]="objective.content.keyPerformanceIndicators"
                         (ngModelChange)="objective.content.keyPerformanceIndicators = $event" [name]="'kpi-' + i"
-                        class="text-area textsize" ></textarea>
+                        class="text-area textsize" disabled ></textarea>
                 </div>
             </div>
             <div>
@@ -58,7 +57,7 @@
                         <h4>Actual Performance</h4>
                         <textarea rows="4" [ngModel]="objective.content.actualPerformance"
                             (ngModelChange)="objective.content.actualPerformance = $event" [name]="'actual-' + i"
-                            class="text-area textsize" [disabled]="disable"></textarea>
+                            class="text-area textsize" [disabled]="disable "></textarea>
                     </div>
                 </div>
 
@@ -76,28 +75,44 @@
                             <input class="textsize" matInput placeholder="Self Score" type="number"
                                 [ngModel]="objective.content.selfScore"
                                 (ngModelChange)="selfScoreValue($event, objective.content.score,i)"
-                                [name]="'selfScore' + i" required [disabled]="disable">
+                                [name]="'selfScore' + i" required [disabled]="disableSelfScore">
                         </mat-form-field>
                         <mat-error style="position: relative;
                             margin-top: -38px;" *ngIf="objective.isValueGreaterThanScore">Self score should not be
                             greater then Score </mat-error>
                     </div>
 
-                    <mat-form-field appearance="outline" class="input-box  col-6 manager-score">
+                    <mat-form-field appearance="outline" class="input-box  col-6 manager-score" *ngIf="paramsDetails">
                         <mat-label>Manager Score</mat-label>
-                        <input class="textsize" matInput placeholder="anager Score" [ngModel]="objective.content.managerScore"
-                            (ngModelChange)="objective.content.managerScore = $event" [name]="'managerScore' + i"
+                        <input class="textsize" matInput placeholder="Manager Score" 
+                        [ngModel]="objective.content.managerScore"
+                        (ngModelChange)="managerScoreValue($event, objective.content.score,i)"
+                             [name]="'managerScore' + i"
                             [disabled]="disable" required />
-                        <mat-error>abc</mat-error>
                     </mat-form-field>
-                </div>
+                    <mat-error style="position: relative;
+                    margin-top: -38px;" *ngIf="objective.isManagerScoreGreaterThanScore">Manager score should not be
+                    greater then Score </mat-error>
 
+                    <mat-form-field appearance="outline" class="input-box  col-6 manager-score" *ngIf="paramsDetails && role==='CEO'">
+                        <mat-label>CEO Score</mat-label>
+                        <input class="textsize" matInput placeholder="CEO Score" 
+                        [ngModel]="objective.content.CEOScore"
+                        (ngModelChange)="managerScoreValue($event, objective.content.score,i)"
+                             [name]="'CEOScore' + i"
+                            [disabled]="disable" required />
+                    </mat-form-field>
+                    <mat-error style="position: relative;
+                    margin-top: -38px;" *ngIf="objective.isManagerScoreGreaterThanScore  && role==='CEO'">CEO score should not be
+                    greater then Score </mat-error>
+                </div>
+          
             </div>
 
         </div>
     </div>
     <div style=" padding: 0;"> 
-        <button mat-button class="save-button" (click)="saveData()" *ngIf="!disable">Save and continue</button>
+        <button mat-button  class="save-button" (click)="saveData()" *ngIf="!disable">Save and continue</button>
         <button mat-button class=" nextbutton" (click)="nextPage()" *ngIf="disable">Next</button>
 
     </div>

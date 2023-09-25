@@ -39,21 +39,21 @@ export class AuthGuard implements CanActivate {
       return this.router.parseUrl('/auth/login');
     }
 
-    return new Observable((observer) => {
-      this.sideNav$?.subscribe((sideBarItems: ISideNav[]) => {
-        const routs: string[] = sideBarItems.map(
-          (item: ISideNav) => item.route
-        );
+    // return new Observable((observer) => {
+    //   this.sideNav$?.subscribe((sideBarItems: ISideNav[]) => {
+    //     const routs: string[] = sideBarItems.map(
+    //       (item: ISideNav) => item.route
+    //     );
 
-        const isFound: boolean = routs.includes(state.url);
-        if (!isFound) {
-          observer.next(this.router.parseUrl('/not-found'));
-        } else {
-          observer.next(isFound);
-        }
-      });
-    });
+    //     const isFound: boolean = routs.includes(state.url);
+    //     if (!isFound) {
+    //       observer.next(this.router.parseUrl('/not-found'));
+    //     } else {
+    //       observer.next(isFound);
+    //     }
+    //   });
+    // });
 
-    // return true;
+    return true;
   }
 }

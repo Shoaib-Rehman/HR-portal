@@ -29,10 +29,10 @@ export class CompanyService extends APIBasicConfig {
   }
 
   agencyEmployee(agencyId: any): Observable<any> {
-    // not in use not confirmed
     return this.http.get(`${this.base_url}agency/getAgencyEmployees/${agencyId?.id}`);
   }
 
+ 
   launchAppriasal(formData: ILaunchAppraisal): Observable<any> {
     // not in use not confirmed
     return this.http.post(`${this.base_url}users/launchApprisal`, formData);
@@ -62,5 +62,13 @@ export class CompanyService extends APIBasicConfig {
   GetNextYearApriasal(userId: number): Observable<any> {
     return this.http.get(`${this.base_url}users/getUserNextYearDetail/${userId}`);
   }
-  
+
+  getMembers(data: any): Observable<any> {
+    // not in use not confirmed
+    return this.http.get(`${this.base_url}users/getEmployeesAgainstManager/${data?.agencyId}/${data?.managerId}/${data?.status}`);
+  }
+  // http://35.231.24.34:3000/api/users/getEmployeesAgainstManager/321/2/all
+  assignMembers(data: any): Observable<any> {
+    return this.http.post(`${this.base_url}users/employeesAssignstoManager`, data);
+  }
 }

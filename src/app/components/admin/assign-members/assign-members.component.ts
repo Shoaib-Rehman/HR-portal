@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormControl } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-interface User {
-  name: string;
-  selected?: boolean;
-}
+import { Store } from '@ngxs/store';
+import { Subject, takeUntil } from 'rxjs';
+import { IMember } from 'src/app/interface';
+import { Company } from 'src/app/store/company/company.action';
+
 @Component({
   selector: 'app-assign-members',
   templateUrl: './assign-members.component.html',
@@ -12,27 +13,41 @@ interface User {
 })
 export class AssignMembersComponent implements OnInit {
   disable: boolean = false;
+  private unsubscribe$ = new Subject();
+  users: IMember[] = [];
+  selectAllOption: IMember = { firstName: 'Select All' };
+  selectedUsersControl = new FormControl<IMember[]>([]);
+  selectAllValue = false;
+
   constructor(
-    private formBuilder: FormBuilder,
+    private store: Store,
     private dialogRef: MatDialogRef<AssignMembersComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {}
 
-  users: User[] = [
-    { name: 'User 1' },
-    { name: 'User 2' },
-    { name: 'User 3' },
-    { name: 'User 3' },
-    { name: 'User 3' },
-    { name: 'User 3' },
-    { name: 'User 3' },
-  ];
+  ngOnInit() {
+    this.assignmembersToManger();
+    this.selectedUsersControl.valueChanges.subscribe(() => {
+      this.updateSelectAllCheckbox();
+    });
+  }
 
-  selectAllOption: User = { name: 'Select All' };
-  selectedUsersControl = new FormControl<User[]>([]);
-  selectAllValue = false;
+  assignmembersToManger(): void {
+    this.store
+      .dispatch(
+        new Company.getMembers({
+          agencyId: this.data?.agencyId,
+          managerId: this.data?.managerId,
+          status:'all'
+        })
+      )
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        this.users = resp?.company?.managerEmployeeList;
+      });
+  }
 
-  toggleSelectAll() {
+  toggleSelectAll(): void {
     if (this.selectAllValue) {
       this.selectedUsersControl.setValue(this.users); // Select all users
     } else {
@@ -40,8 +55,7 @@ export class AssignMembersComponent implements OnInit {
     }
   }
 
-  // Update the state of "Select All" checkbox based on selected users
-  updateSelectAllCheckbox() {
+  updateSelectAllCheckbox(): void {
     const selectedUsers: any = this.selectedUsersControl.value;
     this.selectAllValue = selectedUsers.length === this.users.length;
     if (this.selectedUsersControl.value?.length) {
@@ -51,38 +65,27 @@ export class AssignMembersComponent implements OnInit {
     }
   }
 
-  // Subscribe to value changes to update "Select All" checkbox state
-  ngOnInit() {
-    this.selectedUsersControl.valueChanges.subscribe(() => {
-      this.updateSelectAllCheckbox();
-    });
-    this.updateSelectAllCheckbox();
-  }
+  submitSelectedUsers(): void {
+    const employeesId = this.selectedUsersControl.value?.map(
+      (item) => item?.id
+    );
+    let obj = {
+      memberIds: employeesId,
+      managerId: this.data?.managerId,
+      agencyId: this.data?.agencyId,
+      userType: this.data?.role,
 
-  submitSelectedUsers() {
-    const selectedUsers = this.selectedUsersControl.value;
+    };
+    this.store
+      .dispatch(new Company.AssignMembers(obj))
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        if (resp) {
+          this.dialogRef.close({ data: false });
+        }
+      });
+  }
+  cancel(): void {
     this.dialogRef.close({ data: false });
-  }
-  cancel() {
-    this.dialogRef.close({ data: false });
-  }
-
-  selectedMembers = new FormControl([]);
-  members = [
-    { name: 'Member 1', value: 'member1' },
-    { name: 'Member 2', value: 'member2' },
-    // Add more member options as needed
-  ];
-
-  onClose(): void {
-    this.dialogRef.close();
-  }
-
-  onAssign(): void {
-    // Get the selected members and perform the assignment logic here
-    const selectedValues = this.selectedMembers.value;
-    // (e.g., send the selected members to the server)
-    // then close the dialog
-    this.dialogRef.close();
   }
 }
