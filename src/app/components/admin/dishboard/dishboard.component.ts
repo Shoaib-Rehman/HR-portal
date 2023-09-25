@@ -115,18 +115,12 @@ const ELEMENT_DATA: IMember[] = [];
 export class DishboardComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   agencyForm: FormGroup;
-  statusFormControl: FormControl = new FormControl('steak-0');
-
-  foods = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
-
+  // statusFormControl: FormControl = new FormControl('steak-0');
   displayedColumns: string[] = [
     'name',
     'agency',
     'position',
+    'role',
     'location',
     'status',
     'actions',
@@ -149,14 +143,10 @@ export class DishboardComponent implements OnInit, AfterViewInit {
   selectedAgencyId: number = -1;
   allAgencytList: any[] = [];
   ngOnInit(): void {
-    this.statusFormControl.valueChanges.subscribe((status: string) => {});
+    // this.statusFormControl.valueChanges.subscribe((status: string) => {});
     this.agencyFormValue();
     this.subscriptions();
-
-    this.store.dispatch(new Company.GetAll()).subscribe((resp: any) => {
-    });
-    // this.agencyFormValue()
-    // this.agencyEmployeeList();
+    this.store.dispatch(new Company.GetAll()).subscribe((resp: any) => {});
   }
 
   agencyFormValue() {
@@ -173,7 +163,6 @@ export class DishboardComponent implements OnInit, AfterViewInit {
       .dispatch(new Company.GetSingleAgencyEmployee({ id: agencyId }))
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
-        this.employeeList = resp?.company?.agencyemployeeList;
         this.dataSource = resp?.company?.agencyemployeeList.map(
           (item: any) => ({
             name: `${item?.firstName} ${item?.lastName}`,
@@ -181,6 +170,9 @@ export class DishboardComponent implements OnInit, AfterViewInit {
             position: item?.designation || 'N/A',
             location: item?.location || 'N/A',
             status: item?.status || 'Pending',
+            managerId: item?.id,
+            agencyId: item?.agency,
+            role: item?.role
           })
         );
       });
@@ -208,8 +200,7 @@ export class DishboardComponent implements OnInit, AfterViewInit {
     const dialogRef = this.dialog.open(AddEmployeeComponent, {
       width: '800px',
     });
-    dialogRef.afterClosed().subscribe((result) => {
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   isAllSelected() {
@@ -228,22 +219,21 @@ export class DishboardComponent implements OnInit, AfterViewInit {
     this.dataSource.paginator = this.paginator;
   }
 
-  assignMember(): void {
+  assignMember(data: any): void {
     const dialogRef = this.dialog.open(AssignMembersComponent, {
+      data: data,
       width: '600px',
       height: '280px',
       panelClass: 'abc',
     });
-    dialogRef.afterClosed().subscribe((result) => {
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
 
   reminderEmail(): void {
     const dialogRef = this.dialog.open(ComposeEmailComponent, {
       width: '900%',
     });
-    dialogRef.afterClosed().subscribe((result) => {
-    });
+    dialogRef.afterClosed().subscribe((result) => {});
   }
   delete(a: any): void {}
 

@@ -8,13 +8,14 @@ import {
 import { MatDialog } from '@angular/material/dialog';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { CustomToasterComponent } from '../custom-toaster/custom-toaster.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { CompanyState } from 'src/app/store/company/company.state';
 import { CompanyModel } from 'src/app/store/company/company.model';
 import { Observable, Subject, takeUntil } from 'rxjs';
 import { IUser } from 'src/app/store/company/company.interface';
 import { Company } from 'src/app/store/company/company.action';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 
 @Component({
   selector: 'app-annual-apprsaial',
@@ -25,8 +26,13 @@ export class AnnualApprsaialComponent implements OnInit {
   @Select(CompanyState.userdetails)
   userdetails$?: Observable<CompanyModel>;
   annualAppraisal: FormGroup;
-  userDetails?: IUser;
   disableBoxes: boolean = true;
+  userId: string = '';
+  userDetails = this.localStorage.User;
+  currentUserRole = this.localStorage.CurrentUserRole;
+  curtentUserId = this.localStorage.CurrentUserId;
+  paramsDetails: boolean = false;
+  parmasId: string = '';
   private unsubscribe$ = new Subject();
   boxNumbers: number[] = [1, 2, 3, 4, 5];
   selectedBoxes: { [key: string]: any } = {
@@ -44,14 +50,29 @@ export class AnnualApprsaialComponent implements OnInit {
     private store: Store,
     private router: Router,
     private toasterService: ToasterService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private localStorage: LocalStorageService,
+    private activatedRoute: ActivatedRoute
   ) {
     this.annualAppraisal = this.initForm();
   }
 
   ngOnInit(): void {
-    this.getSelfApriasalData();
+    this.getUserId();
   }
+
+  getUserId(): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params?.['id']) {
+        this.userId = params?.['id'];
+        this.parmasId = params?.['id'];
+      } else {
+        this.userId = this.localStorage.User?.id;
+      }
+      this.getSelfApriasalData();
+    });
+  }
+
   initForm(): UntypedFormGroup {
     return this.formBuilder.group({
       name: [''],
@@ -63,36 +84,108 @@ export class AnnualApprsaialComponent implements OnInit {
   }
 
   getSelfApriasalData(): void {
-    this.userdetails$?.subscribe((resp: any) => {
-      if (resp) {
-        this.userDetails = resp;
-        this.setValueDisableConrols(resp);
-        this.store
-          .dispatch(new Company.GetCompetencyApriasal(this.userDetails?.id))
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe((resp) => {
-            if (resp.company.ApprisalDetails.length) {
-              const data = resp.company.ApprisalDetails[0];
-              this.selectedBoxes['workEthics'] = data?.workEthics;
-              this.selectedBoxes['jobKnowledge'] = data?.jobKnowledge;
-              this.selectedBoxes['qualityWork'] = data?.qualityWork;
-              this.selectedBoxes['Productivity'] = data?.Productivity;
-              this.selectedBoxes['Dependability'] = data?.Dependability;
-              this.selectedBoxes['Discipline'] = data?.Discipline;
-              this.selectedBoxes['CommunicationSkills'] =
-                data?.CommunicationSkills;
-              this.CommentFormControl.disable();
-              this.CommentFormControl.setValue(data?.comment);
-              this.disableBoxes = false;
-            }
-          });
+    this.store
+      .dispatch(new Company.GetCompetencyApriasal(this.userId))
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        if (this.userId !== this.curtentUserId) {
+          this.paramsDetails = true;
+          this.setValueDisableConrols(resp);
+        } else {
+          this.paramsDetails = false;
+          this.setValueDisableConrols(this.userDetails);
+        }
+        const data = resp.company.ApprisalDetails[0];
+        if (data?.workEthics) {
+          this.selectedBoxes['workEthics'] = data?.workEthics;
+          this.selectedBoxes['jobKnowledge'] = data?.jobKnowledge;
+          this.selectedBoxes['qualityWork'] = data?.qualityWork;
+          this.selectedBoxes['Productivity'] = data?.Productivity;
+          this.selectedBoxes['Dependability'] = data?.Dependability;
+          this.selectedBoxes['Discipline'] = data?.Discipline;
+          this.selectedBoxes['CommunicationSkills'] = data?.CommunicationSkills;
+          // this.CommentFormControl.disable();
+          this.CommentFormControl.setValue(data?.comment);
+          this.enableFieldsButtonRoleBased(data);
+        }
+      });
+  }
+
+  enableFieldsButtonRoleBased(data: any): void {
+    if (this.userId === this.curtentUserId) {
+      console.log('Member');
+      if (data?.workEthics !== undefined && data?.workEthics !== null) {
+        this.disableBoxes = false;
+        this.CommentFormControl.disable();
+      } else {
+        this.disableBoxes = true;
       }
-    });
+    }
+    // Manager to member OR CEO to Manager apprisal
+    else if (
+      this.userId !== this.curtentUserId &&
+      this.currentUserRole === 'Manager'
+    ) {
+      console.log('Manager');
+      if (data['competency_done_manager'] === 0) {
+        this.disableBoxes = true;
+      } else {
+        this.disableBoxes = false;
+        this.CommentFormControl.disable();
+      }
+    } else if (
+      this.userId !== this.curtentUserId &&
+      this.currentUserRole === 'CEO'
+    ) {
+      console.log('CEO');
+      if (data['competency_done_ceo'] === 0) {
+        this.disableBoxes = true;
+      } else {
+        this.disableBoxes = false;
+        this.CommentFormControl.disable();
+      }
+    }
+
+    // else if (
+    //   this.userId !== this.curtentUserId && this.currentUserRole === 'HR'
+    // ) {
+    //   console.log("HR")
+    //     this.disableBoxes = false;
+    //     this.CommentFormControl.disable();
+    //   }
+    else {
+      // HR view apprisal
+      console.log('ROLE', 'Human Resource');
+      this.disableBoxes = false;
+      this.CommentFormControl.disable();
+    }
+
+    // if (this.currentUserRole === 'Member') {
+    //   this.disableBoxes = false;
+    //   this.CommentFormControl.disable();
+    // } else if (
+    //   this.currentUserRole === 'Manager' &&
+    //   this.userId === this.curtentUserId
+    // ) {
+    //   this.disableBoxes = false;
+    //   this.CommentFormControl.disable();
+    // } else if (
+    //   this.currentUserRole === 'Manager' &&
+    //   this.userId !== this.curtentUserId
+    // ) {
+    //   this.disableBoxes = true;
+    // } else {
+    //   this.disableBoxes = false;
+
+    //   this.CommentFormControl.disable();
+    // }
   }
 
   setValueDisableConrols(userData: IUser) {
     this.NameFormControl?.disable();
-    this.NameFormControl?.setValue(userData?.firstName);
+    this.NameFormControl?.setValue(
+      userData?.firstName + ' ' + userData?.lastName
+    );
 
     this.LocationFormControl?.disable();
     this.LocationFormControl?.setValue(userData?.location || 'N/A');
@@ -139,36 +232,92 @@ export class AnnualApprsaialComponent implements OnInit {
         this.valueNotNull = true;
       }
     }
+    console.log('fromrdata', this.prepareFormData());
     if (this.valueNotNull) {
       this.store
         .dispatch(new Company.launchCompetencyApriasal(this.prepareFormData()))
         .subscribe((resp) => {
           if (resp) {
-            this.router.navigateByUrl('/next-year-objective');
+            this.nextPage();
           }
         });
     }
 
-    const dialogRef = this.dialog.open(CustomToasterComponent, {});
-    dialogRef.afterClosed().subscribe((result) => {});
+    // const dialogRef = this.dialog.open(CustomToasterComponent, {});
+    // dialogRef.afterClosed().subscribe((result) => {});
   }
 
   private prepareFormData(): any {
-    const formData = {
+    let formData: any;
+    formData = {
       rating: this.selectedBoxes,
       totalRating: this.calculateSum(),
       comment: this.CommentFormControl.value,
       userId: this.userDetails?.id, // will change according to the login user
     };
-    return formData;
+    if (this.userId === this.curtentUserId) {
+      formData = {
+        ...formData,
+        is_selfApprisal: true,
+        is_manager_to_other: false,
+        is_CEO_to_manager: false,
+      };
+      // formData = {
+      //   rating: this.selectedBoxes,
+      //   totalRating: this.calculateSum(),
+      //   comment: this.CommentFormControl.value,
+      //   userId: this.userDetails?.id, // will change according to the login user
+      //   is_selfApprisal: true,
+      //   is_manager_to_other: false,
+      //   is_CEO_to_manager: false,
+      // };
+
+      return formData;
+    }
+    if (
+      this.userId !== this.curtentUserId &&
+      this.currentUserRole === 'Manager'
+    ) {
+      formData = {
+        ...formData,
+        member_id: +this.userId,
+        is_selfApprisal: false,
+        is_manager_to_other: true,
+        is_CEO_to_manager: false,
+      };
+
+      return formData;
+    }
+    if (
+      this.userId !== this.curtentUserId &&
+      this.currentUserRole === 'Manager'
+    ) {
+      formData = {
+        ...formData,
+        manager_id: +this.userId,
+        is_selfApprisal: false,
+        is_manager_to_other: false,
+        is_CEO_to_manager: true,
+      };
+      return formData;
+    }
+    return false;
   }
 
   goBack(): void {
-    this.router.navigateByUrl('/self-appraisal');
+    if (this.userId !== this.curtentUserId) {
+      this.router.navigateByUrl('/self-appraisal?id=' + this.parmasId);
+    } else {
+      this.router.navigateByUrl('/self-appraisal');
+    }
   }
 
   nextPage() {
-    this.router.navigateByUrl('/next-year-objective');
+    if (this.userId !== this.curtentUserId) {
+      this.router.navigateByUrl('/next-year-objective?id=' + this.parmasId);
+    } else {
+      this.router.navigateByUrl('/next-year-objective');
+    }
   }
 
   get NameFormControl(): FormControl {

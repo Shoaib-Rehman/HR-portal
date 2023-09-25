@@ -6,11 +6,11 @@ export interface ICompany {
 
 export interface IUser {
     designation?: string;
-    email: string;
-    firstName: string;
-    id: number;
+    email?: string;
+    firstName?: string;
+    id?: number;
     lastName?: string;
     location?: string;
     phoneNo?:string;
-    role:string;
+    role?:string;
 }

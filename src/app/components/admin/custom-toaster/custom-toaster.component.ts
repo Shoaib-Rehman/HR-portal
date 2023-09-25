@@ -12,7 +12,9 @@ export class CustomToasterComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: any) { }
 
   ngOnInit(): void {
+    setTimeout(() => {
       this.close();
+    }, 4000);
   }
   close() {
     this.dialogRef.close()
