@@ -194,14 +194,14 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
           this.role === 'Manager'
         ) {
           console.log('Manager');
-          if (this.data['done_by_manager'] === 0) {
+          if (this.data?.['done_by_manager'] === 0) {
             this.disable = false;
           } else {
             this.disable = true;
           }
         } else if (this.userId !== this.curtentUserId && this.role === 'CEO') {
           console.log('CEO');
-          if (this.data['done_by_ceo'] === 0) {
+          if (this.data?.['done_by_ceo'] === 0) {
             this.disable = false;
           } else {
             this.disable = true;

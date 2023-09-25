@@ -208,6 +208,14 @@ export class CompanyState {
     );
   }
 
+
+  @Action(Company.DownloadPDF)
+  downloadPDF(
+    action: Company.DownloadPDF
+  ) {
+    return this.companyService.downloadPDF(action.payload)
+  }
+
   // @Action(Company.GetUserIdLocalStorage)
   // GetUserIdLocalStorage(ctx:StateContext<CompanyModel>) {
   //   return ctx.getState()

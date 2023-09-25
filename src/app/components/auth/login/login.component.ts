@@ -58,7 +58,11 @@ export class LoginComponent implements OnInit {
       this.localStorage.CurrentUserRole === ROLE.MANAGER
     ) {
       this.router.navigate(['/self-appraisal']);
-    } else {
+    }
+    else if(this.localStorage.CurrentUserRole === ROLE.CEO ) {
+      this.router.navigate(['/assign-members']);
+    } 
+    else {
       this.router.navigate(['/dashboard']);
     }
   }
