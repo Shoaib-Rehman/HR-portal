@@ -1,9 +1,12 @@
 
-.main-heading{
-  font-size: 24px;
-  font-weight: 600;
-  font-family: Poppins;
+.main-heading {
   margin-bottom: 3px;
+  font-family: Poppins;
+font-size: 24px;
+font-weight: 700;
+line-height: 36px;
+letter-spacing: 0em;
+text-align: left;
 
 }
 
@@ -114,5 +117,18 @@ h4 {
   margin-right: 22px;
   text-align: center;
 }
+.objective-text {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+  
+}
+.example-form {
+  margin-top: -24px;
+}
+
 
 // ******************** Custom toaster *******

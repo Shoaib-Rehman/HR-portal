@@ -1,7 +1,7 @@
 <div class="heading-line">
     <h1 class="main-heading">Self Annual Apraisal</h1>
 </div>
-<form class="example-form" [formGroup]="selfAppraisalForm">
+<form  class="example-form" [formGroup]="selfAppraisalForm">
     <div class="row box-height">
         <mat-form-field appearance="outline" class="input-box col">
             <mat-label class="textsize">Name</mat-label>
@@ -39,7 +39,7 @@
                     <h4>Objective</h4>
                     <textarea rows="4" [ngModel]="objective.content.objective"
                         (ngModelChange)="objective.content.objective = $event" [name]="'objective-' + i"
-                        class="text-area textsize" disabled></textarea>
+                        class="text-area textsize" [disabled]="disable"></textarea>
                 </div>
             </div>
             <div class="outer-container">
@@ -47,7 +47,7 @@
                     <h4>Key Performance Indicators</h4>
                     <textarea rows="4" [ngModel]="objective.content.keyPerformanceIndicators"
                         (ngModelChange)="objective.content.keyPerformanceIndicators = $event" [name]="'kpi-' + i"
-                        class="text-area textsize" disabled ></textarea>
+                        class="text-area textsize" [disabled]="disable" ></textarea>
                 </div>
             </div>
             <div>
@@ -82,7 +82,7 @@
                             greater then Score </mat-error>
                     </div>
 
-                    <mat-form-field appearance="outline" class="input-box  col-6 manager-score" *ngIf="paramsDetails">
+                    <mat-form-field appearance="outline" class="input-box  col-6 manager-score" *ngIf="userId !== curtentUserId && role==='Manager'">
                         <mat-label>Manager Score</mat-label>
                         <input class="textsize" matInput placeholder="Manager Score" 
                         [ngModel]="objective.content.managerScore"
@@ -94,16 +94,16 @@
                     margin-top: -38px;" *ngIf="objective.isManagerScoreGreaterThanScore">Manager score should not be
                     greater then Score </mat-error>
 
-                    <mat-form-field appearance="outline" class="input-box  col-6 manager-score" *ngIf="paramsDetails && role==='CEO'">
+                    <mat-form-field appearance="outline" class="input-box  col-6 manager-score" *ngIf="role==='CEO'">
                         <mat-label>CEO Score</mat-label>
                         <input class="textsize" matInput placeholder="CEO Score" 
                         [ngModel]="objective.content.CEOScore"
-                        (ngModelChange)="managerScoreValue($event, objective.content.score,i)"
+                        (ngModelChange)="CEOScoreValue($event, objective.content.score,i)"
                              [name]="'CEOScore' + i"
                             [disabled]="disable" required />
                     </mat-form-field>
                     <mat-error style="position: relative;
-                    margin-top: -38px;" *ngIf="objective.isManagerScoreGreaterThanScore  && role==='CEO'">CEO score should not be
+                    margin-top: -38px;" *ngIf="objective.isCEOScoreGreaterThanScore  && role==='CEO'">CEO score should not be
                     greater then Score </mat-error>
                 </div>
           

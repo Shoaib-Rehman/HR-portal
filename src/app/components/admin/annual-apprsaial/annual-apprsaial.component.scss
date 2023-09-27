@@ -18,10 +18,14 @@
 }
 
 .main-heading {
-  font-size: 24px;
-  font-weight: 600;
-  font-family: Poppins;
   margin-bottom: 3px;
+  font-family: Poppins;
+font-size: 24px;
+font-weight: 700;
+line-height: 36px;
+letter-spacing: 0em;
+text-align: left;
+
 }
 .ptext {
   font-size: 14px;
@@ -104,7 +108,8 @@
 }
 .comments-textarea {
   background: #f8f9fa !important;
-  border: #f8f9fa !important;
+  // border: #f8f9fa !important;
+  border: 1px solid #b2b2b2;
 }
 .buttons-section {
   margin-top: 21px;
@@ -157,3 +162,16 @@ h4 {
   font-family: Inter;
   font-weight: 500;
 }
+.competency-styling {
+  font-family: Poppins;
+font-size: 20px;
+font-weight: 600;
+line-height: 30px;
+letter-spacing: 0em;
+text-align: left;
+
+}
+.example-form {
+  margin-top: -24px;
+}
+

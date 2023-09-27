@@ -16,6 +16,7 @@ import { CompanyState } from 'src/app/store/company/company.state';
 import { CustomToasterComponent } from '../custom-toaster/custom-toaster.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { ToasterService } from 'src/app/services/toaster/toaster.service';
 
 @Component({
   selector: 'app-next-year-objectives',
@@ -85,7 +86,8 @@ export class NextYearObjectivesComponent implements OnInit, OnDestroy {
     private store: Store,
     private dialog: MatDialog,
     private activatedRoute: ActivatedRoute,
-    private localStorage: LocalStorageService
+    private localStorage: LocalStorageService,
+    private toasterService: ToasterService
   ) {
     this.nextYearForm = this.initForm();
   }
@@ -228,19 +230,16 @@ export class NextYearObjectivesComponent implements OnInit, OnDestroy {
         return false;
       }
     });
-    data.find((res: any) => {
-      console.log('ASADSDSDS', res);
+    this.valuetrue = data.find((res: any) => {
       if (res === false) {
-        this.valuetrue = false;
-        // this.toasterService.failed("Please filled all mandatory fields");
-        return;
+        this.toasterService.failed('Please verify something wrong in the data');
+        return true;
       } else {
-        this.valuetrue = true;
+        return false;
       }
     });
     if (this.valuetrue !== false) {
       let performance: any[] = [];
-
       if (this.userId === this.curtentUserId) {
         performance.push({
           ...data,
@@ -248,23 +247,24 @@ export class NextYearObjectivesComponent implements OnInit, OnDestroy {
           is_selfApprisal: true,
           is_manager_to_other: false,
           is_CEO_to_manager: false,
+          agency_id: +this.userDetails?.agency,
         }); // member or manager self Apprisal
       }
       if (this.userId !== this.curtentUserId && this.role === 'Manager') {
         performance.push({
           ...data,
           userId: this.userDetails?.id,
-          member_id: this.userId,
+          member_id: +this.userId,
           is_selfApprisal: false,
           is_manager_to_other: true,
           is_CEO_to_manager: false,
         }); // manager to member Apprisal
       }
-      if (this.role === 'CEO') {
+      if (this.userId !== this.curtentUserId && this.role === 'CEO') {
         performance.push({
           ...data,
           userId: this.userDetails?.id,
-          manager_id: this.userId,
+          member_id: +this.userId,
           is_selfApprisal: false,
           is_manager_to_other: false,
           is_CEO_to_manager: true,
