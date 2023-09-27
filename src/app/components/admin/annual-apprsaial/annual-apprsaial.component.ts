@@ -50,7 +50,6 @@ export class AnnualApprsaialComponent implements OnInit {
     private store: Store,
     private router: Router,
     private toasterService: ToasterService,
-    private dialog: MatDialog,
     private localStorage: LocalStorageService,
     private activatedRoute: ActivatedRoute
   ) {
@@ -90,7 +89,8 @@ export class AnnualApprsaialComponent implements OnInit {
       .subscribe((resp) => {
         if (this.userId !== this.curtentUserId) {
           this.paramsDetails = true;
-          this.setValueDisableConrols(resp);
+          this.setValueDisableConrols(resp.company.ApprisalDetails[0]);
+          
         } else {
           this.paramsDetails = false;
           this.setValueDisableConrols(this.userDetails);
@@ -159,26 +159,6 @@ export class AnnualApprsaialComponent implements OnInit {
       this.disableBoxes = false;
       this.CommentFormControl.disable();
     }
-
-    // if (this.currentUserRole === 'Member') {
-    //   this.disableBoxes = false;
-    //   this.CommentFormControl.disable();
-    // } else if (
-    //   this.currentUserRole === 'Manager' &&
-    //   this.userId === this.curtentUserId
-    // ) {
-    //   this.disableBoxes = false;
-    //   this.CommentFormControl.disable();
-    // } else if (
-    //   this.currentUserRole === 'Manager' &&
-    //   this.userId !== this.curtentUserId
-    // ) {
-    //   this.disableBoxes = true;
-    // } else {
-    //   this.disableBoxes = false;
-
-    //   this.CommentFormControl.disable();
-    // }
   }
 
   setValueDisableConrols(userData: IUser) {
@@ -242,9 +222,6 @@ export class AnnualApprsaialComponent implements OnInit {
           }
         });
     }
-
-    // const dialogRef = this.dialog.open(CustomToasterComponent, {});
-    // dialogRef.afterClosed().subscribe((result) => {});
   }
 
   private prepareFormData(): any {
@@ -261,17 +238,8 @@ export class AnnualApprsaialComponent implements OnInit {
         is_selfApprisal: true,
         is_manager_to_other: false,
         is_CEO_to_manager: false,
+        agency_id: +this.userDetails?.agency,
       };
-      // formData = {
-      //   rating: this.selectedBoxes,
-      //   totalRating: this.calculateSum(),
-      //   comment: this.CommentFormControl.value,
-      //   userId: this.userDetails?.id, // will change according to the login user
-      //   is_selfApprisal: true,
-      //   is_manager_to_other: false,
-      //   is_CEO_to_manager: false,
-      // };
-
       return formData;
     }
     if (
@@ -290,11 +258,11 @@ export class AnnualApprsaialComponent implements OnInit {
     }
     if (
       this.userId !== this.curtentUserId &&
-      this.currentUserRole === 'Manager'
+      this.currentUserRole === 'CEO'
     ) {
       formData = {
         ...formData,
-        manager_id: +this.userId,
+        member_id: +this.userId,
         is_selfApprisal: false,
         is_manager_to_other: false,
         is_CEO_to_manager: true,

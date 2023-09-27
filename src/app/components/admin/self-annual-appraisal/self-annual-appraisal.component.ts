@@ -13,7 +13,6 @@ import { ROLE } from 'src/app/constant';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { Company } from 'src/app/store/company/company.action';
-import { IUser } from 'src/app/store/company/company.interface';
 import { CompanyModel } from 'src/app/store/company/company.model';
 import { CompanyState } from 'src/app/store/company/company.state';
 
@@ -31,6 +30,8 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
       expanded: false,
       isValueGreaterThanScore: false,
       isManagerScoreGreaterThanScore: false,
+      isCEOScoreGreaterThanScore: false,
+
       content: {
         objective: '',
         keyPerformanceIndicators: '',
@@ -46,6 +47,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
       expanded: false,
       isValueGreaterThanScore: false,
       isManagerScoreGreaterThanScore: false,
+      isCEOScoreGreaterThanScore: false,
       content: {
         objective: '',
         keyPerformanceIndicators: '',
@@ -61,6 +63,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
       expanded: false,
       isValueGreaterThanScore: false,
       isManagerScoreGreaterThanScore: false,
+      isCEOScoreGreaterThanScore: false,
       content: {
         objective: '',
         keyPerformanceIndicators: '',
@@ -76,6 +79,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
       expanded: false,
       isValueGreaterThanScore: false,
       isManagerScoreGreaterThanScore: false,
+      isCEOScoreGreaterThanScore: false,
       content: {
         objective: '',
         keyPerformanceIndicators: '',
@@ -136,7 +140,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
       .dispatch(new Company.GetSelfApriasal(this.userId))
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe((resp) => {
-        if (this.userId !== this.curtentUserId && this.role === 'Manager') {
+        if (this.userId !== this.curtentUserId) {
           this.paramsDetails = true;
           this.setValueDisableConrols(resp.company.ApprisalDetails[0]);
         } else {
@@ -164,7 +168,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
 
             this.objectives[i - 1].content.managerScore =
               this.data[`manager_score_${i}`];
-            this.objectives[i - 1].content.CEOScore = this.data[`CEOScore${i}`];
+            this.objectives[i - 1].content.CEOScore =this.data[`manager_score_${i}`];
           }
           this.disableSelfScore = true;
           // if (
@@ -223,7 +227,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
     });
   }
 
-  setValueDisableConrols(userData: any) {
+  setValueDisableConrols(userData: any): void {
     this.NameFormControl?.disable();
     this.NameFormControl?.setValue(
       userData?.firstName + ' ' + userData?.lastName
@@ -257,63 +261,80 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
   isDataValid(): void {
     this.dataa = this.objectives.map((objective) => {
       if (
-        // objective.content.objective &&
-        // objective.content.keyPerformanceIndicators
-        this.userId === this.curtentUserId &&
         objective.content.actualPerformance &&
+        objective.content.objective &&
+        objective.content.keyPerformanceIndicators &&
         objective.content.selfScore
       ) {
-        return {
-          objective: objective.content.objective,
-          KeyPerformanceIndicators: objective.content.keyPerformanceIndicators,
-          actualPerformance: objective.content.actualPerformance,
-          score: +objective.content.score.slice(0, -1),
-          selfScore: +objective.content.selfScore,
-        };
-      } else if (
-        // objective.content.objective &&
-        // objective.content.keyPerformanceIndicators
-        this.userId !== this.curtentUserId &&
-        objective.content.actualPerformance &&
-        objective.content.selfScore &&
-        objective.content.managerScore
-      ) {
-        return {
-          objective: objective.content.objective,
-          KeyPerformanceIndicators: objective.content.keyPerformanceIndicators,
-          actualPerformance: objective.content.actualPerformance,
-          score: +objective.content.score.slice(0, -1),
-          selfScore: +objective.content.selfScore,
-          managerScore: +objective.content.managerScore,
-        };
-      } else if (
-        // objective.content.objective &&
-        // objective.content.keyPerformanceIndicators
-        // this.userId !== this.curtentUserId &&
-        this.role === 'CEO' &&
-        objective.content.actualPerformance &&
-        objective.content.selfScore &&
-        objective.content.CEOScore
-      ) {
-        return {
-          objective: objective.content.objective,
-          KeyPerformanceIndicators: objective.content.keyPerformanceIndicators,
-          actualPerformance: objective.content.actualPerformance,
-          score: +objective.content.score.slice(0, -1),
-          selfScore: +objective.content.selfScore,
-          CEOScore: +objective.content.CEOScore,
-        };
-      }
-      return false;
-    });
-    this.dataa.find((res: any) => {
-      console.log('ASADSDSDS', res);
-      if (res === false) {
-        this.valuetrue = false;
-        this.toasterService.failed('Please filled all mandatory fields');
-        return;
+        if (
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators
+          this.userId === this.curtentUserId
+          //  &&
+          // objective.content.actualPerformance &&
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators &&
+          // objective.content.selfScore
+        ) {
+          return {
+            objective: objective.content.objective,
+            KeyPerformanceIndicators:
+              objective.content.keyPerformanceIndicators,
+            actualPerformance: objective.content.actualPerformance,
+            score: +objective.content.score.slice(0, -1),
+            selfScore: +objective.content.selfScore,
+          };
+        } else if (
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators
+          this.userId !== this.curtentUserId &&
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators &&
+          // objective.content.actualPerformance &&
+          // objective.content.selfScore &&
+          objective.content.managerScore
+        ) {
+          return {
+            objective: objective.content.objective,
+            KeyPerformanceIndicators:
+              objective.content.keyPerformanceIndicators,
+            actualPerformance: objective.content.actualPerformance,
+            score: +objective.content.score.slice(0, -1),
+            selfScore: +objective.content.selfScore,
+            managerScore: +objective.content.managerScore,
+          };
+        } else if (
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators
+          // this.userId !== this.curtentUserId &&
+          this.role === 'CEO' &&
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators &&
+          // objective.content.actualPerformance &&
+          // objective.content.selfScore &&
+          objective.content.CEOScore
+        ) {
+          return {
+            objective: objective.content.objective,
+            KeyPerformanceIndicators:
+              objective.content.keyPerformanceIndicators,
+            actualPerformance: objective.content.actualPerformance,
+            score: +objective.content.score.slice(0, -1),
+            selfScore: +objective.content.selfScore,
+            CEOScore: +objective.content.CEOScore,
+          };
+        }
+        return false;
       } else {
-        this.valuetrue = true;
+        return false;
+      }
+    });
+    this.valuetrue = this.dataa.find((res: any) => {
+      if (res === false) {
+        this.toasterService.failed('Please verify something wrong in the data');
+        return true;
+      } else {
+        return false;
       }
     });
   }
@@ -330,6 +351,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
           is_selfApprisal: true,
           is_manager_to_other: false,
           is_CEO_to_manager: false,
+          agency_id: +this.userDetails?.agency,
         }); // member or manager self Apprisal
       }
       if (this.userId !== this.curtentUserId && this.role === 'Manager') {
@@ -388,9 +410,18 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
       this.objectives[index].content.managerScore = managerScore;
     }
   }
+  CEOScoreValue(managerScore: number, score: string, index: number): void {
+    score = score.slice(0, -1);
+    if (managerScore > +score) {
+      this.objectives[index].isCEOScoreGreaterThanScore  = true; // Show the error message
+    } else {
+      this.objectives[index].isCEOScoreGreaterThanScore = false; // Hide the error message
+      this.objectives[index].content.CEOScore = managerScore;
+    }
+  }
 
   nextPage(): void {
-    if (this.paramsDetails) {
+    if (this.paramsDetails || this.role === 'CEO') {
       this.router.navigateByUrl('/annual-appraisal?id=' + this.parmasId);
     } else {
       this.router.navigateByUrl('/annual-appraisal');
