@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map } from 'rxjs';
+import { Observable,} from 'rxjs';
 import { APIBasicConfig } from '../api-basic-config';
 import { IAddEmployee, ILaunchAppraisal } from 'src/app/interface';
 
@@ -29,12 +29,11 @@ export class CompanyService extends APIBasicConfig {
   }
 
   agencyEmployee(agencyId: any): Observable<any> {
-    // not in use not confirmed
     return this.http.get(`${this.base_url}agency/getAgencyEmployees/${agencyId?.id}`);
   }
 
+ 
   launchAppriasal(formData: ILaunchAppraisal): Observable<any> {
-    // not in use not confirmed
     return this.http.post(`${this.base_url}users/launchApprisal`, formData);
   }
   launchSelfApriasal(formData: any): Observable<any> {
@@ -62,5 +61,15 @@ export class CompanyService extends APIBasicConfig {
   GetNextYearApriasal(userId: number): Observable<any> {
     return this.http.get(`${this.base_url}users/getUserNextYearDetail/${userId}`);
   }
-  
+
+  getMembers(data: any): Observable<any> {
+    return this.http.get(`${this.base_url}users/getEmployeesAgainstManager/${data?.agencyId}/${data?.managerId}/${data?.status}`);
+  }
+  assignMembers(data: any): Observable<any> {
+    return this.http.post(`${this.base_url}users/employeesAssignstoManager`, data);
+  }
+  downloadPDF(userId: number) {
+    window.open(`${this.base_url}users/getReportFile/${userId}`, "_blank");
+  }
+
 }

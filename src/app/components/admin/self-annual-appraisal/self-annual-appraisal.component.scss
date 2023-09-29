@@ -83,11 +83,15 @@ h4 {
   padding: 20px;
   margin-top: 1rem;
 }
+
 .textsize {
-  font-size: 14px;
-  line-height: 16.94px;
   font-family: Inter;
+  font-size: 14px;
   font-weight: 500;
+  line-height: 17px;
+  letter-spacing: 0em;
+  text-align: left;
+  
 }
 .add-details {
   font-size: 18.46px;
@@ -121,6 +125,25 @@ h4 {
   color: white !important;
   text-align: center;
  
+}
+.cancel-button{
+  // margin-top: 8rem;
+  background-color:#e7e7e7;;
+  color: #807575;
+  cursor: pointer;
+}
+
+.objective-text {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+  
+}
+.example-form {
+  margin-top: -24px;
 }
 
 // ******************** Custom toaster *******

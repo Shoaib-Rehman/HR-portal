@@ -6,11 +6,13 @@ import {
   UntypedFormGroup,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Select, Store } from '@ngxs/store';
 import { Subject, takeUntil, Observable } from 'rxjs';
+import { ROLE } from 'src/app/constant';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
+import { ToasterService } from 'src/app/services/toaster/toaster.service';
 import { Company } from 'src/app/store/company/company.action';
-import { IUser } from 'src/app/store/company/company.interface';
 import { CompanyModel } from 'src/app/store/company/company.model';
 import { CompanyState } from 'src/app/store/company/company.state';
 
@@ -27,6 +29,9 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
       name: 'Objective 1',
       expanded: false,
       isValueGreaterThanScore: false,
+      isManagerScoreGreaterThanScore: false,
+      isCEOScoreGreaterThanScore: false,
+
       content: {
         objective: '',
         keyPerformanceIndicators: '',
@@ -34,12 +39,15 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
         score: '40%',
         selfScore: '',
         managerScore: '',
+        CEOScore: '',
       },
     },
     {
       name: 'Objective 2',
       expanded: false,
       isValueGreaterThanScore: false,
+      isManagerScoreGreaterThanScore: false,
+      isCEOScoreGreaterThanScore: false,
       content: {
         objective: '',
         keyPerformanceIndicators: '',
@@ -47,12 +55,15 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
         score: '30%',
         selfScore: '',
         managerScore: '',
+        CEOScore: '',
       },
     },
     {
       name: 'Objective 3',
       expanded: false,
       isValueGreaterThanScore: false,
+      isManagerScoreGreaterThanScore: false,
+      isCEOScoreGreaterThanScore: false,
       content: {
         objective: '',
         keyPerformanceIndicators: '',
@@ -60,12 +71,15 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
         score: '20%',
         selfScore: '',
         managerScore: '',
+        CEOScore: '',
       },
     },
     {
       name: 'Objective 4',
       expanded: false,
       isValueGreaterThanScore: false,
+      isManagerScoreGreaterThanScore: false,
+      isCEOScoreGreaterThanScore: false,
       content: {
         objective: '',
         keyPerformanceIndicators: '',
@@ -73,6 +87,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
         score: '10%',
         selfScore: '',
         managerScore: '',
+        CEOScore: '',
       },
     },
   ];
@@ -80,58 +95,127 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
   submittedSelfAppriasalData: any[] = [];
   disable: boolean = false;
   data: any;
-  userDetails?: IUser;
-  valuetrue: boolean = true;
-  private unsubscribe$ = new Subject();
+  userDetails = this.localStorage.User;
+  curtentUserId = this.localStorage.CurrentUserId;
 
+  valuetrue: boolean = true;
+  roleManager: boolean = false;
+  private unsubscribe$ = new Subject();
+  userId: string = '';
+  paramsDetails: boolean = false;
+  parmasId: string = '';
+  role: string = this.localStorage.CurrentUserRole;
+  disableSelfScore: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
-    private store: Store
+    private store: Store,
+    private activatedRoute: ActivatedRoute,
+    private localStorage: LocalStorageService,
+    private toasterService: ToasterService
   ) {
     this.selfAppraisalForm = this.initForm();
   }
   ngOnInit(): void {
-    this.getSelfApriasalData();
+    this.getUserId();
+
+    if (this.localStorage.CurrentUserRole === ROLE.MANAGER) {
+      this.roleManager = true;
+    }
+  }
+  getUserId(): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      if (params?.['id']) {
+        this.userId = params?.['id'];
+        this.parmasId = params?.['id'];
+      } else {
+        this.userId = this.localStorage.User?.id;
+      }
+      this.getSelfApriasalData();
+    });
   }
 
   getSelfApriasalData(): void {
-    this.userdetails$?.subscribe((resp: any) => {
-      if (resp) {
-        this.userDetails = resp;
-        this.setValueDisableConrols(resp);
-        this.store
-          .dispatch(new Company.GetSelfApriasal(this.userDetails?.id))
-          .pipe(takeUntil(this.unsubscribe$))
-          .subscribe((resp) => {
-            if (resp.company.ApprisalDetails.length) {
-              this.submittedSelfAppriasalData = resp.company.ApprisalDetails;
-              this.data = this.submittedSelfAppriasalData[0];
-              for (let i = 1; i <= 4; i++) {
-                this.objectives[i - 1].content.objective =
-                  this.data[`objective_${i}`];
-                this.objectives[i - 1].content.keyPerformanceIndicators =
-                  this.data[`kpi_${i}`];
-                this.objectives[i - 1].content.actualPerformance =
-                  this.data[`actual_performance_${i}`];
-                this.objectives[i - 1].content.score = `${
-                  this.data[`score_${i}`]
-                }%`;
-                this.objectives[i - 1].content.selfScore =
-                  this.data[`self_socre_${i}`];
-                this.objectives[i - 1].content.managerScore =
-                  this.data[`manager_score_${i}`];
-              }
-              if (
-                this.data['actual_performance_1'] !== '' ||
-                this.data['actual_performance_1'] !== null
-              ) {
-                this.disable = true;
-              }
-            }
-          });
-      }
-    });
+    this.store
+      .dispatch(new Company.GetSelfApriasal(this.userId))
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((resp) => {
+        if (this.userId !== this.curtentUserId) {
+          this.paramsDetails = true;
+          this.setValueDisableConrols(resp.company.ApprisalDetails[0]);
+        } else {
+          this.paramsDetails = false;
+          this.setValueDisableConrols(this.userDetails);
+        }
+        if (
+          resp.company.ApprisalDetails[0]?.objective_1 !== undefined &&
+          resp.company.ApprisalDetails[0]?.objective_1 !== null
+        ) {
+          this.submittedSelfAppriasalData = resp.company.ApprisalDetails;
+          this.data = this.submittedSelfAppriasalData[0];
+          for (let i = 1; i <= 4; i++) {
+            this.objectives[i - 1].content.objective =
+              this.data[`objective_${i}`];
+            this.objectives[i - 1].content.keyPerformanceIndicators =
+              this.data[`kpi_${i}`];
+            this.objectives[i - 1].content.actualPerformance =
+              this.data[`actual_performance_${i}`];
+            this.objectives[i - 1].content.score = `${
+              this.data[`score_${i}`]
+            }%`;
+            this.objectives[i - 1].content.selfScore =
+              this.data[`self_socre_${i}`];
+
+            this.objectives[i - 1].content.managerScore =
+              this.data[`manager_score_${i}`];
+            this.objectives[i - 1].content.CEOScore =this.data[`manager_score_${i}`];
+          }
+          this.disableSelfScore = true;
+          // if (
+          //   this.data['actual_performance_1'] !== '' ||
+          //   (this.data['actual_performance_1'] !== null &&
+          //     this.role !== ROLE.MANAGER)
+          // ) {
+          //   this.disable = true;
+          // }
+        }
+        if (this.userId === this.curtentUserId) {
+          if (
+            this.data?.actual_performance_1 !== undefined &&
+            this.data?.actual_performance_1 !== null
+          ) {
+            this.disable = true;
+          } else {
+            this.disable = false;
+          }
+          console.log('Member');
+
+          // this.disable = true;
+        }
+        // Manager to member OR CEO to Manager apprisal
+        else if (
+          this.userId !== this.curtentUserId &&
+          this.role === 'Manager'
+        ) {
+          console.log('Manager');
+          if (this.data?.['done_by_manager'] === 0) {
+            this.disable = false;
+          } else {
+            this.disable = true;
+          }
+        } else if (this.userId !== this.curtentUserId && this.role === 'CEO') {
+          console.log('CEO');
+          if (this.data?.['done_by_ceo'] === 0) {
+            this.disable = false;
+          } else {
+            this.disable = true;
+          }
+        } else {
+          // HR view apprisal
+          console.log('ROLE', 'Human Resource');
+          this.disable = true;
+        }
+      });
   }
 
   initForm(): UntypedFormGroup {
@@ -143,9 +227,11 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
     });
   }
 
-  setValueDisableConrols(userData: IUser) {
+  setValueDisableConrols(userData: any): void {
     this.NameFormControl?.disable();
-    this.NameFormControl?.setValue(userData?.firstName);
+    this.NameFormControl?.setValue(
+      userData?.firstName + ' ' + userData?.lastName
+    );
 
     this.LocationFormControl?.disable();
     this.LocationFormControl?.setValue(userData?.location || 'N/A');
@@ -170,48 +256,141 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
   isExpanded(index: number): boolean {
     return this.objectives[index].expanded;
   }
- 
-  saveData(): void {
-    const data: any = this.objectives.map((objective) => {
+
+  dataa: any;
+  isDataValid(): void {
+    this.dataa = this.objectives.map((objective) => {
       if (
+        objective.content.actualPerformance &&
         objective.content.objective &&
         objective.content.keyPerformanceIndicators &&
-        objective.content.actualPerformance &&
         objective.content.selfScore
       ) {
-        return {
-          objective: objective.content.objective,
-          KeyPerformanceIndicators: objective.content.keyPerformanceIndicators,
-          actualPerformance: objective.content.actualPerformance,
-          score: +objective.content.score.slice(0, -1),
-          selfScore: +objective.content.selfScore,
-          managerScore: +objective.content.managerScore,
-        };
+        if (
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators
+          this.userId === this.curtentUserId
+          //  &&
+          // objective.content.actualPerformance &&
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators &&
+          // objective.content.selfScore
+        ) {
+          return {
+            objective: objective.content.objective,
+            KeyPerformanceIndicators:
+              objective.content.keyPerformanceIndicators,
+            actualPerformance: objective.content.actualPerformance,
+            score: +objective.content.score.slice(0, -1),
+            selfScore: +objective.content.selfScore,
+          };
+        } else if (
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators
+          this.userId !== this.curtentUserId &&
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators &&
+          // objective.content.actualPerformance &&
+          // objective.content.selfScore &&
+          objective.content.managerScore
+        ) {
+          return {
+            objective: objective.content.objective,
+            KeyPerformanceIndicators:
+              objective.content.keyPerformanceIndicators,
+            actualPerformance: objective.content.actualPerformance,
+            score: +objective.content.score.slice(0, -1),
+            selfScore: +objective.content.selfScore,
+            managerScore: +objective.content.managerScore,
+          };
+        } else if (
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators
+          // this.userId !== this.curtentUserId &&
+          this.role === 'CEO' &&
+          // objective.content.objective &&
+          // objective.content.keyPerformanceIndicators &&
+          // objective.content.actualPerformance &&
+          // objective.content.selfScore &&
+          objective.content.CEOScore
+        ) {
+          return {
+            objective: objective.content.objective,
+            KeyPerformanceIndicators:
+              objective.content.keyPerformanceIndicators,
+            actualPerformance: objective.content.actualPerformance,
+            score: +objective.content.score.slice(0, -1),
+            selfScore: +objective.content.selfScore,
+            CEOScore: +objective.content.CEOScore,
+          };
+        }
+        return false;
       } else {
         return false;
       }
     });
-    data.find((res: any) => {
+    this.valuetrue = this.dataa.find((res: any) => {
       if (res === false) {
-        this.valuetrue = false;
-        return;
+        this.toasterService.failed('Please verify something wrong in the data');
+        return true;
       } else {
-        this.valuetrue = true;
+        return false;
       }
     });
+  }
+
+  saveData(): void {
+    this.isDataValid();
     if (this.valuetrue !== false) {
       let performance: any[] = [];
-      performance.push({ ...data, userId: this.userDetails?.id }); // change userId
+      // will change to manager to member
+      if (this.userId === this.curtentUserId) {
+        performance.push({
+          ...this.dataa,
+          userId: this.userDetails?.id,
+          is_selfApprisal: true,
+          is_manager_to_other: false,
+          is_CEO_to_manager: false,
+          agency_id: +this.userDetails?.agency,
+        }); // member or manager self Apprisal
+      }
+      if (this.userId !== this.curtentUserId && this.role === 'Manager') {
+        performance.push({
+          ...this.dataa,
+          userId: this.userDetails?.id,
+          member_id: +this.userId,
+          is_selfApprisal: false,
+          is_manager_to_other: true,
+          is_CEO_to_manager: false,
+        }); // manager to member Apprisal
+      }
+      if (this.role === 'CEO') {
+        performance.push({
+          ...this.dataa,
+          userId: this.userDetails?.id,
+          manager_id: +this.userId,
+          is_selfApprisal: false,
+          is_manager_to_other: false,
+          is_CEO_to_manager: true,
+        }); // CEO to manager Apprisal
+      }
       this.store
         .dispatch(new Company.launchSelfApriasal(performance))
         .subscribe((resp) => {
           if (resp) {
-            this.router.navigateByUrl('/annual-appraisal');
+            if (this.paramsDetails) {
+              this.router.navigateByUrl(
+                '/annual-appraisal?id=' + this.parmasId
+              );
+            } else {
+              this.router.navigateByUrl('/annual-appraisal');
+            }
           }
         });
     } else {
     }
   }
+
   selfScoreValue(selfScore: number, score: string, index: number): void {
     score = score.slice(0, -1);
     if (selfScore > +score) {
@@ -221,8 +400,32 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
       this.objectives[index].content.selfScore = selfScore;
     }
   }
-  nextPage() {
-    this.router.navigateByUrl('/annual-appraisal');
+
+  managerScoreValue(managerScore: number, score: string, index: number): void {
+    score = score.slice(0, -1);
+    if (managerScore > +score) {
+      this.objectives[index].isManagerScoreGreaterThanScore = true; // Show the error message
+    } else {
+      this.objectives[index].isManagerScoreGreaterThanScore = false; // Hide the error message
+      this.objectives[index].content.managerScore = managerScore;
+    }
+  }
+  CEOScoreValue(managerScore: number, score: string, index: number): void {
+    score = score.slice(0, -1);
+    if (managerScore > +score) {
+      this.objectives[index].isCEOScoreGreaterThanScore  = true; // Show the error message
+    } else {
+      this.objectives[index].isCEOScoreGreaterThanScore = false; // Hide the error message
+      this.objectives[index].content.CEOScore = managerScore;
+    }
+  }
+
+  nextPage(): void {
+    if (this.paramsDetails || this.role === 'CEO') {
+      this.router.navigateByUrl('/annual-appraisal?id=' + this.parmasId);
+    } else {
+      this.router.navigateByUrl('/annual-appraisal');
+    }
   }
 
   get NameFormControl(): FormControl {

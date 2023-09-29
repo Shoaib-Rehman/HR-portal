@@ -34,30 +34,31 @@ export class SideBarData {
       //   route: '/compose-email',
       //   routeLinkActive: "active"
       // },
+    
+      {
+        name: 'Apprisal',
+        icon: 'assignment_ind',
+        route: '/self-appraisal',
+        routeLinkActive: "active"
+      },
       {
         name: 'Assign Members',
         icon: 'work_history',
         route: '/assign-members',
         routeLinkActive: "active"
       },
-      {
-        name: 'Self Annual Appraisal',
-        icon: 'assignment_ind',
-        route: '/self-appraisal',
-        routeLinkActive: "active"
-      },
-      {
-        name: 'Annual Appraisal',
-        icon: 'view_timeline',
-        route: '/annual-appraisal',
-        routeLinkActive: "active"
-      },
-      {
-        name: 'Next Year Objectives',
-        icon: 'perm_contact_calendar',
-        route: '/next-year-objective',
-        routeLinkActive: "active"
-      },
+      // {
+      //   name: 'Annual Appraisal',
+      //   icon: 'view_timeline',
+      //   route: '/annual-appraisal',
+      //   routeLinkActive: "active"
+      // },
+      // {
+      //   name: 'Next Year Objectives',
+      //   icon: 'perm_contact_calendar',
+      //   route: '/next-year-objective',
+      //   routeLinkActive: "active"
+      // },
       {
         name: 'Appraisal Results',
         icon: 'wysiwyg',

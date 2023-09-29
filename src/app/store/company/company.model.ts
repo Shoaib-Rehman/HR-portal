@@ -1,9 +1,11 @@
+import { IMember } from "src/app/interface";
 import { IUser } from "./company.interface";
 
 export class CompanyModel {
     agenciesList: [] = [];
     allemployeeList: [] = [];
-    agencyemployeeList: [] = [];
+    agencyemployeeList: IMember[] = [];
     ApprisalDetails: [] = [];
-    userId:IUser = JSON.parse(localStorage.getItem('current-user')  || '{}')
+    managerEmployeeList: [] = [];
+    userId:IUser = JSON.parse(localStorage.getItem('current-user')  || '{}');
 }

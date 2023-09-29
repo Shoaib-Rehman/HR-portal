@@ -39,7 +39,7 @@ export namespace Company {
         static readonly type = '[Company] GetAllEmployee' ;
         constructor() {}
     }
-
+    
     export class launchAppriasal {
         static readonly type = '[Company] launchAppriasal' ;
         constructor(public payload:ILaunchAppraisal) {}
@@ -80,5 +80,17 @@ export namespace Company {
         constructor() {}
     }
 
+    export class getMembers {
+        static readonly type = '[Company] getMembers';
+        constructor(public payload: any) {}
+    }
 
+    export class AssignMembers {
+        static readonly type = '[Company] AssignMembers';
+        constructor(public payload: any) {}
+    }
+    export class DownloadPDF {
+        static readonly type = '[Company] DownloadPDF';
+        constructor(public payload:number) {}
+    }
 }
