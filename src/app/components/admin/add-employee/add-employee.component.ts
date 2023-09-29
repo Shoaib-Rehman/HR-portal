@@ -27,7 +27,7 @@ export class AddEmployeeComponent implements OnInit {
   editEmployee: boolean = false;
   roles = [
     { value: 'Member', label: 'Member' },
-    { value: 'TeamLead', label: 'Team Lead' },
+    { value: 'Manager', label: 'Team Lead' },
     { value: 'CEO', label: 'CEO' },
   ];
   designation = [
