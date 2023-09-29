@@ -197,6 +197,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
           this.role === 'Manager'
         ) {
           console.log('Manager');
+          this.disableSelfScore = true;
           if (this.data?.['done_by_manager'] === 0) {
             this.disable = false;
           } else {
@@ -204,6 +205,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
           }
         } else if (this.userId !== this.curtentUserId && this.role === 'CEO') {
           console.log('CEO');
+          this.disableSelfScore = true;
           if (this.data?.['done_by_ceo'] === 0) {
             this.disable = false;
           } else {

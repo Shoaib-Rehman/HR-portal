@@ -216,7 +216,8 @@ export class CompanyState {
 
 
   @Action(Company.DownloadPDF)
-  downloadPDF(
+  DownloadPDF(
+    ctx: StateContext<CompanyModel>,
     action: Company.DownloadPDF
   ) {
     return this.companyService.downloadPDF(action.payload)
