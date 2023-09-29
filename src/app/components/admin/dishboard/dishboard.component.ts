@@ -167,7 +167,7 @@ export class DishboardComponent implements OnInit, AfterViewInit {
             agency: item?.agency_name || 'N/A',
             position: item?.designation || 'N/A',
             location: item?.location || 'N/A',
-            status: item?.status || 'Pending',
+            status: item?.status || 'pending',
             managerId: item?.id,
             agencyId: item?.agency,
             role: item?.role
