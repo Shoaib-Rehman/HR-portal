@@ -93,4 +93,9 @@ export namespace Company {
         static readonly type = '[Company] DownloadPDF';
         constructor(public payload:number) {}
     }
+
+    export class GetAllMemberWhoDoneApprisal {
+        static readonly type = '[Member] Get All Member Who Done Apprisal';
+        constructor(public payload: any) {}
+    }
 }

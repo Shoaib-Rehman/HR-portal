@@ -21,8 +21,6 @@ export class CalibrationComponent implements OnInit {
   employeeList: IMember[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  statusFormControl: FormControl = new FormControl('steak-0');
-
   displayedColumns: string[] = [
     'Excellent',
     'Good',
@@ -36,8 +34,6 @@ export class CalibrationComponent implements OnInit {
   constructor(private dialog: MatDialog, private store:Store) {}
 
   ngOnInit(): void {
-    this.statusFormControl.valueChanges.subscribe((status: string) => {
-    });
     this.getAllEmployee()
 
   }

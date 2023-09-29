@@ -106,8 +106,8 @@ export class AnnualApprsaialComponent implements OnInit {
           this.selectedBoxes['CommunicationSkills'] = data?.CommunicationSkills;
           // this.CommentFormControl.disable();
           this.CommentFormControl.setValue(data?.comment);
-          this.enableFieldsButtonRoleBased(data);
         }
+        this.enableFieldsButtonRoleBased(data);
       });
   }
 
@@ -145,14 +145,6 @@ export class AnnualApprsaialComponent implements OnInit {
         this.CommentFormControl.disable();
       }
     }
-
-    // else if (
-    //   this.userId !== this.curtentUserId && this.currentUserRole === 'HR'
-    // ) {
-    //   console.log("HR")
-    //     this.disableBoxes = false;
-    //     this.CommentFormControl.disable();
-    //   }
     else {
       // HR view apprisal
       console.log('ROLE', 'Human Resource');

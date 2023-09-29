@@ -62,7 +62,7 @@ export class SideBarData {
       {
         name: 'Appraisal Results',
         icon: 'wysiwyg',
-        route: '/employee',
+        route: '/employee-results',
         routeLinkActive: 'active',
       },
       {

@@ -7,12 +7,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { IMember } from 'src/app/interface';
 import { AddEmployeeComponent } from '../add-employee/add-employee.component';
 import { Store } from '@ngxs/store';
-import { CompanyModel } from 'src/app/store/company/company.model';
 import { Company } from 'src/app/store/company/company.action';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
-import { takeUntil } from 'rxjs';
-
 
 const ELEMENT_DATA: IMember[] = []
 
@@ -25,14 +22,6 @@ export class AssignMembersListComponent implements OnInit {
 
   employeeList: IMember[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  statusFormControl: FormControl = new FormControl('steak-0');
-
-  foods = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
 
   displayedColumns: string[] = [
     'name',
@@ -49,8 +38,6 @@ export class AssignMembersListComponent implements OnInit {
       private localStorage: LocalStorageService) {}
 
   ngOnInit(): void {
-    this.statusFormControl.valueChanges.subscribe((status: string) => {
-    });
     this.getAllEmployee()
 
   }
@@ -97,10 +84,10 @@ export class AssignMembersListComponent implements OnInit {
       this.employeeList = resp?.company?.managerEmployeeList;
       this.dataSource  = resp?.company?.managerEmployeeList.map((item:any) => ({
         name: `${item.firstName} ${item.lastName}`,
-        agency: item.agency_name || 'N/A',
         position: item.designation || 'N/A',
         location: item.location || 'N/A',
         status: item.status || 'Pending',
+        agency: item.agency_name || 'N/A',
         id: item?.id,
         agencyId: item?.agency,
         role: item?.role

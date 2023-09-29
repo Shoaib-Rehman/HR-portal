@@ -73,7 +73,7 @@ export class AddEmployeeComponent implements OnInit {
 
   disableFormControl(formGroup: UntypedFormGroup): FormGroup {
     if (this.data?.agency) {
-      formGroup.get('agency')?.disable();
+      // formGroup.get('agency')?.disable();
       formGroup.get('agency')?.setValue(+this.data?.agency);
     }
     if (this.data?.firstName) {
