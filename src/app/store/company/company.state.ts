@@ -18,6 +18,12 @@ export class CompanyState {
   static agenciesInfo(state: CompanyModel) {
     return state.agenciesList;
   }
+  
+  @Selector()
+  static GetAllMemberWhoDoneApprisal(state: CompanyModel) {
+    return state.AllMemberWhoDoneApprisal;
+  }
+
 
   @Selector()
   static agencyEmployees(state: CompanyModel) {
@@ -214,6 +220,18 @@ export class CompanyState {
     action: Company.DownloadPDF
   ) {
     return this.companyService.downloadPDF(action.payload)
+  }
+
+
+  @Action(Company.GetAllMemberWhoDoneApprisal)
+  GetAllMemberWhoDoneApprisal(ctx: StateContext<CompanyModel>, action: Company.GetAllMemberWhoDoneApprisal) {
+    return this.companyService.getAllEmployeeWhoDoneApprisal(action.payload).pipe(
+      tap((resp) => {
+        ctx.patchState({
+          AllMemberWhoDoneApprisal: resp,
+        });
+      })
+    );
   }
 
   // @Action(Company.GetUserIdLocalStorage)

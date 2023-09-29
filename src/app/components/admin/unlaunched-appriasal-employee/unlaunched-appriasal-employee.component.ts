@@ -1,86 +1,15 @@
 import { SelectionModel } from '@angular/cdk/collections';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { IMember } from 'src/app/interface';
 import { AddEmployeeComponent } from '../add-employee/add-employee.component';
 import { Store } from '@ngxs/store';
-import { CompanyModel } from 'src/app/store/company/company.model';
 import { Company } from 'src/app/store/company/company.action';
-
 
 const ELEMENT_DATA: IMember[] = []
 
-// const ELEMENT_DATA: IMember[] = [
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'HR',
-//   location: 'Islamabad',
-//   status: 'Pending',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// ];
 @Component({
   selector: 'app-unlaunched-appriasal-employee',
   templateUrl: './unlaunched-appriasal-employee.component.html',
@@ -91,13 +20,6 @@ export class UnlaunchedAppriasalEmployeeComponent implements OnInit {
 employeeList: IMember[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  statusFormControl: FormControl = new FormControl('steak-0');
-
-  foods = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
 
   displayedColumns: string[] = [
     'name',
@@ -113,8 +35,6 @@ employeeList: IMember[] = [];
   constructor(private dialog: MatDialog, private store:Store) {}
 
   ngOnInit(): void {
-    this.statusFormControl.valueChanges.subscribe((status: string) => {
-    });
     this.getAllEmployee()
 
   }
@@ -162,8 +82,6 @@ employeeList: IMember[] = [];
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-
-  delete(a: any): void {}
 }
 
 

@@ -23,11 +23,8 @@ table {
     font-size: 24px;
     color: #000;
   }
-  .mat-select-arrow-wrapper {
-    position: relative !important;
-    top: -14px !important;
-    margin-right: 27px !important;
+  .name {
+    color: blue;
+    cursor: pointer;
   }
-  .mat-select {
-    display: inline-block;
-  }
+  

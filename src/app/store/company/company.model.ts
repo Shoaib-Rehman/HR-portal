@@ -8,4 +8,6 @@ export class CompanyModel {
     ApprisalDetails: [] = [];
     managerEmployeeList: [] = [];
     userId:IUser = JSON.parse(localStorage.getItem('current-user')  || '{}');
+    AllMemberWhoDoneApprisal: IMember[] = [];
+
 }

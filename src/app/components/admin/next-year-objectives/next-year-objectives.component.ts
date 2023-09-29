@@ -294,11 +294,12 @@ export class NextYearObjectivesComponent implements OnInit, OnDestroy {
     }
   }
   backToApprisal(): void {
-    if (this.userId !== this.curtentUserId) {
-      this.router.navigateByUrl('/assign-members');
-    } else {
-      this.apprisalDetail();
-    }
+    this.router.navigateByUrl('/employee-results')
+    // if (this.userId !== this.curtentUserId) {
+    //   this.router.navigateByUrl('/assign-members');
+    // } else {
+    //   this.apprisalDetail();
+    // }
   }
 
   get NameFormControl(): FormControl {
