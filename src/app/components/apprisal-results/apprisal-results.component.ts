@@ -101,7 +101,6 @@ export class ApprisalResultsComponent implements OnInit {
   isAllSelected() {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
-    debugger
     return numSelected === numRows;
   }
 
