@@ -61,3 +61,7 @@ export interface ISideBar {
   routeLinkActive: string;
 }
 
+export interface IGraph {
+  x: string;
+  y: number;
+}
