@@ -1,18 +1,10 @@
 <form [formGroup]="agencyForm">
   <div class="heading-line">
     <h1 class="heading">Agency Member List</h1>
- <div>
-  
- </div>
-    <mat-form-field
-      appearance="outline"
-      class="form-field input-box designation-input col-md-4">
-      <mat-label>AgenciesList</mat-label>
+    <mat-form-field appearance="outline" class="form-field input-box designation-input col-md-4">
+      <mat-label>Agencies</mat-label>
       <mat-select formControlName="agency">
-        <mat-option
-          *ngFor="let option of allAgencytList"
-          [value]="option?.id"
-          class="textsize"
+        <mat-option *ngFor="let option of allAgencytList" [value]="option?.id" class="textsize"
           (click)="agencyEmployeeList(option?.id)">
           {{ option.name }}
         </mat-option>
@@ -21,13 +13,12 @@
     *ngIf="submitted &&  DesignationFormControl.invalid && DesignationFormControl.touched">Please
     select designation</mat-error> -->
     </mat-form-field>
-    <button  class="add-employee-button" (click)="openEmployeeModal()">Add
+    <button class="add-employee-button" (click)="openEmployeeModal()">Add
       Employee</button>
   </div>
   <span *ngIf="!agencySelected">Please Select Agency</span>
 
-  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8"
-    *ngIf="agencySelected">
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" *ngIf="agencySelected">
 
     <!-- Checkbox Column -->
     <!-- <ng-container matColumnDef="select">
@@ -80,19 +71,19 @@
         </button>
         <mat-menu #actionMenu="matMenu">
           <button mat-menu-item (click)="delete(element)">Remove Member</button>
-          <button *ngIf="element?.role === 'Team Lead' || element?.role === 'Manager' || element?.role === 'CEO' " mat-menu-item (click)="assignMember(element)" > Assign Member</button>
-          <button mat-menu-item [disabled]="element.status === 'Pending' || element.status === 'completed'" (click)="reminderEmail()"> Email Reminder</button>
+          <button *ngIf="element?.role === 'Team Lead' || element?.role === 'Manager' || element?.role === 'CEO' "
+            mat-menu-item (click)="assignMember(element)"> Assign Member</button>
+          <button mat-menu-item [disabled]="element.status === 'Pending' || element.status === 'completed'"
+            (click)="reminderEmail()"> Email Reminder</button>
         </mat-menu>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayedColumns;"
-      (click)="selection.toggle(row)">
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)">
     </tr>
   </table>
 
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons
-    aria-label="Select page of periodic elements">
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
   </mat-paginator>
 </form>

@@ -7,97 +7,20 @@ import { MatTableDataSource } from '@angular/material/table';
 import { IMember } from 'src/app/interface';
 import { AddEmployeeComponent } from '../add-employee/add-employee.component';
 import { Store } from '@ngxs/store';
-import { CompanyModel } from 'src/app/store/company/company.model';
 import { Company } from 'src/app/store/company/company.action';
+import { MEMBER_STATUSES } from 'src/app/constant';
+import { MatSelectChange } from '@angular/material/select';
 
-
-const ELEMENT_DATA: IMember[] = []
-
-// const ELEMENT_DATA: IMember[] = [
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'HR',
-//   location: 'Islamabad',
-//   status: 'Pending',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// {
-//   name: 'Hydrogen',
-//   position: 'Manager',
-//   location: 'Islamabad',
-//   status: 'developer',
-// },
-// ];
+const ELEMENT_DATA: IMember[] = [];
 @Component({
   selector: 'app-unlaunched-appriasal-employee',
   templateUrl: './unlaunched-appriasal-employee.component.html',
-  styleUrls: ['./unlaunched-appriasal-employee.component.scss']
+  styleUrls: ['./unlaunched-appriasal-employee.component.scss'],
 })
-
 export class UnlaunchedAppriasalEmployeeComponent implements OnInit {
-employeeList: IMember[] = [];
+  employeeList: IMember[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  statusFormControl: FormControl = new FormControl('steak-0');
-
-  foods = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
+  memberStatuses = MEMBER_STATUSES;
 
   displayedColumns: string[] = [
     'name',
@@ -105,46 +28,43 @@ employeeList: IMember[] = [];
     'position',
     'location',
     'status',
+    'change_status',
     'actions',
   ];
   dataSource = new MatTableDataSource<IMember>(ELEMENT_DATA);
   selection = new SelectionModel<IMember>(true, []);
 
-  constructor(private dialog: MatDialog, private store:Store) {}
+  constructor(private dialog: MatDialog, private store: Store) {}
 
   ngOnInit(): void {
-    this.statusFormControl.valueChanges.subscribe((status: string) => {
-    });
-    this.getAllEmployee()
-
+    this.getAllEmployee();
   }
 
-  
-
-  openEmployeeModal(element:IMember, index:any): void {
+  openEmployeeModal(element: IMember, index: any): void {
     const dialogRef = this.dialog.open(AddEmployeeComponent, {
-      data:this.employeeList[index],
+      data: this.employeeList[index],
       width: '700px',
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result?.data) {
-        this.getAllEmployee()
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.data) {
+        this.getAllEmployee();
       }
     });
   }
 
   getAllEmployee(): void {
-    this.store.dispatch(new Company.GetAllEmployee).subscribe((resp) => {
-      this.employeeList = resp?.company?.allemployeeList
-      this.dataSource  = resp?.company?.allemployeeList.map((item:any) => ({
+    this.store.dispatch(new Company.GetAllEmployee()).subscribe((resp) => {
+      this.employeeList = resp?.company?.allemployeeList;
+      this.dataSource = resp?.company?.allemployeeList.map((item: any) => ({
         name: `${item.firstName} ${item.lastName}`,
         agency: item.agency_name || 'N/A',
         position: item.designation || 'N/A',
         location: item.location || 'N/A',
         status: item.status || 'Pending',
+        change_status: item.status,
+        id: item.id,
       }));
-      
-    })
+    });
   }
 
   isAllSelected() {
@@ -163,8 +83,10 @@ employeeList: IMember[] = [];
     this.dataSource.paginator = this.paginator;
   }
 
+  changeMemberStatus(status: MatSelectChange, member: IMember): void {
+    console.log('Member > ', member);
+    console.log('status > ', status);
+  }
+
   delete(a: any): void {}
 }
-
-
-

@@ -20,6 +20,11 @@ export class CompanyState {
   }
 
   @Selector()
+  static membersDoneAppraisal(state: CompanyModel): IMember[] {
+    return state.membersDoneAppraisal;
+  }
+
+  @Selector()
   static agencyEmployees(state: CompanyModel) {
     return state.agencyemployeeList;
   }
@@ -91,7 +96,7 @@ export class CompanyState {
   ) {
     return this.companyService.agencyEmployee(action.payload).pipe(
       tap((resp) => {
-        resp.map((res:IMember) => {
+        resp.map((res: IMember) => {
           if (res.role === 'TeamLead') {
             res.role = 'Team Lead';
           }
@@ -208,12 +213,22 @@ export class CompanyState {
     );
   }
 
-
   @Action(Company.DownloadPDF)
-  downloadPDF(
-    action: Company.DownloadPDF
-  ) {
-    return this.companyService.downloadPDF(action.payload)
+  downloadPDF(action: Company.DownloadPDF) {
+    return this.companyService.downloadPDF(action.payload);
+  }
+
+  @Action(Company.GetAllMember)
+  getAllMember(ctx: StateContext<CompanyModel>, action: Company.GetAllMember) {
+    return this.companyService
+      .getAllMembersWhoDoneAppraisal(action.payload)
+      .pipe(
+        tap((resp) => {
+          ctx.patchState({
+            membersDoneAppraisal: resp,
+          });
+        })
+      );
   }
 
   // @Action(Company.GetUserIdLocalStorage)

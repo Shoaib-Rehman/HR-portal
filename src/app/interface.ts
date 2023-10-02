@@ -23,6 +23,7 @@ export interface IMember {
   password_encry?: string;
   phoneNo?: string;
   role?: string;
+  change_status?: string;
 }
 
 export interface IAddEmployee {
@@ -64,4 +65,12 @@ export interface ISideBar {
 export interface IGraph {
   x: string;
   y: number;
+}
+
+export interface ICategory {
+  inadequate: number;
+  adequate: number;
+  satisfactory: number;
+  good: number;
+  excelent: number;
 }

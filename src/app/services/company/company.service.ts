@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable,} from 'rxjs';
+import { Observable } from 'rxjs';
 import { APIBasicConfig } from '../api-basic-config';
 import { IAddEmployee, ILaunchAppraisal } from 'src/app/interface';
 
@@ -29,47 +29,68 @@ export class CompanyService extends APIBasicConfig {
   }
 
   agencyEmployee(agencyId: any): Observable<any> {
-    return this.http.get(`${this.base_url}agency/getAgencyEmployees/${agencyId?.id}`);
+    return this.http.get(
+      `${this.base_url}agency/getAgencyEmployees/${agencyId?.id}`
+    );
   }
 
- 
   launchAppriasal(formData: ILaunchAppraisal): Observable<any> {
     return this.http.post(`${this.base_url}users/launchApprisal`, formData);
   }
   launchSelfApriasal(formData: any): Observable<any> {
-    return this.http.post(`${this.base_url}users/selfAnnualAppraisal`, formData);
+    return this.http.post(
+      `${this.base_url}users/selfAnnualAppraisal`,
+      formData
+    );
   }
-  
+
   getSelfApriasal(userId: number): Observable<any> {
-    return this.http.get(`${this.base_url}users/getUserAppraisalDetail/${userId}`);
+    return this.http.get(
+      `${this.base_url}users/getUserAppraisalDetail/${userId}`
+    );
   }
 
   launchCompetencyApriasal(formData: any): Observable<any> {
     return this.http.post(`${this.base_url}users/annualAppraisal`, formData);
   }
 
- 
   GetCompetencyApriasal(userId: number): Observable<any> {
-    return this.http.get(`${this.base_url}users/getUserAnnualAppraisalDetail/${userId}`);
+    return this.http.get(
+      `${this.base_url}users/getUserAnnualAppraisalDetail/${userId}`
+    );
   }
 
   launchNextYearApriasal(formData: any): Observable<any> {
-    return this.http.post(`${this.base_url}users/addUserNextYearObjective`, formData);
+    return this.http.post(
+      `${this.base_url}users/addUserNextYearObjective`,
+      formData
+    );
   }
 
- 
   GetNextYearApriasal(userId: number): Observable<any> {
-    return this.http.get(`${this.base_url}users/getUserNextYearDetail/${userId}`);
+    return this.http.get(
+      `${this.base_url}users/getUserNextYearDetail/${userId}`
+    );
   }
 
   getMembers(data: any): Observable<any> {
-    return this.http.get(`${this.base_url}users/getEmployeesAgainstManager/${data?.agencyId}/${data?.managerId}/${data?.status}`);
+    return this.http.get(
+      `${this.base_url}users/getEmployeesAgainstManager/${data?.agencyId}/${data?.managerId}/${data?.status}`
+    );
   }
   assignMembers(data: any): Observable<any> {
-    return this.http.post(`${this.base_url}users/employeesAssignstoManager`, data);
+    return this.http.post(
+      `${this.base_url}users/employeesAssignstoManager`,
+      data
+    );
   }
   downloadPDF(userId: number) {
-    window.open(`${this.base_url}users/getReportFile/${userId}`, "_blank");
+    window.open(`${this.base_url}users/getReportFile/${userId}`, '_blank');
   }
 
+  getAllMembersWhoDoneAppraisal(agencyId: number): Observable<any> {
+    return this.http.get(
+      `${this.base_url}users/getAgencyCompleteAppraisalScore/${agencyId}`
+    );
+  }
 }
