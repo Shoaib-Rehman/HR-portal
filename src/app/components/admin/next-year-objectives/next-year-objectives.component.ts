@@ -301,6 +301,10 @@ export class NextYearObjectivesComponent implements OnInit, OnDestroy {
     }
   }
 
+  backToApprisalResult(): void {
+    this.router.navigateByUrl('/employee-results');
+  }
+
   get NameFormControl(): FormControl {
     return this.nextYearForm.get('name') as FormControl;
   }

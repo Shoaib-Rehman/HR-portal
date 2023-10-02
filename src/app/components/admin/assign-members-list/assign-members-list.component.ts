@@ -7,32 +7,20 @@ import { MatTableDataSource } from '@angular/material/table';
 import { IMember } from 'src/app/interface';
 import { AddEmployeeComponent } from '../add-employee/add-employee.component';
 import { Store } from '@ngxs/store';
-import { CompanyModel } from 'src/app/store/company/company.model';
 import { Company } from 'src/app/store/company/company.action';
 import { Router } from '@angular/router';
 import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
-import { takeUntil } from 'rxjs';
 
-
-const ELEMENT_DATA: IMember[] = []
+const ELEMENT_DATA: IMember[] = [];
 
 @Component({
   selector: 'app-assign-members-list',
   templateUrl: './assign-members-list.component.html',
-  styleUrls: ['./assign-members-list.component.scss']
+  styleUrls: ['./assign-members-list.component.scss'],
 })
 export class AssignMembersListComponent implements OnInit {
-
   employeeList: IMember[] = [];
   @ViewChild(MatPaginator) paginator!: MatPaginator;
-
-  statusFormControl: FormControl = new FormControl('steak-0');
-
-  foods = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' },
-  ];
 
   displayedColumns: string[] = [
     'name',
@@ -45,22 +33,22 @@ export class AssignMembersListComponent implements OnInit {
   dataSource = new MatTableDataSource<IMember>(ELEMENT_DATA);
   selection = new SelectionModel<IMember>(true, []);
 
-  constructor(private dialog: MatDialog, private store:Store, private router: Router,
-      private localStorage: LocalStorageService) {}
+  constructor(
+    private dialog: MatDialog,
+    private store: Store,
+    private router: Router,
+    private localStorage: LocalStorageService
+  ) {}
 
   ngOnInit(): void {
-    this.statusFormControl.valueChanges.subscribe((status: string) => {
-    });
-    this.getAllEmployee()
-
+    this.getAllEmployee();
   }
 
-  memberApprisal(userData:IMember) {
-    this.router.navigateByUrl('/self-appraisal?id='+ userData.id);
-    
+  memberApprisal(userData: IMember) {
+    this.router.navigateByUrl('/self-appraisal?id=' + userData.id);
   }
   // assignmembersToManger(): void {
-    
+
   //   this.store
   //     .dispatch(
   //       new Company.getMembers({
@@ -74,39 +62,42 @@ export class AssignMembersListComponent implements OnInit {
   //     });
   // }
 
-  openEmployeeModal(element:IMember, index:any): void {
+  openEmployeeModal(element: IMember, index: any): void {
     const dialogRef = this.dialog.open(AddEmployeeComponent, {
-      data:this.employeeList[index],
+      data: this.employeeList[index],
       width: '700px',
     });
-    dialogRef.afterClosed().subscribe(result => {
-      if(result?.data) {
-        this.getAllEmployee()
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result?.data) {
+        this.getAllEmployee();
       }
     });
   }
 
   getAllEmployee(): void {
-    this.store.dispatch(
-      new Company.getMembers({
-        agencyId: this.localStorage?.User?.agency,
-        managerId: this.localStorage?.User?.id,
-        status:'doneByMember'
-      })
-    ).subscribe((resp) => {
-      this.employeeList = resp?.company?.managerEmployeeList;
-      this.dataSource  = resp?.company?.managerEmployeeList.map((item:any) => ({
-        name: `${item.firstName} ${item.lastName}`,
-        agency: item.agency_name || 'N/A',
-        position: item.designation || 'N/A',
-        location: item.location || 'N/A',
-        status: item.status || 'Pending',
-        id: item?.id,
-        agencyId: item?.agency,
-        role: item?.role
-      }));
-      
-    })
+    this.store
+      .dispatch(
+        new Company.getMembers({
+          agencyId: this.localStorage?.User?.agency,
+          managerId: this.localStorage?.User?.id,
+          status: 'doneByMember',
+        })
+      )
+      .subscribe((resp) => {
+        this.employeeList = resp?.company?.managerEmployeeList;
+        this.dataSource = resp?.company?.managerEmployeeList.map(
+          (item: any) => ({
+            name: `${item.firstName} ${item.lastName}`,
+            position: item.designation || 'N/A',
+            location: item.location || 'N/A',
+            status: item.status || 'Pending',
+            agency: item.agency_name || 'N/A',
+            id: item?.id,
+            agencyId: item?.agency,
+            role: item?.role,
+          })
+        );
+      });
   }
 
   isAllSelected() {
@@ -126,5 +117,4 @@ export class AssignMembersListComponent implements OnInit {
   }
 
   delete(a: any): void {}
-
 }

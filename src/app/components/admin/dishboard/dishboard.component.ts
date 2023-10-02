@@ -115,7 +115,6 @@ const ELEMENT_DATA: IMember[] = [];
 export class DishboardComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   agencyForm: FormGroup;
-  // statusFormControl: FormControl = new FormControl('steak-0');
   displayedColumns: string[] = [
     'name',
     'agency',
@@ -143,7 +142,6 @@ export class DishboardComponent implements OnInit, AfterViewInit {
   selectedAgencyId: number = -1;
   allAgencytList: any[] = [];
   ngOnInit(): void {
-    // this.statusFormControl.valueChanges.subscribe((status: string) => {});
     this.agencyFormValue();
     this.subscriptions();
     this.store.dispatch(new Company.GetAll()).subscribe((resp: any) => {});
@@ -169,7 +167,7 @@ export class DishboardComponent implements OnInit, AfterViewInit {
             agency: item?.agency_name || 'N/A',
             position: item?.designation || 'N/A',
             location: item?.location || 'N/A',
-            status: item?.status || 'Pending',
+            status: item?.status || 'pending',
             managerId: item?.id,
             agencyId: item?.agency,
             role: item?.role

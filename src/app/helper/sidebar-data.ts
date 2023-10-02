@@ -42,7 +42,7 @@ export class SideBarData {
         routeLinkActive: "active"
       },
       {
-        name: 'Assign Members',
+        name: 'Assigned Members',
         icon: 'work_history',
         route: '/assign-members',
         routeLinkActive: "active"
@@ -62,7 +62,7 @@ export class SideBarData {
       {
         name: 'Appraisal Results',
         icon: 'wysiwyg',
-        route: '/employee',
+        route: '/employee-results',
         routeLinkActive: 'active',
       },
       {

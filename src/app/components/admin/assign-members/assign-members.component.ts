@@ -38,7 +38,7 @@ export class AssignMembersComponent implements OnInit {
         new Company.getMembers({
           agencyId: this.data?.agencyId,
           managerId: this.data?.managerId,
-          status:'all'
+          status: 'all',
         })
       )
       .pipe(takeUntil(this.unsubscribe$))
@@ -74,7 +74,6 @@ export class AssignMembersComponent implements OnInit {
       managerId: this.data?.managerId,
       agencyId: this.data?.agencyId,
       userType: this.data?.role,
-
     };
     this.store
       .dispatch(new Company.AssignMembers(obj))

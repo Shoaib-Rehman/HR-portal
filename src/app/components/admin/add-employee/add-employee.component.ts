@@ -27,7 +27,7 @@ export class AddEmployeeComponent implements OnInit {
   editEmployee: boolean = false;
   roles = [
     { value: 'Member', label: 'Member' },
-    { value: 'TeamLead', label: 'Team Lead' },
+    { value: 'Manager', label: 'Team Lead' },
     { value: 'CEO', label: 'CEO' },
   ];
   designation = [
@@ -73,7 +73,7 @@ export class AddEmployeeComponent implements OnInit {
 
   disableFormControl(formGroup: UntypedFormGroup): FormGroup {
     if (this.data?.agency) {
-      formGroup.get('agency')?.disable();
+      // formGroup.get('agency')?.disable();
       formGroup.get('agency')?.setValue(+this.data?.agency);
     }
     if (this.data?.firstName) {

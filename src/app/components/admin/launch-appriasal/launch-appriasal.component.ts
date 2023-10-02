@@ -132,7 +132,14 @@ export class LaunchAppriasalComponent implements OnInit, OnDestroy {
         data: formData,
         width: '900%',
       });
-      dialogRef.afterClosed().subscribe((result) => {});
+      dialogRef.afterClosed().subscribe((result) => {
+        this.companyFromControl.setValue('');
+        this.employeeFromControl.setValue('');
+        this.appraisalTypeFromControl?.setValue('');
+        this.appraisalTypeFromControl.clearValidators();
+        this.appraisalTypeFromControl.updateValueAndValidity();
+        this.clearValidator();
+      });
     } else {
       this.appraisalForm.markAllAsTouched();
     }
@@ -168,6 +175,9 @@ export class LaunchAppriasalComponent implements OnInit, OnDestroy {
   }
   get companyFromControl(): FormControl {
     return this.appraisalForm.get('company') as FormControl;
+  }
+  get appraisalTypeFromControl(): FormControl {
+    return this.appraisalForm.get('appraisalType') as FormControl;
   }
 
   ngOnDestroy(): void {

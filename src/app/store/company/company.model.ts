@@ -9,4 +9,5 @@ export class CompanyModel {
   managerEmployeeList: [] = [];
   userId: IUser = JSON.parse(localStorage.getItem('current-user') || '{}');
   membersDoneAppraisal: IMember[] = [];
+  AllMemberWhoDoneApprisal: IMember[] = [];
 }

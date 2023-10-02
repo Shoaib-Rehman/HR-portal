@@ -12,9 +12,9 @@ export class PermissionsService {
   canSee(moduleName: string): boolean {
     const role: string = this.localStorage.CurrentUserRole;
     const members: string[] = ['Apprisal', 'Annual Appraisal', 'Next Year Objectives'];
-    const managers: string[] = ['Apprisal', 'Annual Appraisal', 'Next Year Objectives', 'Assign Members'];
+    const managers: string[] = ['Apprisal', 'Annual Appraisal', 'Next Year Objectives', 'Assigned Members'];
     const HR: string[] = ['Agency Member List', 'Launch Appraisal', 'All Employee List', 'Appraisal Results','Calibration','Bell Cruve'];
-    const CEO: string[] = ['Assign Members']; 
+    const CEO: string[] = ['Assigned Members']; 
     
     if (role === ROLE.HR) {
       return HR.some((member: string) => member === moduleName);

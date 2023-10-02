@@ -14,6 +14,7 @@ import { AddEditAgencyComponent } from './add-edit-agency/add-edit-agency.compon
 import { SelfAnnualAppraisalComponent } from './self-annual-appraisal/self-annual-appraisal.component';
 import { NextYearObjectivesComponent } from './next-year-objectives/next-year-objectives.component';
 import { CalibrationComponent } from './calibration/calibration.component';
+import { ApprisalResultsComponent } from '../apprisal-results/apprisal-results.component';
 
 
 const routes: Routes = [
@@ -31,8 +32,8 @@ const routes: Routes = [
             component: DishboardComponent,
           },
           {
-            path: "employee",
-            component: DishboardComponent,
+            path: "employee-results",
+            component: ApprisalResultsComponent,
           },
           {
             path: "add-agency",

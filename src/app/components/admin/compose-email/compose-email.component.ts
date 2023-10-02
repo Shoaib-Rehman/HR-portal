@@ -52,7 +52,9 @@ export class ComposeEmailComponent implements OnInit {
     if (this.composeEmailForm.valid) {
     const formData: ILaunchAppraisal = this.prepareFormData();
     this.store.dispatch(new Company.launchAppriasal(formData)).subscribe(resp => {
-     
+      if(resp) {
+        this.cancel();
+      }
     })
     }
   }

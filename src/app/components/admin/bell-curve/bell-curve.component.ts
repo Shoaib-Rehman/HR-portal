@@ -14,7 +14,7 @@ import { CompanyState } from 'src/app/store/company/company.state';
   styleUrls: ['./bell-curve.component.scss'],
 })
 export class BellCurveComponent implements OnInit, AfterViewInit, OnDestroy {
-  @Select(CompanyState.membersDoneAppraisal)
+  @Select(CompanyState.GetAllMemberWhoDoneApprisal)
   members$?: Observable<IMember[]>;
 
   @Select(CompanyState.agenciesInfo)
@@ -68,7 +68,7 @@ export class BellCurveComponent implements OnInit, AfterViewInit, OnDestroy {
     this.agencyList$?.subscribe((agencies: IAgency[]) => {
       const firstMember: number = agencies[0]?.id as number;
       this.agency.setValue(firstMember);
-      this.store.dispatch(new Company.GetAllMember(firstMember));
+      this.store.dispatch(new Company.GetAllMemberWhoDoneApprisal(firstMember));
     });
 
     this.createChart();
@@ -77,7 +77,9 @@ export class BellCurveComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.agencySubscription = this.agency.valueChanges.subscribe(
       (agencyId: number) => {
-        this.store.dispatch(new Company.GetAllMember(agencyId)).subscribe();
+        this.store
+          .dispatch(new Company.GetAllMemberWhoDoneApprisal(agencyId))
+          .subscribe();
       }
     );
   }

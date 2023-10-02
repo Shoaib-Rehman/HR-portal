@@ -30,6 +30,7 @@ import { AssignMembersListComponent } from './assign-members-list/assign-members
 import { SearchPipe } from 'src/app/pipes/search/search.pipe';
 import { ProfileMenuComponent } from './profile-menu/profile-menu.component';
 import { NotificationComponent } from './notification/notification.component';
+import { ApprisalResultsComponent } from '../apprisal-results/apprisal-results.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { NotificationComponent } from './notification/notification.component';
     AssignMembersListComponent,
     ProfileMenuComponent,
     NotificationComponent,
+    ApprisalResultsComponent
   ],
   imports: [
     SharedModule,

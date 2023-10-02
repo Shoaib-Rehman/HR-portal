@@ -70,10 +70,10 @@
           <img src="./../../../../assets/icons/actiondots.svg" alt>
         </button>
         <mat-menu #actionMenu="matMenu">
-          <button mat-menu-item (click)="delete(element)">Remove Member</button>
+          <!-- <button mat-menu-item (click)="delete(element)">Remove Member</button> -->
           <button *ngIf="element?.role === 'Team Lead' || element?.role === 'Manager' || element?.role === 'CEO' "
             mat-menu-item (click)="assignMember(element)"> Assign Member</button>
-          <button mat-menu-item [disabled]="element.status === 'Pending' || element.status === 'completed'"
+          <button mat-menu-item [disabled]="element.status === 'pending' || element.status === 'completed'"
             (click)="reminderEmail()"> Email Reminder</button>
         </mat-menu>
       </td>

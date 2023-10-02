@@ -28,6 +28,10 @@ export class CompanyService extends APIBasicConfig {
     return this.http.get(`${this.base_url}users`);
   }
 
+  getAllEmployeeWhoDoneApprisal(data:any): Observable<any> {
+    return this.http.get(`${this.base_url}users?page=1&limit=10&isCompleted=true`);
+  }
+
   agencyEmployee(agencyId: any): Observable<any> {
     return this.http.get(
       `${this.base_url}agency/getAgencyEmployees/${agencyId?.id}`
@@ -35,7 +39,7 @@ export class CompanyService extends APIBasicConfig {
   }
 
   launchAppriasal(formData: ILaunchAppraisal): Observable<any> {
-    return this.http.post(`${this.base_url}users/launchApprisal`, formData);
+    return this.http.post(`${this.base_url}users/launchAppraisal`, formData);
   }
   launchSelfApriasal(formData: any): Observable<any> {
     return this.http.post(
@@ -78,15 +82,18 @@ export class CompanyService extends APIBasicConfig {
       `${this.base_url}users/getEmployeesAgainstManager/${data?.agencyId}/${data?.managerId}/${data?.status}`
     );
   }
+
   assignMembers(data: any): Observable<any> {
     return this.http.post(
       `${this.base_url}users/employeesAssignstoManager`,
       data
     );
   }
+
   downloadPDF(userId: number) {
     window.open(`${this.base_url}users/getReportFile/${userId}`, '_blank');
   }
+  
 
   getAllMembersWhoDoneAppraisal(agencyId: number): Observable<any> {
     return this.http.get(

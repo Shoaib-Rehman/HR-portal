@@ -20,6 +20,11 @@ export class CompanyState {
   }
 
   @Selector()
+  static GetAllMemberWhoDoneApprisal(state: CompanyModel) {
+    return state.AllMemberWhoDoneApprisal;
+  }
+
+  @Selector()
   static membersDoneAppraisal(state: CompanyModel): IMember[] {
     return state.membersDoneAppraisal;
   }
@@ -214,18 +219,21 @@ export class CompanyState {
   }
 
   @Action(Company.DownloadPDF)
-  downloadPDF(action: Company.DownloadPDF) {
+  DownloadPDF(ctx: StateContext<CompanyModel>, action: Company.DownloadPDF) {
     return this.companyService.downloadPDF(action.payload);
   }
 
-  @Action(Company.GetAllMember)
-  getAllMember(ctx: StateContext<CompanyModel>, action: Company.GetAllMember) {
+  @Action(Company.GetAllMemberWhoDoneApprisal)
+  GetAllMemberWhoDoneApprisal(
+    ctx: StateContext<CompanyModel>,
+    action: Company.GetAllMemberWhoDoneApprisal
+  ) {
     return this.companyService
-      .getAllMembersWhoDoneAppraisal(action.payload)
+      .getAllEmployeeWhoDoneApprisal(action.payload)
       .pipe(
         tap((resp) => {
           ctx.patchState({
-            membersDoneAppraisal: resp,
+            AllMemberWhoDoneApprisal: resp,
           });
         })
       );

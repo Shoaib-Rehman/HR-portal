@@ -160,30 +160,29 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
               this.data[`kpi_${i}`];
             this.objectives[i - 1].content.actualPerformance =
               this.data[`actual_performance_${i}`];
-            this.objectives[i - 1].content.score = `${
-              this.data[`score_${i}`]
-            }%`;
-            this.objectives[i - 1].content.selfScore =
-              this.data[`self_socre_${i}`];
+            // this.objectives[i - 1].content.score = `${
+            //   this.data[`score_${i}`]
+            // }%`;
+            if (
+              this.data[`done_by_member`] !== null &&
+              this.data[`done_by_member`] !== 0
+            ) {
+              this.objectives[i - 1].content.selfScore =
+                this.data[`self_socre_${i}`];
+            }
 
             this.objectives[i - 1].content.managerScore =
               this.data[`manager_score_${i}`];
-            this.objectives[i - 1].content.CEOScore =this.data[`manager_score_${i}`];
+            this.objectives[i - 1].content.CEOScore =
+              this.data[`manager_score_${i}`];
           }
-          this.disableSelfScore = true;
-          // if (
-          //   this.data['actual_performance_1'] !== '' ||
-          //   (this.data['actual_performance_1'] !== null &&
-          //     this.role !== ROLE.MANAGER)
-          // ) {
-          //   this.disable = true;
-          // }
         }
         if (this.userId === this.curtentUserId) {
           if (
             this.data?.actual_performance_1 !== undefined &&
             this.data?.actual_performance_1 !== null
           ) {
+            this.disableSelfScore = true;
             this.disable = true;
           } else {
             this.disable = false;
@@ -198,6 +197,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
           this.role === 'Manager'
         ) {
           console.log('Manager');
+          this.disableSelfScore = true;
           if (this.data?.['done_by_manager'] === 0) {
             this.disable = false;
           } else {
@@ -205,6 +205,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
           }
         } else if (this.userId !== this.curtentUserId && this.role === 'CEO') {
           console.log('CEO');
+          this.disableSelfScore = true;
           if (this.data?.['done_by_ceo'] === 0) {
             this.disable = false;
           } else {
@@ -214,6 +215,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
           // HR view apprisal
           console.log('ROLE', 'Human Resource');
           this.disable = true;
+          this.disableSelfScore = true;
         }
       });
   }
@@ -378,7 +380,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
         .dispatch(new Company.launchSelfApriasal(performance))
         .subscribe((resp) => {
           if (resp) {
-            if (this.paramsDetails) {
+            if (this.userId !== this.curtentUserId) {
               this.router.navigateByUrl(
                 '/annual-appraisal?id=' + this.parmasId
               );
@@ -410,10 +412,11 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
       this.objectives[index].content.managerScore = managerScore;
     }
   }
+  
   CEOScoreValue(managerScore: number, score: string, index: number): void {
     score = score.slice(0, -1);
     if (managerScore > +score) {
-      this.objectives[index].isCEOScoreGreaterThanScore  = true; // Show the error message
+      this.objectives[index].isCEOScoreGreaterThanScore = true; // Show the error message
     } else {
       this.objectives[index].isCEOScoreGreaterThanScore = false; // Hide the error message
       this.objectives[index].content.CEOScore = managerScore;
@@ -421,7 +424,7 @@ export class SelfAnnualAppraisalComponent implements OnInit, OnDestroy {
   }
 
   nextPage(): void {
-    if (this.paramsDetails || this.role === 'CEO') {
+    if (this.userId !== this.curtentUserId) {
       this.router.navigateByUrl('/annual-appraisal?id=' + this.parmasId);
     } else {
       this.router.navigateByUrl('/annual-appraisal');
