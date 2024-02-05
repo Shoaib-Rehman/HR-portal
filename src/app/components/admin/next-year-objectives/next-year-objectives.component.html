@@ -1,0 +1,73 @@
+<div class="heading-line">
+    <h1 class="main-heading">Objective Settings</h1>
+</div>
+<form class="example-form" [formGroup]="nextYearForm">
+    <div class="row box-height">
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label class="textsize">Name</mat-label>
+            <input class="textsize" matInput placeholder="Name" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label class="textsize">Location/Office</mat-label>
+            <input class="textsize" matInput placeholder="Location/Office" formControlName="location" />
+        </mat-form-field>
+    </div>
+    <div class="row">
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label class="textsize">Position</mat-label>
+            <input class="textsize" matInput placeholder="position" formControlName="position" />
+
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label>Date</mat-label>
+            <input matInput formControlName="date" placeholder="Select a date" />
+        </mat-form-field>
+    </div>
+</form>
+<!-- ***************************** Add Details *************** -->
+<div>
+    <p class="add-details">Please add your Objective and KPIs for 2024. Click on '+' sign to open and write your objectives/KPIs</p>
+</div>
+<div class="row" style="padding: 9px">
+    <div class="objective-boxing mb-5" *ngFor="let objective of objectives; let i = index">
+        <div class="text-container">
+            <h2 class="objective-text">{{ objective.name }}</h2>
+            <img src="../../../../assets/icons/objective_plus_icon.svg" alt="plus" (click)="toggleObjective(i)" />
+        </div>
+        <div class="objective-content" [ngClass]="{ expanded: isExpanded(i) }">
+            <div class="outer-container">
+                <div class="inner-container">
+                    <h4>Objective</h4>
+                    <textarea rows="4" [ngModel]="objective.content.objective"
+                        (ngModelChange)="objective.content.objective = $event" [name]="'objective-' + i"
+                        class="text-area textsize" [disabled]="hideButtonsAndDisableFields"></textarea>
+                </div>
+            </div>
+            <div class="outer-container">
+                <div class="inner-container">
+                    <h4>Key Performance Indicators</h4>
+                    <textarea rows="4" [ngModel]="objective.content.keyPerformanceIndicators"
+                        (ngModelChange)="objective.content.keyPerformanceIndicators = $event" [name]="'kpi-' + i"
+                        class="text-area textsize" [disabled]="hideButtonsAndDisableFields"></textarea>
+                </div>
+            </div>
+            <div>
+                <div class="row" style="margin-top: -60px">
+                    <mat-form-field appearance="outline" class="input-box col-12 score-padding">
+                        <mat-label class="textsize">Score</mat-label>
+                        <input matInput [ngModel]="objective.content.score"
+                            (ngModelChange)="objective.content.score = $event" [name]="'score' + i" disabled>
+                    </mat-form-field>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="buttons-section">
+<button mat-button class="save-button" (click)="saveData()" *ngIf="!hideButtonsAndDisableFields">Save and Finish</button>
+<button mat-button class="save-button" (click)="backPage()">Back</button>
+<button mat-button class="save-button" *ngIf="role === 'HR'" (click)="backToApprisalResult()">Back To Apprisal Result</button>
+</div>

@@ -1,0 +1,135 @@
+<div>
+    <h1 class="main-heading">Competency Assessment</h1>
+</div>
+<!-- [formGroup]="myForm"  -->
+<form class="example-form" [formGroup]="annualAppraisal">
+    <div class="row box-height">
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label class="textsize">Name</mat-label>
+            <input class="textsize" matInput placeholder="Name" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label class="textsize">Location/Office</mat-label>
+            <input class="textsize" matInput placeholder="Location/Office" formControlName="location" />
+        </mat-form-field>
+    </div>
+    <div class="row">
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label class="textsize">Position</mat-label>
+            <input class="textsize" matInput placeholder="position" formControlName="position" />
+
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="input-box col">
+            <mat-label>Date</mat-label>
+            <input matInput formControlName="date" placeholder="Select a date" />
+        </mat-form-field>
+    </div>
+
+
+    <div>
+        <h1 class="main-heading">Role Based Competency</h1>
+        <p class="ptext">1 being the lowest 5 being the highest</p>
+    </div>
+    <div class="row bottom-space">
+        <div class="col competency-styling">
+            <p>Work Ethics</p>
+        </div>
+        <div class="box-container col">
+            <div [class.selected]="isSelected('workEthics', boxNumber)" (click)="selectBox('workEthics', boxNumber)"
+                class="box" *ngFor="let boxNumber of boxNumbers">
+                {{ boxNumber }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row bottom-space">
+        <div class="col competency-styling ">
+            <p>Job Knowledge</p>
+        </div>
+        <div class="box-container col">
+            <div [class.selected]="isSelected('jobKnowledge', boxNumber)" (click)="selectBox('jobKnowledge', boxNumber)"
+                class="box" *ngFor="let boxNumber of boxNumbers">
+                {{ boxNumber }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row bottom-space">
+        <div class="col competency-styling">
+            <p>Quality of Work</p>
+        </div>
+        <div class="box-container col">
+            <div [class.selected]="isSelected('qualityWork', boxNumber)" (click)="selectBox('qualityWork', boxNumber)"
+                class="box" *ngFor="let boxNumber of boxNumbers">
+                {{ boxNumber }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row bottom-space">
+        <div class="col competency-styling ">
+            <p>Productivity</p>
+        </div>
+        <div class="box-container col">
+            <div [class.selected]="isSelected('Productivity', boxNumber)" (click)="selectBox('Productivity', boxNumber)"
+                class="box" *ngFor="let boxNumber of boxNumbers">
+                {{ boxNumber }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row bottom-space">
+        <div class="col competency-styling">
+            <p>Dependability</p>
+        </div>
+        <div class="box-container col">
+            <div [class.selected]="isSelected('Dependability', boxNumber)"
+                (click)="selectBox('Dependability', boxNumber)" class="box" *ngFor="let boxNumber of boxNumbers">
+                {{ boxNumber }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row bottom-space">
+        <div class="col competency-styling ">
+            <p>Discipline</p>
+        </div>
+        <div class="box-container col">
+            <div [class.selected]="isSelected('Discipline', boxNumber)" (click)="selectBox('Discipline', boxNumber)"
+                class="box" *ngFor="let boxNumber of boxNumbers">
+                {{ boxNumber }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row bottom-space">
+        <div class="col competency-styling ">
+            <p>Communication Skills</p>
+        </div>
+        <div class="box-container col">
+            <div [class.selected]="isSelected('CommunicationSkills', boxNumber)"
+                (click)="selectBox('CommunicationSkills', boxNumber)" class="box" *ngFor="let boxNumber of boxNumbers">
+                {{ boxNumber }}
+            </div>
+        </div>
+    </div>
+
+    <div class="row bottom-space">
+        <div class="col competency-styling ">
+            <p>Total</p>
+        </div>
+        <div class="box-container col">
+            <div class="total-box">{{ calculateSum() }}</div>
+        </div>
+    </div>
+
+    <div>
+        <p class="comment-text textsize">Final Comments</p>
+        <textarea class="text-area textsize comments-textarea" formControlName="comment"></textarea>
+    </div>
+    <div class="buttons-section">
+        <button *ngIf="disableBoxes" mat-button class="save-button" (click)="submit()">Save and continue</button>
+        <button mat-button class="go-back" (click)="goBack()">Go back</button>
+        <button *ngIf="!disableBoxes" mat-button class="go-back" (click)="nextPage()">Next</button>
+    </div>
+</form>

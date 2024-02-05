@@ -1,0 +1,33 @@
+table {
+    width: 100%;
+    box-shadow: none;
+  }
+
+  ::ng-deep .mat-paginator-container {
+    justify-content: center !important;
+  }
+  
+  .select-status {
+    padding: 8px 3px 7px 3px;
+    border-radius: 8px;
+    border: 1px solid rgba(177, 177, 177, 0.3);
+    background: rgba(255, 255, 255, 0.2);
+    width: 50%;
+  }
+  
+  .heading {
+    font-family: Poppins;
+    line-height: normal;
+    font-style: normal;
+    font-weight: 700;
+    font-size: 24px;
+    color: #000;
+  }
+  .mat-select-arrow-wrapper {
+    position: relative !important;
+    top: -14px !important;
+    margin-right: 27px !important;
+  }
+  .mat-select {
+    display: inline-block;
+  }

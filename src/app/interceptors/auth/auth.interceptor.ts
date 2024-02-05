@@ -6,17 +6,17 @@ import {
   HttpInterceptor
 } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { LocalStorageState } from 'src/app/local-storage.state';
+import { LocalStorageService } from 'src/app/services/local-storage/local-storage.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor() {}
+  constructor(private localStorage: LocalStorageService) {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     const modifiedRequest = request.clone({
       setHeaders: {
-        'Authorization': `Bearer ${LocalStorageState.Tokan}`,
+        'Authorization': `Bearer ${this.localStorage.Tokan}`,
         'Custom-Header': 'your_custom_header_value'
       }
     });

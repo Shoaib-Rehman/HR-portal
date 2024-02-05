@@ -1,0 +1,13 @@
+<mat-form-field >
+  <mat-label>Select Users</mat-label>
+  <mat-select panelClass="abc1" [formControl]="selectedUsersControl" multiple>
+    <mat-checkbox [(ngModel)]="selectAllValue" (change)="toggleSelectAll()">{{ selectAllOption.firstName }} </mat-checkbox>
+    <mat-option *ngFor="let user of users" [value]="user">{{ user?.firstName }} {{user?.lastName}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div class="buttonsDiv">
+  <button mat-button class="cancel-button" (click)="cancel()">Cancel</button>
+  <button mat-button [ngClass]="disable ? 'assign-user' : 'cancel-button'" (click)="submitSelectedUsers()" [disabled] = !disable>Submit</button>
+
+</div>

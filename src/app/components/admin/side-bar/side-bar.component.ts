@@ -1,9 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { Auth } from 'src/app/store/auth/auth.action';
 import { ISideNav } from 'src/app/store/auth/auth.interface';
-import { AuthState } from 'src/app/store/auth/auth.state';
+import { AuthState } from 'src/app/store/auth/auth.store';
 
 @Component({
   selector: 'app-side-bar',
@@ -20,9 +21,10 @@ export class SideBarComponent implements OnInit {
   isShowing = false;
   showSubSubMenu: boolean = false;
 
-  constructor() { }
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
+    this.store.dispatch(new Auth.RefreshSideBarORData())
   }
 
 }

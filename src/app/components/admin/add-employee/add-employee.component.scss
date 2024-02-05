@@ -1,3 +1,6 @@
+.heading-line{
+  padding: 1rem 0rem
+}
 .form-row {
     display: flex;
     flex-wrap: wrap;
@@ -12,7 +15,12 @@
   button[type="submit"] {
     margin-top: 10px;
   }
-
+.close-modal {
+  display: flex;
+  float: right;
+  margin-top: -28px;
+  cursor: pointer;
+}
   .input-box {
     // margin-top: 3rem;
     margin-bottom: 1.5rem;
@@ -59,7 +67,13 @@
   }
   .add-employee-button {
     background-color:#4CA3FB;
-    color: white;
+    color: white !important;
+    display: flex;
+    float: right;
+    border: none;
+    padding: 8px;
+    margin-top: -7px;
+
   }
   // .designation-input{
   //   margin-bottom: 0px !important;

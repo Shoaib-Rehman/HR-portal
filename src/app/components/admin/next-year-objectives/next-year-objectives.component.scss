@@ -1,0 +1,141 @@
+
+.main-heading {
+  margin-bottom: 3px;
+  font-family: Poppins;
+font-size: 24px;
+font-weight: 700;
+line-height: 36px;
+letter-spacing: 0em;
+text-align: left;
+
+}
+
+
+.input-box {
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+}
+.box-height {
+  margin-bottom: -38px;
+}
+:host ::ng-deep mat-form-field .mat-form-field-outline-start {
+  background-color: #f8f9fa !important;
+}
+
+:host ::ng-deep mat-form-field .mat-form-field-outline-gap {
+  background-color: #f8f9fa !important;
+}
+
+:host ::ng-deep mat-form-field .mat-form-field-outline-end {
+  background-color: #f8f9fa !important;
+}
+
+// **************** Add Details ***************************************
+
+.objective-boxing {
+  padding: 26px;
+  border-radius: 12px;
+  height: auto;
+  border: 1px solid #e8ecf1;
+}
+.objective-boxing h2 {
+  margin: 0px;
+  font-size: large;
+}
+
+.objective-content {
+  margin-top: 10px;
+  display: none;
+}
+
+.objective-content.expanded {
+  display: block;
+}
+
+h4 {
+  margin: 0px 0px 0px 0px;
+  font-size: 18px;
+  font-family: Poppins;
+  font-weight: 600;
+  color: #242731;
+}
+
+.outer-container {
+  border: 1px solid #e8ecf1;
+  // height: 244px;
+  border-radius: 20px;
+  margin-bottom: 33px;
+}
+.inner-container {
+  padding: 1rem 1rem 1rem 1rem;
+}
+
+.text-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-area {
+  width: 100%;
+  height: 157px;
+  resize: none;
+  background: #F8F9FA;
+  border: 1px solid #b2b2b2;
+  border-radius: 6px;
+  padding: 20px;
+  margin-top: 1rem;
+}
+.textsize {
+  font-size: 14px;
+  line-height: 16.94px;
+  font-weight: 500;
+  color: black;
+  font-family: Poppins;
+}
+.add-details {
+  font-size: 18.46px;
+  font-weight: 600;
+  font-family: Poppins;
+  margin-bottom: 1.7rem;
+}
+.kips-button {
+  background-color: #4ca3fb;
+  color: white !important;
+  margin-right: 22px;
+  text-align: center;
+}
+.manager-score {
+  margin-top: 0px !important;
+}
+.score-padding {
+  margin-top: 4rem !important;
+}
+
+.save-button  {
+  background-color:#4CA3FB;
+  color: white !important;
+  margin-right: 22px;
+  text-align: center;
+}
+.objective-text {
+  font-family: Poppins;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  letter-spacing: 0em;
+  text-align: left;
+  
+}
+.example-form {
+  margin-top: -24px;
+}
+
+.buttons-section {
+  margin-top: 21px;
+  margin-top: 21px;
+  display: flex;
+  justify-content: space-between;
+}
+
+// ******************** Custom toaster *******

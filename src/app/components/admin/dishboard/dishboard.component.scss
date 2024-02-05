@@ -2,6 +2,19 @@ table {
   width: 100%;
   box-shadow: none;
 }
+.add-employee-button {
+  background-color:#4CA3FB;
+    color: white !important;
+    display: flex;
+    float: right;
+    border: none;
+    padding: 8px;
+    // margin-top: -7px;
+}
+.add-employee-button:hover{
+  background-color: #4ca3fb;
+  color: white !important;
+}
 
 ::ng-deep .mat-paginator-container {
   justify-content: center !important;
@@ -10,8 +23,8 @@ table {
 .select-status {
   padding: 8px 3px 7px 3px;
   border-radius: 8px;
-  border: 1px solid rgba(177, 177, 177, 0.30);
-  background: rgba(255, 255, 255, 0.20);
+  border: 1px solid rgba(177, 177, 177, 0.3);
+  background: rgba(255, 255, 255, 0.2);
   width: 50%;
 }
 
@@ -23,3 +36,5 @@ table {
   font-size: 24px;
   color: #000;
 }
+
+

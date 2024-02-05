@@ -1,9 +1,22 @@
-<div>
-    <canvas baseChart
-            [datasets]="chartData"
-            [labels]="chartLabels"
-            [options]="chartOptions"
-            [legend]="true"
-            [chartType]="chartType">
-    </canvas>
-  </div>
+<div class="mb-5">
+
+        <div class="agencies-box">
+                <mat-form-field appearance="outline" class="form-field input-box designation-input col-md-4">
+                        <mat-label>Agencies</mat-label>
+                        <mat-select [formControl]="agency">
+                                <mat-option *ngFor="let agency of agencyList$ | async" [value]="agency?.id"
+                                        class="textsize">
+                                        {{ agency.name }}
+                                </mat-option>
+                        </mat-select>
+                </mat-form-field>
+        </div>
+
+        <canvas baseChart [datasets]="chartData" [labels]="chartLabels" [options]="chartOptions" [legend]="true"
+                [chartType]="chartType">
+        </canvas>
+</div>
+
+<div class="">
+        <app-unlaunched-appriasal-employee></app-unlaunched-appriasal-employee>
+</div>

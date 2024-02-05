@@ -1,32 +1,103 @@
-import { IGetAll } from "src/app/interface";
-import { ICompany } from "./company.interface";
+import { IAddEmployee, IGetAll, ILaunchAppraisal } from 'src/app/interface';
+import { ICompany } from './company.interface';
 
 export namespace Company {
+  export class Create {
+    static readonly type = '[Company] Create';
+    constructor(public payload: ICompany) {}
+  }
 
-    export class Create {
-        static readonly type = '[Company] Create';
-        constructor(public payload: ICompany) {}
-    }
+  export class EditEmployee {
+    static readonly type = '[Company] EditEmployee';
+    constructor(public payload: IAddEmployee) {}
+  }
 
-    export class Update {
-        static readonly type = '[Company] Update';
-        constructor(public payload: ICompany) {}
-    }
+  export class Delete {
+    static readonly type = '[Company] Delete';
+    constructor(public id: number) {}
+  }
 
-    export class Delete {
-        static readonly type = '[Company] Delete';
-        constructor(public id: number) {}
-    }
+  export class GetAll {
+    static readonly type = '[Company] GetAll';
+    constructor() {}
+  }
 
-    export class GetAll {
-        static readonly type = '[Company] GetAll';
-        constructor(public payload: IGetAll) {}
-    }
+  export class GetSingleAgencyEmployee {
+    static readonly type = '[Company] GetSingleAgencyEmployee';
+    constructor(public payload: any) {}
+  }
 
-    export class GetSingle {
-        static readonly type = '[Company] GetSingle';
-        constructor(public id: number) {}
-    }
+  export class addEmployee {
+    static readonly type = '[Company] addEmployee';
+    constructor(public payload: IAddEmployee) {}
+  }
 
+  export class GetAllEmployee {
+    static readonly type = '[Company] GetAllEmployee';
+    constructor() {}
+  }
 
+  export class launchAppriasal {
+    static readonly type = '[Company] launchAppriasal';
+    constructor(public payload: ILaunchAppraisal) {}
+  }
+
+  export class launchSelfApriasal {
+    static readonly type = '[Company] launchSelfApriasal';
+    constructor(public payload: any) {}
+  }
+
+  export class GetSelfApriasal {
+    static readonly type = '[Company] GetSelfApriasal';
+    constructor(public payload: any) {}
+  }
+
+  export class launchCompetencyApriasal {
+    static readonly type = '[Company] launchCompetencyApriasal';
+    constructor(public payload: any) {}
+  }
+
+  export class GetCompetencyApriasal {
+    static readonly type = '[Company] GetCompetencyApriasal';
+    constructor(public payload: any) {}
+  }
+
+  export class launchNextYearApriasal {
+    static readonly type = '[Company] launchNextYearApriasal';
+    constructor(public payload: any) {}
+  }
+
+  export class GetNextYearApriasal {
+    static readonly type = '[Company] GetNextYearApriasal';
+    constructor(public payload: any) {}
+  }
+
+  export class GetUserIdLocalStorage {
+    static readonly type = '[Company] GetUserIdLocalStorage';
+    constructor() {}
+  }
+
+  export class getMembers {
+    static readonly type = '[Company] getMembers';
+    constructor(public payload: any) {}
+  }
+
+  export class AssignMembers {
+    static readonly type = '[Company] AssignMembers';
+    constructor(public payload: any) {}
+  }
+  export class DownloadPDF {
+    static readonly type = '[Company] DownloadPDF';
+    constructor(public payload: number) {}
+  }
+
+  export class GetAllMember {
+    static readonly type = '[Member] Get All Who Done Appraisal';
+    constructor(public payload: number) {}
+  }
+
+  export class GetAllMemberWhoDoneApprisal {
+    static readonly type = '[Member] Get All Member Who Done Apprisal';
+    constructor(public payload: any) {}
+  }
 }

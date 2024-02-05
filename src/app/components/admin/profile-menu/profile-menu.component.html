@@ -1,0 +1,11 @@
+<button mat-icon-button [matMenuTriggerFor]="menu">
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRZ8eXCyj0PQOuhp2lmRQ8Yw9Glh9M5R6-7dj6sAgc&s"
+        alt="Profile Image" class="profile-image">
+    <mat-icon>keyboard_arrow_down</mat-icon>
+</button>
+<mat-menu #menu="matMenu">
+    <!-- <button mat-menu-item>Edit Profile</button> -->
+    <!-- <button mat-menu-item>Change Password</button> -->
+    <button mat-menu-item (click)="logout()">Logout</button>
+    <button mat-menu-item (click)="downloadPDF()">Download PDF</button>
+</mat-menu>

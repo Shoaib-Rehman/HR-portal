@@ -1,0 +1,70 @@
+// ::ng-deep .mat-pseudo-checkbox .mat-pseudo-checkbox-checked {
+//   background-color: gray;
+// }
+// ::ng-deep .mat-checkbox-checked.mat-accent .mat-checkbox-background {
+//   background-color: gray;
+// }
+
+
+::ng-deep {
+  .abc {
+      .mat-dialog-container {
+        padding: 19px 19px 0px 19px !important;
+      }
+      .mat-form-field-appearance-legacy .mat-form-field-wrapper{
+        width: 562px !important;
+      }
+       
+  }
+
+  .mat-dialog-container {
+      border-radius: 10px;
+  }
+ 
+}
+  //  .abc .mat-dialog-container {
+  //   //  height: 250px;
+  //   //  width: 600px;
+  //    padding: 19px 19px 0px 19px !important;
+  //  }
+// .mat-option-disabled .mat-option-text {
+//   color: rgba(0, 0, 0, 0.5); /* Gray out the selected users */
+// }
+
+
+// ::ng-deep .mat-form-field-infix {
+//   width: 648px;
+// }
+
+// ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-wrapper {
+//     width: 470px;
+// }
+
+::ng-deep .mat-select-panel-wrap .abc1{  
+  margin-left: 40px;
+  margin-top: 40px;
+  height: 150px;
+  min-width: calc(89% + 64px) !important; 
+}
+// ::ng-deep .mat-select-panel-wrap {
+//   flex-basis: 90%;
+// }
+.assign-user{
+  // margin-top: 8rem;
+  background-color:#4CA3FB;
+  color: white;
+  cursor: pointer;
+}
+.cancel-button{
+  // margin-top: 8rem;
+  background-color:#e7e7e7;;
+  color: #807575;
+  cursor: pointer;
+}
+.buttonsDiv{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 9rem;
+
+}
+

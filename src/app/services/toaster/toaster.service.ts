@@ -10,10 +10,21 @@ export class ToasterService {
 
   constructor(private _snackBar: MatSnackBar) { }
 
-  openSnackBar(message: string): void {
+  success(message: string): void {
     this._snackBar.open(message, 'X', {
       horizontalPosition: this.horizontalPosition,
       verticalPosition: this.verticalPosition,
+      panelClass: "green-snackbar",
+      duration: 3000,
+    });
+  }
+
+  failed(message: string): void {
+    this._snackBar.open(message, 'X', {
+      horizontalPosition: this.horizontalPosition,
+      verticalPosition: this.verticalPosition,
+      panelClass: "red-snackbar",
+      duration: 3000,
     });
   }
 

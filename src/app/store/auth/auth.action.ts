@@ -13,4 +13,14 @@ export namespace Auth {
         static readonly type = '[Auth] Login';
         constructor(public payload: ILogin) {}
     }
+
+    export class Logout {
+        static readonly type = '[Auth] Logout';
+        constructor() {}
+    }
+
+    export class RefreshSideBarORData {
+        static readonly type = '[Auth] Refresh';
+        constructor() {}
+    }
 }
